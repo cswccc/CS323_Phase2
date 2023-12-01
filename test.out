@@ -1,22 +1,22 @@
 Program (1)
   ExtDefList (1)
     ExtDef (1)
-      Specifier (1)
-        TYPE: int
+      Specifier (1) (int)
+        TYPE: int (int)
       FunDec (1)
         ID: sum
         LP
         VarList (1)
           ParamDec (1)
-            Specifier (1)
-              TYPE: int
+            Specifier (1) (int)
+              TYPE: int (int)
             VarDec (1)
               ID: x
           COMMA
           VarList (1)
             ParamDec (1)
-              Specifier (1)
-                TYPE: int
+              Specifier (1) (int)
+                TYPE: int (int)
               VarDec (1)
                 ID: y
         RP
@@ -24,8 +24,8 @@ Program (1)
         LC
         DefList (3)
           Def (3)
-            Specifier (3)
-              TYPE: int
+            Specifier (3) (int)
+              TYPE: int (int)
             DecList (3)
               Dec (3)
                 VarDec (3)
@@ -42,76 +42,97 @@ Program (1)
                     Exp (3)
                       ID: z
             SEMI
-        StmtList (4)
-          Stmt (4)
+          DefList (4)
+            Def (4)
+              Specifier (4) (int)
+                TYPE: int (int)
+              DecList (4)
+                Dec (4)
+                  VarDec (4)
+                    VarDec (4)
+                      VarDec (4)
+                        ID: a
+                      LB
+                      INT: 2
+                      RB
+                    LB
+                    INT: 2
+                    RB
+              SEMI
+        StmtList (5)
+          Stmt (5)
             RETURN
-            Exp (4)
+            Exp (5)
               ID: res
             SEMI
         RC
-    ExtDefList (6)
-      ExtDef (6)
-        Specifier (6)
-          TYPE: int
-        FunDec (6)
+    ExtDefList (7)
+      ExtDef (7)
+        Specifier (7) (int)
+          TYPE: int (int)
+        FunDec (7)
           ID: test_2_r01
           LP
           RP
-        CompSt (7)
+        CompSt (8)
           LC
-          DefList (8)
-            Def (8)
-              Specifier (8)
-                TYPE: int
-              DecList (8)
-                Dec (8)
-                  VarDec (8)
+          DefList (9)
+            Def (9)
+              Specifier (9) (int)
+                TYPE: int (int)
+              DecList (9)
+                Dec (9)
+                  VarDec (9)
                     ID: a1
                   ASSIGN
-                  Exp (8)
+                  Exp (9)
                     INT: 1
               SEMI
-            DefList (9)
-              Def (9)
-                Specifier (9)
-                  TYPE: int
-                DecList (9)
-                  Dec (9)
-                    VarDec (9)
+            DefList (10)
+              Def (10)
+                Specifier (10) (int)
+                  TYPE: int (int)
+                DecList (10)
+                  Dec (10)
+                    VarDec (10)
                       ID: b
                     ASSIGN
-                    Exp (9)
-                      Exp (9)
+                    Exp (10)
+                      Exp (10)
                         ID: a1
                       PLUS
-                      Exp (9)
+                      Exp (10)
                         ID: a
                 SEMI
-              DefList (10)
-                Def (10)
-                  Specifier (10)
-                    TYPE: int
-                  DecList (10)
-                    Dec (10)
-                      VarDec (10)
+              DefList (11)
+                Def (11)
+                  Specifier (11) (int)
+                    TYPE: int (int)
+                  DecList (11)
+                    Dec (11)
+                      VarDec (11)
                         ID: b
                       ASSIGN
-                      Exp (10)
+                      Exp (11)
                         ID: sum
                         LP
-                        Args (10)
-                          Exp (10)
+                        Args (11)
+                          Exp (11)
                             ID: a
                           COMMA
-                          Args (10)
-                            Exp (10)
+                          Args (11)
+                            Exp (11)
                               ID: b
                         RP
                   SEMI
-          StmtList (11)
-            Stmt (11)
+          StmtList (12)
+            Stmt (12)
               RETURN
-              Exp (11)
+              Exp (12)
                 INT: 0
               SEMI
           RC
+b: int
+a1: int
+-1: int
+res: int

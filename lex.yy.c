@@ -1054,12 +1054,12 @@ YY_RULE_SETUP
 case 34:
 YY_RULE_SETUP
 #line 110 "lex.l"
-{/*line();*/       /*printf("Type %s\n",yytext);   */ yylval = create_add("TYPE: ",yytext);   return TYPE;}
+{/*line();*/       /*printf("Type %s\n",yytext);   */ yylval = create_add("TYPE: ",yytext); yylval->type=yytext;  return TYPE;}
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
 #line 111 "lex.l"
-{/*line();*/       /*printf("Id %s\n",yytext);   */ yylval = create_add("ID: ",yytext);   return ID;}
+{/*line();*/       /*printf("Id %s\n",yytext);   */ yylval = create_add("ID: ",yytext);  yylval->id=yytext; return ID;}
 	YY_BREAK
 case 36:
 YY_RULE_SETUP

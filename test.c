@@ -1,6 +1,7 @@
 int sum(int x, int y)
 {
   int res = x + y + z;
+  int a[2][2];
   return res;
 }
 int test_2_r01()

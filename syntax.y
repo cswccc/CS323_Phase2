@@ -3,7 +3,7 @@
     #include <stdio.h>
     #include <iostream>
     #include <string>
-    #include <map>
+    #include <unordered_map>
     #define true 1
     #define false 0
     using namespace std;
@@ -11,6 +11,8 @@
     struct parsetree
     {
         string name;
+        string id;
+        string type;
         struct parsetree* left_son;
         struct parsetree* right_son;
         struct parsetree* nxt_bro;
@@ -19,8 +21,8 @@
     #define YYSTYPE struct parsetree*
 
     int tot = 0;
-    map<string, string> para_type;
-    map<string, string> func_type;
+
+    unordered_map<string, string> para_type;
 
     void my_yyerror(const string s,int line);
     void yyerror(const string s);
@@ -28,16 +30,11 @@
     struct parsetree* create_add(const string to_name,const char* to_add);
     void add_son(struct parsetree* parent,struct parsetree* son);
 
-    string charToString(const char* c);
-    void insert_para(const char* para, const char* type);
-    void insert_func(const char* func, const char* type);
-    string get_func_type(const char* func);
-    string get_type(const char* para);
+    void decListIt(struct parsetree* root,string type);
 
     void output(struct parsetree* root,int dep);
 
     #include "lex.yy.c"
-
 %}
 
 %token INT
@@ -94,14 +91,14 @@ ExtDef : Specifier ExtDecList SEMI{$$ = create("ExtDef"); add_son($$,$1); add_so
 ExtDecList : VarDec{$$ = create("ExtDecList"); add_son($$,$1);}
     | VarDec COMMA ExtDecList{$$ = create("ExtDecList"); add_son($$,$1); add_son($$,$2); add_son($$,$3);}
 
-Specifier : TYPE{$$ = create("Specifier"); add_son($$,$1);}
+Specifier : TYPE{$$ = create("Specifier"); add_son($$,$1); $$->type=$1->type;}
     | StructSpecifier{$$ = create("Specifier"); add_son($$,$1);}
 
 StructSpecifier : STRUCT ID LC DefList RC{$$ = create("StructSpecifier"); add_son($$,$1); add_son($$,$2); add_son($$,$3); add_son($$,$4); add_son($$,$5);}
     | STRUCT ID LC DefList error{$$ = create("StructSpecifier"); add_son($$,$1); my_yyerror("Missing right curly '}'",$$->line);}
     | STRUCT ID{$$ = create("StructSpecifier"); add_son($$,$1); add_son($$,$2);}
 
-VarDec : ID{$$ = create("VarDec"); add_son($$,$1);}
+VarDec : ID{$$ = create("VarDec"); add_son($$,$1); $$->id=$1->id;}
     | VarDec LB INT RB{$$ = create("VarDec"); add_son($$,$1); add_son($$,$2); add_son($$,$3); add_son($$,$4);}
     | VarDec LB INT error{$$ = create("VarDec"); add_son($$,$1); my_yyerror("Missing right brackets ']'",$$->line);}
 
@@ -139,15 +136,20 @@ Stmt : Exp SEMI{$$ = create("Stmt"); add_son($$,$1); add_son($$,$2);}
 DefList : Def DefList{$$ = create("DefList"); add_son($$,$1); add_son($$,$2);}
     | {$$ = NULL;}
 
-Def : Specifier DecList SEMI{$$ = create("Def"); add_son($$,$1); add_son($$,$2); add_son($$,$3);}
+Def : Specifier DecList SEMI{$$ = create("Def"); add_son($$,$1); add_son($$,$2); add_son($$,$3); decListIt($2,$1->type);
+//  para_type[$2->name]=$1->type;
+
+
+
+} //简单定义
     | Specifier DecList error{$$ = create("Def"); add_son($$,$1); my_yyerror("Missing semicolon ';'",$$->line);}
 
 DecList : Dec{$$ = create("DecList"); add_son($$,$1);}
     | Dec COMMA DecList{$$ = create("DecList"); add_son($$,$1); add_son($$,$2); add_son($$,$3);}
 
-Dec : VarDec{$$ = create("Dec"); add_son($$,$1);}
-    | VarDec ASSIGN Exp{$$ = create("Dec"); add_son($$,$1); add_son($$,$2); add_son($$,$3);}
-    | VarDec ASSIGN error{$$ = create("Dec"); add_son($$,$1);my_yyerror("Missing Expression ",$$->line);}
+Dec : VarDec{$$ = create("Dec"); add_son($$,$1);cerr<<"hhhbefore"; $$->id=$1->id; cerr<<"hhhafter";}
+    | VarDec ASSIGN Exp{$$ = create("Dec"); add_son($$,$1); add_son($$,$2); add_son($$,$3); $$->id=$1->id;}
+    | VarDec ASSIGN error{$$ = create("Dec"); add_son($$,$1);my_yyerror("Missing Expression ",$$->line); $$->id=$1->id;}
 
 Operate : ASSIGN{$$ = create("ASSIGN");$$->line = $1->line;}
     | AND{$$ = create("AND");$$->line = $1->line;}
@@ -201,6 +203,8 @@ void yyerror(const string s) {
 
 struct parsetree* create(const string to_name) {
     struct parsetree* ret = (struct parsetree*) malloc(sizeof(struct parsetree));
+    ret->id="-1";
+    ret->type="-1";
     ret->line = lines;
     ret->left_son = ret->right_son = NULL;
     ret->name = to_name;
@@ -223,48 +227,21 @@ void add_son(struct parsetree* parent,struct parsetree* son)
     }
 }
 
-string charToString(const char* c)
-{
-    string ret = "";
-    for (int i = 0; c[i] != '\0'; i++)
-        ret += c[i];
-    
-    return ret;
-}
-
 struct parsetree* create_add(const string to_name,const char* to_add)
 {
     struct parsetree* ret = (struct parsetree*) malloc(sizeof(struct parsetree));
+    ret->id="-1";
+    ret->type="-1";
     ret->line = lines;
     ret->left_son = ret->right_son = NULL;
 
-    string to_name_1 = to_name;
-    for (int i = 0; to_add[i] != '\0'; i++)
-        to_name_1 += to_add[i];
-
-    ret->name = to_name_1;
+    string to_add_ = to_add;
+    string name = to_name;
+    name += to_add_;
+    
+    ret->name = name;
 
     return ret;
-}
-
-void insert_para(const char* para, const char* type)
-{
-    para_type[charToString(para)] = charToString(type);
-}
-
-void insert_func(const char* func, const char* type)
-{
-    func_type[charToString(func)] = charToString(type);
-}
-
-string get_para_type(const char* para)
-{
-    return para_type[charToString(para)];
-}
-
-string get_func_type(const char* func)
-{
-    return func_type[charToString(func)];
 }
 
 void output(struct parsetree* root,int dep)
@@ -273,11 +250,28 @@ void output(struct parsetree* root,int dep)
         printf("  ");
     cout<<root->name;
     if(root->left_son !=NULL) printf(" (%d)",root->line);
+    if(root->type!="-1") printf(" (%s)",root->type.c_str());
     printf("\n");
     struct parsetree* nxt = root->left_son;
     while(nxt!=NULL)
     {
         output(nxt,dep+1);
+        nxt = nxt->nxt_bro;
+    }
+}
+
+void decListIt(struct parsetree* root,string type)
+{
+    if(root->name == "COMMA") return;
+    if(root->name == "Dec")
+    {
+        para_type[root->id]=type;
+        return;
+    }
+    struct parsetree* nxt = root->left_son;
+    while(nxt!=NULL)
+    {
+        decListIt(nxt,type);
         nxt = nxt->nxt_bro;
     }
 }
@@ -288,11 +282,12 @@ int main(int argc, char **argv) {
           return EXIT_FAIL;
     } else if(argc == 2){
         file_path = argv[1];
-        string s="123";
-        cout<<s<<endl;
         freopen("test.c","r",stdin);
         freopen("test.out","w",stdout);
         yyparse();
+         for (const auto& pair : para_type) {
+        std::cout << pair.first << ": " << pair.second << std::endl;
+        }
     }
     else
     {

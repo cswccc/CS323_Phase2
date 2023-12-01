@@ -107,8 +107,8 @@ WHILE while
 {SEMI} {/*line();*/       /*printf("%s\n",yytext);   */ yylval = create("SEMI");     return SEMI;}
 {COMMA} {/*line();*/       /*printf("%s\n",yytext);   */ yylval = create("COMMA");     return COMMA;}
 
-{Type} {/*line();*/       /*printf("Type %s\n",yytext);   */ yylval = create_add("TYPE: ",yytext);   return TYPE;}
-{ID} {/*line();*/       /*printf("Id %s\n",yytext);   */ yylval = create_add("ID: ",yytext);   return ID;}
+{Type} {/*line();*/       /*printf("Type %s\n",yytext);   */ yylval = create_add("TYPE: ",yytext); yylval->type=yytext;  return TYPE;}
+{ID} {/*line();*/       /*printf("Id %s\n",yytext);   */ yylval = create_add("ID: ",yytext);  yylval->id=yytext; return ID;}
 (([1-9]{digit}*)|0+)\.{digit}+ {/*line();*/       /*printf("Float %s\n",yytext);   */ yylval = create_add("FLOAT: ",yytext);   return FLOAT;}
 {INT_HEX} {/*line();*/       /*printf("Hex %s\n",yytext);   */ yylval = create_add("INT: ",yytext);   return INT;}
 {INT} {/*line();*/       /*printf("INT10 %s\n",yytext);   */ yylval = create_add("INT: ",yytext); if(!check(yytext)){fprintf(stderr,"too large int %s at line %d\n",yytext,lines);}  return INT;}
