@@ -1,50 +1,15 @@
-Program (1)  --dim: 0  --type:-1  --id:-1
-  ExtDefList (1)  --dim: 0  --type:-1  --id:-1
-    ExtDef (1)  --dim: 0  --type:-1  --id:-1
-      Specifier (1) (int)  --dim: 0  --type:int  --id:-1
-        TYPE: int (int)  --dim: 0  --type:int  --id:-1
-      FunDec (1)  --dim: 0  --type:-1  --id:sum
-        ID: sum  --dim: 0  --type:-1  --id:sum
-        LP  --dim: 0  --type:-1  --id:-1
-        VarList (1)  --dim: 0  --type:-1  --id:-1
-          ParamDec (1) (int)  --dim: 0  --type:int  --id:-1
-            Specifier (1) (int)  --dim: 0  --type:int  --id:-1
-              TYPE: int (int)  --dim: 0  --type:int  --id:-1
-            VarDec (1)  --dim: 0  --type:-1  --id:x
-              ID: x  --dim: 0  --type:-1  --id:x
-          COMMA  --dim: 0  --type:-1  --id:-1
-          VarList (1)  --dim: 0  --type:-1  --id:-1
-            ParamDec (1) (int)  --dim: 0  --type:int  --id:-1
-              Specifier (1) (int)  --dim: 0  --type:int  --id:-1
-                TYPE: int (int)  --dim: 0  --type:int  --id:-1
-              VarDec (1)  --dim: 0  --type:-1  --id:y
-                ID: y  --dim: 0  --type:-1  --id:y
-        RP  --dim: 0  --type:-1  --id:-1
-      CompSt (2)  --dim: 0  --type:-1  --id:-1
-        LC  --dim: 0  --type:-1  --id:-1
-        DefList (3)  --dim: 0  --type:-1  --id:-1
-          Def (3)  --dim: 0  --type:-1  --id:-1
-            Specifier (3) (int)  --dim: 0  --type:int  --id:-1
-              TYPE: int (int)  --dim: 0  --type:int  --id:-1
-            DecList (3)  --dim: 0  --type:-1  --id:-1
-              Dec (3)  --dim: 0  --type:-1  --id:a
-                VarDec (3)  --dim: 0  --type:-1  --id:a
-                  ID: a  --dim: 0  --type:-1  --id:a
-            SEMI  --dim: 0  --type:-1  --id:-1
-        StmtList (4)  --dim: 0  --type:-1  --id:-1
-          Stmt (4)  --dim: 0  --type:-1  --id:-1
-            Exp (4)  --dim: 0  --type:-1  --id:-1
-              ID: a  --dim: 0  --type:-1  --id:a
-              LP  --dim: 0  --type:-1  --id:-1
-              Args (4)  --dim: 0  --type:-1  --id:-1
-                Exp (4)  --dim: 0  --type:-1  --id:-1
-                  INT: 1  --dim: 0  --type:-1  --id:-1
-                COMMA  --dim: 0  --type:-1  --id:-1
-                Args (4)  --dim: 0  --type:-1  --id:-1
-                  Exp (4)  --dim: 0  --type:-1  --id:-1
-                    INT: 2  --dim: 0  --type:-1  --id:-1
-              RP  --dim: 0  --type:-1  --id:-1
-            SEMI  --dim: 0  --type:-1  --id:-1
-        RC  --dim: 0  --type:-1  --id:-1
-a: int 0
+b: int 0
+c: int 0
+a: int 1
+kkk: char
 sum: int
+kkk: 
+float 
+float 
+int 
+char 
+
+sum: 
+int 
+int 
+
