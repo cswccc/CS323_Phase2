@@ -353,9 +353,9 @@ void output(struct parsetree* root,int dep)
     cout<<root->name;
     if(root->left_son !=NULL) printf(" (%d)",root->line);
     if(root->type!="-1") printf(" (%s)",root->type.c_str());
-    // printf("  --dim: %d", root->dim);
-    // cout << "  --type:" << root->type;
-    // cout << "  --id:" << root->id;
+    printf("  --dim: %d", root->dim);
+    cout << "  --type:" << root->type;
+    cout << "  --id:" << root->id;
     printf("\n");
     struct parsetree* nxt = root->left_son;
     while(nxt!=NULL)
@@ -372,6 +372,7 @@ void decListIt(struct parsetree* root, string type)
     if(root->name == "Dec")
     {
         // cerr << root->id << " " << root->dim << endl;
+        root->type = type;
         para_type[root->id] = make_pair(type, root->dim);
         return;
     }

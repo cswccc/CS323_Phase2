@@ -1,86 +1,45 @@
-Program (1)
-  ExtDefList (1)
-    ExtDef (1)
-      Specifier (1) (int)
-        TYPE: int (int)
-      FunDec (1)
-        ID: sum
-        LP
-        VarList (1)
-          ParamDec (1) (int)
-            Specifier (1) (int)
-              TYPE: int (int)
-            VarDec (1) (0)
-              ID: x
-          COMMA
-          VarList (1)
-            ParamDec (1) (int)
-              Specifier (1) (int)
-                TYPE: int (int)
-              VarDec (1) (0)
-                ID: y
-        RP
-      CompSt (2)
-        LC
-        DefList (3)
-          Def (3)
-            Specifier (3) (int)
-              TYPE: int (int)
-            DecList (3) (0)
-              Dec (3) (0)
-                VarDec (3) (0)
-                  VarDec (3) (0)
-                    VarDec (3) (0)
-                      ID: a
-                    LB
-                    INT: 10
-                    RB
-                  LB
-                  INT: 11
-                  RB
-            SEMI
-          DefList (4)
-            Def (4)
-              Specifier (4) (int)
-                TYPE: int (int)
-              DecList (4) (0)
-                Dec (4) (0)
-                  VarDec (4) (0)
-                    ID: b
-              SEMI
-            DefList (5)
-              Def (5)
-                Specifier (5) (int)
-                  TYPE: int (int)
-                DecList (5) (int)
-                  Dec (5) (int)
-                    VarDec (5) (int)
-                      ID: c
-                    ASSIGN
-                    Exp (5) (int)
-                      Exp (5) (int)
-                        Exp (5) (int)
-                          Exp (5) (int)
-                            ID: a
-                          LB
-                          Exp (5) (int)
-                            INT: 1 (int)
-                          RB
-                        LB
-                        Exp (5) (int)
-                          INT: 2 (int)
-                        RB
-                      PLUS
-                      Exp (5) (int)
-                        Exp (5) (int)
-                          ID: b
-                        PLUS
-                        Exp (5) (int)
-                          INT: 2 (int)
-                SEMI
-        RC
-c: int 0
-b: int 0
+Program (1)  --dim: -1  --type:-1  --id:-1
+  ExtDefList (1)  --dim: -1  --type:-1  --id:-1
+    ExtDef (1)  --dim: -1  --type:-1  --id:-1
+      Specifier (1) (int)  --dim: -1  --type:int  --id:-1
+        TYPE: int (int)  --dim: -1  --type:int  --id:-1
+      FunDec (1)  --dim: -1  --type:-1  --id:sum
+        ID: sum  --dim: -1  --type:-1  --id:sum
+        LP  --dim: -1  --type:-1  --id:-1
+        VarList (1)  --dim: -1  --type:-1  --id:-1
+          ParamDec (1) (int)  --dim: -1  --type:int  --id:-1
+            Specifier (1) (int)  --dim: -1  --type:int  --id:-1
+              TYPE: int (int)  --dim: -1  --type:int  --id:-1
+            VarDec (1) (0)  --dim: 0  --type:0  --id:x
+              ID: x  --dim: 0  --type:-1  --id:x
+          COMMA  --dim: -1  --type:-1  --id:-1
+          VarList (1)  --dim: -1  --type:-1  --id:-1
+            ParamDec (1) (int)  --dim: -1  --type:int  --id:-1
+              Specifier (1) (int)  --dim: -1  --type:int  --id:-1
+                TYPE: int (int)  --dim: -1  --type:int  --id:-1
+              VarDec (1) (0)  --dim: 0  --type:0  --id:y
+                ID: y  --dim: 0  --type:-1  --id:y
+        RP  --dim: -1  --type:-1  --id:-1
+      CompSt (2)  --dim: -1  --type:-1  --id:-1
+        LC  --dim: -1  --type:-1  --id:-1
+        DefList (3)  --dim: -1  --type:-1  --id:-1
+          Def (3)  --dim: -1  --type:-1  --id:-1
+            Specifier (3) (int)  --dim: -1  --type:int  --id:-1
+              TYPE: int (int)  --dim: -1  --type:int  --id:-1
+            DecList (3) (0)  --dim: -1  --type:0  --id:-1
+              Dec (3) (int)  --dim: 2  --type:int  --id:a
+                VarDec (3) (0)  --dim: 2  --type:0  --id:a
+                  VarDec (3) (0)  --dim: 1  --type:0  --id:a
+                    VarDec (3) (0)  --dim: 0  --type:0  --id:a
+                      ID: a  --dim: 0  --type:-1  --id:a
+                    LB  --dim: -1  --type:-1  --id:-1
+                    INT: 10  --dim: -1  --type:-1  --id:-1
+                    RB  --dim: -1  --type:-1  --id:-1
+                  LB  --dim: -1  --type:-1  --id:-1
+                  INT: 11  --dim: -1  --type:-1  --id:-1
+                  RB  --dim: -1  --type:-1  --id:-1
+            SEMI  --dim: -1  --type:-1  --id:-1
+        RC  --dim: -1  --type:-1  --id:-1
 a: int 2
 sum: int
 sum: 
