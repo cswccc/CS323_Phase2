@@ -1,13 +1,5 @@
 int sum(int x, int y)
 {
-  int res = x + y + z;
-  int a[2][2];
-  return res;
-}
-int test_2_r01()
-{
-  int a1 = 1;
-  int b = a1 + a;
-  int b = sum(a, b);
-  return 0;
+  int a, b;
+  int ret[10], ret2[11][12], ret3[11][12][12];
 }

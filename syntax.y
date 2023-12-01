@@ -13,6 +13,7 @@
         string name;
         string id;
         string type;
+        int dim = 0; //当前数据的维度
         struct parsetree* left_son;
         struct parsetree* right_son;
         struct parsetree* nxt_bro;
@@ -22,7 +23,7 @@
 
     int tot = 0;
 
-    unordered_map<string, string> para_type;
+    unordered_map<string, pair<string, int> > para_type;
 
     void my_yyerror(const string s,int line);
     void yyerror(const string s);
@@ -30,7 +31,7 @@
     struct parsetree* create_add(const string to_name,const char* to_add);
     void add_son(struct parsetree* parent,struct parsetree* son);
 
-    void decListIt(struct parsetree* root,string type);
+    void decListIt(struct parsetree* root, string type);
 
     void output(struct parsetree* root,int dep);
 
@@ -98,8 +99,8 @@ StructSpecifier : STRUCT ID LC DefList RC{$$ = create("StructSpecifier"); add_so
     | STRUCT ID LC DefList error{$$ = create("StructSpecifier"); add_son($$,$1); my_yyerror("Missing right curly '}'",$$->line);}
     | STRUCT ID{$$ = create("StructSpecifier"); add_son($$,$1); add_son($$,$2);}
 
-VarDec : ID{$$ = create("VarDec"); add_son($$,$1); $$->id=$1->id;}
-    | VarDec LB INT RB{$$ = create("VarDec"); add_son($$,$1); add_son($$,$2); add_son($$,$3); add_son($$,$4);}
+VarDec : ID{$$ = create("VarDec"); add_son($$,$1); $$->id=$1->id; $$->dim = 0;}
+    | VarDec LB INT RB{$$ = create("VarDec"); add_son($$,$1); add_son($$,$2); add_son($$,$3); add_son($$,$4); $$->dim = $1->dim + 1; $$->id = $1->id;}
     | VarDec LB INT error{$$ = create("VarDec"); add_son($$,$1); my_yyerror("Missing right brackets ']'",$$->line);}
 
 FunDec : ID LP VarList RP{$$ = create("FunDec"); add_son($$,$1); add_son($$,$2); add_son($$,$3); add_son($$,$4);}
@@ -136,19 +137,14 @@ Stmt : Exp SEMI{$$ = create("Stmt"); add_son($$,$1); add_son($$,$2);}
 DefList : Def DefList{$$ = create("DefList"); add_son($$,$1); add_son($$,$2);}
     | {$$ = NULL;}
 
-Def : Specifier DecList SEMI{$$ = create("Def"); add_son($$,$1); add_son($$,$2); add_son($$,$3); decListIt($2,$1->type);
-//  para_type[$2->name]=$1->type;
-
-
-
-} //简单定义
+Def : Specifier DecList SEMI{$$ = create("Def"); add_son($$,$1); add_son($$,$2); add_son($$,$3); decListIt($2, $1->type); /* para_type[$2->name]=$1->type; */}
     | Specifier DecList error{$$ = create("Def"); add_son($$,$1); my_yyerror("Missing semicolon ';'",$$->line);}
 
 DecList : Dec{$$ = create("DecList"); add_son($$,$1);}
     | Dec COMMA DecList{$$ = create("DecList"); add_son($$,$1); add_son($$,$2); add_son($$,$3);}
 
-Dec : VarDec{$$ = create("Dec"); add_son($$,$1);cerr<<"hhhbefore"; $$->id=$1->id; cerr<<"hhhafter";}
-    | VarDec ASSIGN Exp{$$ = create("Dec"); add_son($$,$1); add_son($$,$2); add_son($$,$3); $$->id=$1->id;}
+Dec : VarDec{$$ = create("Dec"); add_son($$,$1); $$->id=$1->id; $$->dim = $1->dim;}
+    | VarDec ASSIGN Exp{$$ = create("Dec"); add_son($$,$1); add_son($$,$2); add_son($$,$3); $$->id=$1->id; $$->dim = $1->dim;}
     | VarDec ASSIGN error{$$ = create("Dec"); add_son($$,$1);my_yyerror("Missing Expression ",$$->line); $$->id=$1->id;}
 
 Operate : ASSIGN{$$ = create("ASSIGN");$$->line = $1->line;}
@@ -251,6 +247,9 @@ void output(struct parsetree* root,int dep)
     cout<<root->name;
     if(root->left_son !=NULL) printf(" (%d)",root->line);
     if(root->type!="-1") printf(" (%s)",root->type.c_str());
+    printf("  --dim: %d", root->dim);
+    cout << "  --type:" << root->type;
+    cout << "  --id:" << root->id;
     printf("\n");
     struct parsetree* nxt = root->left_son;
     while(nxt!=NULL)
@@ -260,18 +259,20 @@ void output(struct parsetree* root,int dep)
     }
 }
 
-void decListIt(struct parsetree* root,string type)
+void decListIt(struct parsetree* root, string type)
 {
+    // cout << root->name << endl;
     if(root->name == "COMMA") return;
     if(root->name == "Dec")
     {
-        para_type[root->id]=type;
+        // cout << root->id << " " << root->dim << endl;
+        para_type[root->id] = make_pair(type, root->dim);
         return;
     }
     struct parsetree* nxt = root->left_son;
     while(nxt!=NULL)
     {
-        decListIt(nxt,type);
+        decListIt(nxt, type);
         nxt = nxt->nxt_bro;
     }
 }
@@ -286,7 +287,7 @@ int main(int argc, char **argv) {
         freopen("test.out","w",stdout);
         yyparse();
          for (const auto& pair : para_type) {
-        std::cout << pair.first << ": " << pair.second << std::endl;
+        std::cout << pair.first << ": " << pair.second.first << ' ' << pair.second.second << std::endl;
         }
     }
     else
