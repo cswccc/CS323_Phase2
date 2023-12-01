@@ -15,6 +15,7 @@
         string id;
         string type;
         list<string> argsList;
+        unordered_map<string, string> varsInStruct;
         int dim = -1; //当前数据的维度
         struct parsetree* left_son;
         struct parsetree* right_son;
@@ -28,6 +29,7 @@
     unordered_map<string, pair<string, int> > para_type;
     unordered_map<string, string> func_type;
     unordered_map<string, list<string>> func_args;
+    unordered_map<string,unordered_map<string,string>> struct_vars;
 
     void my_yyerror(const string s,int line);
     void yyerror(const string s);
@@ -44,7 +46,8 @@
 
     void output(struct parsetree* root,int dep);
     void varListIt(struct parsetree* root,list<string>& re);
-
+   void varInStructListIt(struct parsetree* root,unordered_map<string, string>& varsInStruct);
+    void decListItForStruct(struct parsetree* root,string type,unordered_map<string, string>& varsInStruct);
     #include "lex.yy.c"
 %}
 
@@ -105,7 +108,7 @@ ExtDecList : VarDec{$$ = create("ExtDecList"); add_son($$,$1);}
 Specifier : TYPE{$$ = create("Specifier"); add_son($$,$1); $$->type=$1->type;}
     | StructSpecifier{$$ = create("Specifier"); add_son($$,$1);}
 
-StructSpecifier : STRUCT ID LC DefList RC{$$ = create("StructSpecifier"); add_son($$,$1); add_son($$,$2); add_son($$,$3); add_son($$,$4); add_son($$,$5);}
+StructSpecifier : STRUCT ID LC DefList RC{$$ = create("StructSpecifier"); add_son($$,$1); add_son($$,$2); add_son($$,$3); add_son($$,$4); add_son($$,$5); struct_vars[$2->id]=$4->varsInStruct;} //strcut 名字 {vars}
     | STRUCT ID LC DefList error{$$ = create("StructSpecifier"); add_son($$,$1); my_yyerror("Missing right curly '}'",$$->line);}
     | STRUCT ID{$$ = create("StructSpecifier"); add_son($$,$1); add_son($$,$2);}
 
@@ -147,13 +150,13 @@ Stmt : Exp SEMI{$$ = create("Stmt"); add_son($$,$1); add_son($$,$2);}
     | WHILE LP Exp RP Stmt{$$ = create("Stmt"); add_son($$,$1); add_son($$,$2); add_son($$,$3); add_son($$,$4); add_son($$,$5);}
     // | WHILE LP Exp error Stmt{$$ = create("Stmt"); add_son($$,$1); my_yyerror("Missing right parentheses222 ')'",$$->line);}
 
-DefList : Def DefList{$$ = create("DefList"); add_son($$,$1); add_son($$,$2);}
+DefList : Def DefList{$$ = create("DefList"); add_son($$,$1); add_son($$,$2); varInStructListIt($$,$$->varsInStruct);}  //是struct 变量匹配
     | {$$ = NULL;}
 
 Def : Specifier DecList SEMI{$$ = create("Def"); add_son($$,$1); add_son($$,$2); add_son($$,$3);
                             // cerr << $1->type << ' ' << $2->type << endl;
                             if($1->type != $2->type && $2->type != "0") my_yyerror("para diff type", $$->line);
-                            else decListIt($2, $1->type);
+                            else decListIt($2, $1->type); $$->type=$1->type;
                             }
     | Specifier DecList error{$$ = create("Def"); add_son($$,$1); my_yyerror("Missing semicolon ';'",$$->line);}
 
@@ -398,6 +401,46 @@ void varListIt(struct parsetree* root,list<string>& re)
         nxt = nxt->nxt_bro;
     }
 }
+void decListItForStruct(struct parsetree* root,string type,unordered_map<string, string>& varsInStruct)
+{
+    if(root->name == "COMMA") return;
+    if(root->name == "Dec")
+    {
+
+        varsInStruct[root->id]=type;
+        return;
+    }
+    struct parsetree* nxt = root->left_son;
+    while(nxt!=NULL)
+    {
+        decListItForStruct(nxt,type,varsInStruct);
+        nxt = nxt->nxt_bro;
+    }
+}
+
+void varInStructListIt(struct parsetree* root,unordered_map<string, string>& varsInStruct)
+{
+    if(root->name == "Def")
+    {
+       string type=root->type;
+       struct parsetree* nxt = root->left_son;
+    while(nxt!=NULL)
+    {
+        if(nxt->name=="DecList"){
+        decListItForStruct(nxt,type,varsInStruct);
+        break;
+        }
+        nxt = nxt->nxt_bro;
+    }
+    }
+    struct parsetree* nxt = root->left_son;
+    while(nxt!=NULL)
+    {
+        varInStructListIt(nxt,varsInStruct);
+        nxt = nxt->nxt_bro;
+    }
+}
+
 
 pair<string, int> getType(string id)
 {
@@ -413,12 +456,17 @@ int main(int argc, char **argv) {
         freopen("test.c","r",stdin);
         freopen("test.out","w",stdout);
         yyparse();
+        cout<<"para_type------------"<<endl;
          for (const auto& pair : para_type) {
         std::cout << pair.first << ": " << pair.second.first << ' ' << pair.second.second << std::endl;
         }
+        
+        cout<<"func_type------------"<<endl;
          for (const auto& pair : func_type) {
         std::cout << pair.first << ": " << pair.second << std::endl;
         }
+        
+        cout<<"para_args------------"<<endl;
          for (const auto& pair : func_args) {
         std::cout << pair.first << ": " << std::endl;
          for (string argsType : pair.second) {
@@ -426,6 +474,14 @@ int main(int argc, char **argv) {
          }
          cout<<endl;
         }
+        
+        cout<<"struct_vars------------"<<endl;
+          for (const auto& pair : struct_vars) {
+        std::cout << pair.first << ": "<<std::endl;
+        for (const auto& pair1: pair.second) {
+        std::cout << pair1.first<<pair1.second << " "<<endl;
+    }
+    }
     }
     else
     {
