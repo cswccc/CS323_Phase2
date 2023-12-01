@@ -1,7 +1,6 @@
 int sum(int x, int y)
 {
-  int a[10][2];
-  int c;
-  float d;
-  int b = a[1][1] + d + c;
+  int a[10][11];
+  int b;
+  int c = a[1][2] + b + 2;
 }

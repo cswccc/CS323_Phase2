@@ -109,8 +109,11 @@ StructSpecifier : STRUCT ID LC DefList RC{$$ = create("StructSpecifier"); add_so
     | STRUCT ID LC DefList error{$$ = create("StructSpecifier"); add_son($$,$1); my_yyerror("Missing right curly '}'",$$->line);}
     | STRUCT ID{$$ = create("StructSpecifier"); add_son($$,$1); add_son($$,$2);}
 
-VarDec : ID{$$ = create("VarDec"); add_son($$,$1); $$->id=$1->id; if($$->dim == -1) $$->dim = 0;}
-    | VarDec LB INT RB{$$ = create("VarDec"); add_son($$,$1); add_son($$,$2); add_son($$,$3); add_son($$,$4); if($1->dim == -1) $1->dim = 0; $$->dim = $1->dim + 1; $$->id = $1->id;}
+VarDec : ID{$$ = create("VarDec"); add_son($$,$1); if($1->dim == -1) $1->dim = 0; $$->dim = $1->dim; $$->id=$1->id; $$->type = "0";}
+    | VarDec LB INT RB{$$ = create("VarDec"); add_son($$,$1); add_son($$,$2); add_son($$,$3); add_son($$,$4); 
+                        if($1->dim == -1) $1->dim = 0;
+                        $$->dim = $1->dim + 1; $$->id = $1->id; $$->type = "0";
+                        }
     | VarDec LB INT error{$$ = create("VarDec"); add_son($$,$1); my_yyerror("Missing right brackets ']'",$$->line);}
 
 FunDec : ID LP VarList RP{$$ = create("FunDec"); add_son($$,$1); add_son($$,$2); add_son($$,$3); add_son($$,$4); $$->id=$1->id; func_args[$1->id]=$3->argsList;}//有参函数的定义 id向上传个fundec 处理func_args
@@ -147,14 +150,33 @@ Stmt : Exp SEMI{$$ = create("Stmt"); add_son($$,$1); add_son($$,$2);}
 DefList : Def DefList{$$ = create("DefList"); add_son($$,$1); add_son($$,$2);}
     | {$$ = NULL;}
 
-Def : Specifier DecList SEMI{$$ = create("Def"); add_son($$,$1); add_son($$,$2); add_son($$,$3); decListIt($2, $1->type); /* para_type[$2->name]=$1->type; */}
+Def : Specifier DecList SEMI{$$ = create("Def"); add_son($$,$1); add_son($$,$2); add_son($$,$3);
+                            // cerr << $1->type << ' ' << $2->type << endl;
+                            if($1->type != $2->type && $2->type != "0") my_yyerror("para diff type", $$->line);
+                            else decListIt($2, $1->type);
+                            }
     | Specifier DecList error{$$ = create("Def"); add_son($$,$1); my_yyerror("Missing semicolon ';'",$$->line);}
 
-DecList : Dec{$$ = create("DecList"); add_son($$,$1);}
-    | Dec COMMA DecList{$$ = create("DecList"); add_son($$,$1); add_son($$,$2); add_son($$,$3);}
+DecList : Dec{$$ = create("DecList"); add_son($$,$1); $$->type = $1->type;}
+    | Dec COMMA DecList{$$ = create("DecList"); add_son($$,$1); add_son($$,$2); add_son($$,$3);
+                        if ($1->type == "0") $$->type = $3->type;
+                        else if ($3->type == "0") $$->type = $1->type;
+                        else if ($1->type != $3->type) my_yyerror("para diff type", $$->line);
+                        else
+                            $$->type = $1->type;
+                        }
 
-Dec : VarDec{$$ = create("Dec"); add_son($$,$1); $$->id=$1->id; $$->dim = $1->dim;}
-    | VarDec ASSIGN Exp{$$ = create("Dec"); add_son($$,$1); add_son($$,$2); add_son($$,$3); $$->id=$1->id; $$->dim = $1->dim;}
+Dec : VarDec{$$ = create("Dec"); add_son($$,$1); $$->id=$1->id; $$->dim = $1->dim; $$->type = "0";}
+    | VarDec ASSIGN Exp{$$ = create("Dec"); add_son($$,$1); add_son($$,$2); add_son($$,$3);
+                        // cerr << $3->dim << ' ' << $3->type << endl;
+                        if ($3->dim != $1->dim) my_yyerror("Miss match type",$$->line);
+                        else
+                        {
+                            $$->type = $3->type;
+                            $1->type = $3->type;//此时变量还未获取type
+                            $$->id=$1->id; $$->dim = $1->dim;
+                        }
+                        }
     | VarDec ASSIGN error{$$ = create("Dec"); add_son($$,$1);my_yyerror("Missing Expression ",$$->line); $$->id=$1->id;}
 
 Operate : ASSIGN{$$ = create("ASSIGN");$$->line = $1->line;}
@@ -197,11 +219,11 @@ Exp : ID LP Args RP {$$ = create("Exp"); add_son($$,$1); add_son($$,$2); add_son
 
     | Exp Operate Exp{
         $$ = create("Exp"); add_son($$,$1); add_son($$,$2); add_son($$,$3);
-        cerr << $1->dim << ' ' << $1->type << endl;
-        cerr << $3->dim << ' ' << $3->type << endl;
+        // cerr << $1->dim << ' ' << $1->type << endl;
+        // cerr << $3->dim << ' ' << $3->type << endl;
         if (checkType($1, $3) == 0) my_yyerror("diff type", $$->line);/*数据类型不一致*/
         else {
-            $$->dim = $1->dim; $$->type = $$->type;
+            $$->dim = $1->dim; $$->type = $1->type;
         }
         }
 
@@ -331,9 +353,9 @@ void output(struct parsetree* root,int dep)
     cout<<root->name;
     if(root->left_son !=NULL) printf(" (%d)",root->line);
     if(root->type!="-1") printf(" (%s)",root->type.c_str());
-    printf("  --dim: %d", root->dim);
-    cout << "  --type:" << root->type;
-    cout << "  --id:" << root->id;
+    // printf("  --dim: %d", root->dim);
+    // cout << "  --type:" << root->type;
+    // cout << "  --id:" << root->id;
     printf("\n");
     struct parsetree* nxt = root->left_son;
     while(nxt!=NULL)
@@ -345,11 +367,11 @@ void output(struct parsetree* root,int dep)
 
 void decListIt(struct parsetree* root, string type)
 {
-    // cout << root->name << endl;
+    // cerr << root->name << ' ' << type << endl;
     if(root->name == "COMMA") return;
     if(root->name == "Dec")
     {
-        // cout << root->id << " " << root->dim << endl;
+        // cerr << root->id << " " << root->dim << endl;
         para_type[root->id] = make_pair(type, root->dim);
         return;
     }

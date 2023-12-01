@@ -584,14 +584,14 @@ static const yytype_int8 yytranslate[] =
 static const yytype_int16 yyrline[] =
 {
        0,    93,    93,    95,    96,    98,    99,   100,   102,   103,
-     105,   106,   108,   109,   110,   112,   113,   114,   116,   117,
-     118,   119,   121,   122,   124,   126,   128,   130,   131,   133,
-     134,   135,   136,   137,   138,   139,   140,   141,   142,   143,
-     144,   147,   148,   150,   151,   153,   154,   156,   157,   158,
-     160,   161,   162,   163,   164,   165,   166,   167,   168,   169,
-     170,   171,   172,   173,   174,   175,   177,   186,   188,   198,
-     208,   212,   216,   218,   220,   222,   231,   236,   241,   246,
-     250,   252,   253,   256,   257
+     105,   106,   108,   109,   110,   112,   113,   117,   119,   120,
+     121,   122,   124,   125,   127,   129,   131,   133,   134,   136,
+     137,   138,   139,   140,   141,   142,   143,   144,   145,   146,
+     147,   150,   151,   153,   158,   160,   161,   169,   170,   180,
+     182,   183,   184,   185,   186,   187,   188,   189,   190,   191,
+     192,   193,   194,   195,   196,   197,   199,   208,   210,   220,
+     230,   234,   238,   240,   242,   244,   253,   258,   263,   268,
+     272,   274,   275,   278,   279
 };
 #endif
 
@@ -1596,312 +1596,334 @@ yyreduce:
 
   case 15:
 #line 112 "syntax.y"
-           {yyval = create("VarDec"); add_son(yyval,yyvsp[0]); yyval->id=yyvsp[0]->id; if(yyval->dim == -1) yyval->dim = 0;}
+           {yyval = create("VarDec"); add_son(yyval,yyvsp[0]); if(yyvsp[0]->dim == -1) yyvsp[0]->dim = 0; yyval->dim = yyvsp[0]->dim; yyval->id=yyvsp[0]->id; yyval->type = "0";}
 #line 1601 "syntax.tab.c"
     break;
 
   case 16:
 #line 113 "syntax.y"
-                      {yyval = create("VarDec"); add_son(yyval,yyvsp[-3]); add_son(yyval,yyvsp[-2]); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]); if(yyvsp[-3]->dim == -1) yyvsp[-3]->dim = 0; yyval->dim = yyvsp[-3]->dim + 1; yyval->id = yyvsp[-3]->id;}
-#line 1607 "syntax.tab.c"
+                      {yyval = create("VarDec"); add_son(yyval,yyvsp[-3]); add_son(yyval,yyvsp[-2]); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]); 
+                        if(yyvsp[-3]->dim == -1) yyvsp[-3]->dim = 0;
+                        yyval->dim = yyvsp[-3]->dim + 1; yyval->id = yyvsp[-3]->id; yyval->type = "0";
+                        }
+#line 1610 "syntax.tab.c"
     break;
 
   case 17:
-#line 114 "syntax.y"
+#line 117 "syntax.y"
                          {yyval = create("VarDec"); add_son(yyval,yyvsp[-3]); my_yyerror("Missing right brackets ']'",yyval->line);}
-#line 1613 "syntax.tab.c"
+#line 1616 "syntax.tab.c"
     break;
 
   case 18:
-#line 116 "syntax.y"
+#line 119 "syntax.y"
                          {yyval = create("FunDec"); add_son(yyval,yyvsp[-3]); add_son(yyval,yyvsp[-2]); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]); yyval->id=yyvsp[-3]->id; func_args[yyvsp[-3]->id]=yyvsp[-1]->argsList;}
-#line 1619 "syntax.tab.c"
+#line 1622 "syntax.tab.c"
     break;
 
   case 19:
-#line 117 "syntax.y"
+#line 120 "syntax.y"
                          {yyval = create("FunDec"); add_son(yyval,yyvsp[-3]); my_yyerror("Missing right parentheses ')'",yyval->line);}
-#line 1625 "syntax.tab.c"
+#line 1628 "syntax.tab.c"
     break;
 
   case 20:
-#line 118 "syntax.y"
+#line 121 "syntax.y"
               {yyval = create("FunDec"); add_son(yyval,yyvsp[-2]); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]); yyval->id=yyvsp[-2]->id; list<string> argsList;func_args[yyvsp[-2]->id]=argsList;}
-#line 1631 "syntax.tab.c"
+#line 1634 "syntax.tab.c"
     break;
 
   case 21:
-#line 119 "syntax.y"
+#line 122 "syntax.y"
                  {yyval = create("FunDec"); add_son(yyval,yyvsp[-2]); my_yyerror("Missing right parentheses ')'",yyval->line);}
-#line 1637 "syntax.tab.c"
+#line 1640 "syntax.tab.c"
     break;
 
   case 22:
-#line 121 "syntax.y"
+#line 124 "syntax.y"
                                 {yyval = create("VarList"); add_son(yyval,yyvsp[-2]); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]);varListIt(yyval,yyval->argsList);}
-#line 1643 "syntax.tab.c"
+#line 1646 "syntax.tab.c"
     break;
 
   case 23:
-#line 122 "syntax.y"
+#line 125 "syntax.y"
               {yyval = create("VarList"); add_son(yyval,yyvsp[0]);}
-#line 1649 "syntax.tab.c"
+#line 1652 "syntax.tab.c"
     break;
 
   case 24:
-#line 124 "syntax.y"
+#line 127 "syntax.y"
                            {yyval = create("ParamDec"); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]); yyval->type=yyvsp[-1]->type;}
-#line 1655 "syntax.tab.c"
+#line 1658 "syntax.tab.c"
     break;
 
   case 25:
-#line 126 "syntax.y"
+#line 129 "syntax.y"
                                {yyval = create("CompSt"); add_son(yyval,yyvsp[-3]); add_son(yyval,yyvsp[-2]); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]);}
-#line 1661 "syntax.tab.c"
+#line 1664 "syntax.tab.c"
     break;
 
   case 26:
-#line 128 "syntax.y"
+#line 131 "syntax.y"
                                   {yyval = create("CompSt"); add_son(yyval,yyvsp[-3]); my_yyerror("Missing right curly '}'",yyval->line);}
-#line 1667 "syntax.tab.c"
+#line 1670 "syntax.tab.c"
     break;
 
   case 27:
-#line 130 "syntax.y"
+#line 133 "syntax.y"
                         {yyval = create("StmtList"); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]);}
-#line 1673 "syntax.tab.c"
+#line 1676 "syntax.tab.c"
     break;
 
   case 28:
-#line 131 "syntax.y"
+#line 134 "syntax.y"
       {yyval = NULL;}
-#line 1679 "syntax.tab.c"
+#line 1682 "syntax.tab.c"
     break;
 
   case 29:
-#line 133 "syntax.y"
+#line 136 "syntax.y"
                {yyval = create("Stmt"); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]);}
-#line 1685 "syntax.tab.c"
+#line 1688 "syntax.tab.c"
     break;
 
   case 30:
-#line 134 "syntax.y"
+#line 137 "syntax.y"
                {yyval = create("Stmt"); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]); my_yyerror("Missing semicolon ';'",yyval->line);}
-#line 1691 "syntax.tab.c"
+#line 1694 "syntax.tab.c"
     break;
 
   case 31:
-#line 135 "syntax.y"
+#line 138 "syntax.y"
          {yyval = create("Stmt"); add_son(yyval,yyvsp[0]);}
-#line 1697 "syntax.tab.c"
+#line 1700 "syntax.tab.c"
     break;
 
   case 32:
-#line 136 "syntax.y"
+#line 139 "syntax.y"
             {yyval = create("Stmt"); add_son(yyval,yyvsp[0]);}
-#line 1703 "syntax.tab.c"
+#line 1706 "syntax.tab.c"
     break;
 
   case 33:
-#line 137 "syntax.y"
+#line 140 "syntax.y"
                      {yyval = create("Stmt"); add_son(yyval,yyvsp[-2]); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]);}
-#line 1709 "syntax.tab.c"
+#line 1712 "syntax.tab.c"
     break;
 
   case 34:
-#line 138 "syntax.y"
+#line 141 "syntax.y"
                       {yyval = create("Stmt"); add_son(yyval,yyvsp[-2]); my_yyerror("Missing semicolon ';'",yyval->line);}
-#line 1715 "syntax.tab.c"
+#line 1718 "syntax.tab.c"
     break;
 
   case 35:
-#line 139 "syntax.y"
+#line 142 "syntax.y"
                        {yyval = create("Stmt"); add_son(yyval,yyvsp[-2]); my_yyerror("Missing Expression",yyval->line);}
-#line 1721 "syntax.tab.c"
+#line 1724 "syntax.tab.c"
     break;
 
   case 36:
-#line 140 "syntax.y"
+#line 143 "syntax.y"
                        {yyval = create("Stmt"); add_son(yyval,yyvsp[-4]); add_son(yyval,yyvsp[-3]); add_son(yyval,yyvsp[-2]); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]);}
-#line 1727 "syntax.tab.c"
+#line 1730 "syntax.tab.c"
     break;
 
   case 37:
-#line 141 "syntax.y"
+#line 144 "syntax.y"
                           {yyval = create("Stmt"); add_son(yyval,yyvsp[-4]); my_yyerror("Missing right parentheses ')'",yyval->line);}
-#line 1733 "syntax.tab.c"
+#line 1736 "syntax.tab.c"
     break;
 
   case 38:
-#line 142 "syntax.y"
+#line 145 "syntax.y"
                                  {yyval = create("Stmt"); add_son(yyval,yyvsp[-6]); add_son(yyval,yyvsp[-5]); add_son(yyval,yyvsp[-4]); add_son(yyval,yyvsp[-3]); add_son(yyval,yyvsp[-2]); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]);}
-#line 1739 "syntax.tab.c"
+#line 1742 "syntax.tab.c"
     break;
 
   case 39:
-#line 143 "syntax.y"
+#line 146 "syntax.y"
                                     {yyval = create("Stmt"); add_son(yyval,yyvsp[-6]); add_son(yyval,yyvsp[-5]); add_son(yyval,yyvsp[-4]); add_son(yyval,yyvsp[-3]); add_son(yyval,yyvsp[-2]); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]);my_yyerror("Missing right parentheses ')'",yyval->line);}
-#line 1745 "syntax.tab.c"
+#line 1748 "syntax.tab.c"
     break;
 
   case 40:
-#line 144 "syntax.y"
+#line 147 "syntax.y"
                           {yyval = create("Stmt"); add_son(yyval,yyvsp[-4]); add_son(yyval,yyvsp[-3]); add_son(yyval,yyvsp[-2]); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]);}
-#line 1751 "syntax.tab.c"
+#line 1754 "syntax.tab.c"
     break;
 
   case 41:
-#line 147 "syntax.y"
+#line 150 "syntax.y"
                      {yyval = create("DefList"); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]);}
-#line 1757 "syntax.tab.c"
+#line 1760 "syntax.tab.c"
     break;
 
   case 42:
-#line 148 "syntax.y"
+#line 151 "syntax.y"
       {yyval = NULL;}
-#line 1763 "syntax.tab.c"
+#line 1766 "syntax.tab.c"
     break;
 
   case 43:
-#line 150 "syntax.y"
-                            {yyval = create("Def"); add_son(yyval,yyvsp[-2]); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]); decListIt(yyvsp[-1], yyvsp[-2]->type); /* para_type[$2->name]=$1->type; */}
-#line 1769 "syntax.tab.c"
+#line 153 "syntax.y"
+                            {yyval = create("Def"); add_son(yyval,yyvsp[-2]); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]);
+                            // cerr << $1->type << ' ' << $2->type << endl;
+                            if(yyvsp[-2]->type != yyvsp[-1]->type && yyvsp[-1]->type != "0") my_yyerror("para diff type", yyval->line);
+                            else decListIt(yyvsp[-1], yyvsp[-2]->type);
+                            }
+#line 1776 "syntax.tab.c"
     break;
 
   case 44:
-#line 151 "syntax.y"
+#line 158 "syntax.y"
                              {yyval = create("Def"); add_son(yyval,yyvsp[-2]); my_yyerror("Missing semicolon ';'",yyval->line);}
-#line 1775 "syntax.tab.c"
+#line 1782 "syntax.tab.c"
     break;
 
   case 45:
-#line 153 "syntax.y"
-             {yyval = create("DecList"); add_son(yyval,yyvsp[0]);}
-#line 1781 "syntax.tab.c"
+#line 160 "syntax.y"
+             {yyval = create("DecList"); add_son(yyval,yyvsp[0]); yyval->type = yyvsp[0]->type;}
+#line 1788 "syntax.tab.c"
     break;
 
   case 46:
-#line 154 "syntax.y"
-                       {yyval = create("DecList"); add_son(yyval,yyvsp[-2]); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]);}
-#line 1787 "syntax.tab.c"
+#line 161 "syntax.y"
+                       {yyval = create("DecList"); add_son(yyval,yyvsp[-2]); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]);
+                        if (yyvsp[-2]->type == "0") yyval->type = yyvsp[0]->type;
+                        else if (yyvsp[0]->type == "0") yyval->type = yyvsp[-2]->type;
+                        else if (yyvsp[-2]->type != yyvsp[0]->type) my_yyerror("para diff type", yyval->line);
+                        else
+                            yyval->type = yyvsp[-2]->type;
+                        }
+#line 1800 "syntax.tab.c"
     break;
 
   case 47:
-#line 156 "syntax.y"
-            {yyval = create("Dec"); add_son(yyval,yyvsp[0]); yyval->id=yyvsp[0]->id; yyval->dim = yyvsp[0]->dim;}
-#line 1793 "syntax.tab.c"
+#line 169 "syntax.y"
+            {yyval = create("Dec"); add_son(yyval,yyvsp[0]); yyval->id=yyvsp[0]->id; yyval->dim = yyvsp[0]->dim; yyval->type = "0";}
+#line 1806 "syntax.tab.c"
     break;
 
   case 48:
-#line 157 "syntax.y"
-                       {yyval = create("Dec"); add_son(yyval,yyvsp[-2]); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]); yyval->id=yyvsp[-2]->id; yyval->dim = yyvsp[-2]->dim;}
-#line 1799 "syntax.tab.c"
+#line 170 "syntax.y"
+                       {yyval = create("Dec"); add_son(yyval,yyvsp[-2]); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]);
+                        // cerr << $3->dim << ' ' << $3->type << endl;
+                        if (yyvsp[0]->dim != yyvsp[-2]->dim) my_yyerror("Miss match type",yyval->line);
+                        else
+                        {
+                            yyval->type = yyvsp[0]->type;
+                            yyvsp[-2]->type = yyvsp[0]->type;//此时变量还未获取type
+                            yyval->id=yyvsp[-2]->id; yyval->dim = yyvsp[-2]->dim;
+                        }
+                        }
+#line 1821 "syntax.tab.c"
     break;
 
   case 49:
-#line 158 "syntax.y"
+#line 180 "syntax.y"
                          {yyval = create("Dec"); add_son(yyval,yyvsp[-2]);my_yyerror("Missing Expression ",yyval->line); yyval->id=yyvsp[-2]->id;}
-#line 1805 "syntax.tab.c"
+#line 1827 "syntax.tab.c"
     break;
 
   case 50:
-#line 160 "syntax.y"
+#line 182 "syntax.y"
                 {yyval = create("ASSIGN");yyval->line = yyvsp[0]->line;}
-#line 1811 "syntax.tab.c"
+#line 1833 "syntax.tab.c"
     break;
 
   case 51:
-#line 161 "syntax.y"
+#line 183 "syntax.y"
          {yyval = create("AND");yyval->line = yyvsp[0]->line;}
-#line 1817 "syntax.tab.c"
+#line 1839 "syntax.tab.c"
     break;
 
   case 52:
-#line 162 "syntax.y"
+#line 184 "syntax.y"
         {yyval = create("OR");yyval->line = yyvsp[0]->line;}
-#line 1823 "syntax.tab.c"
+#line 1845 "syntax.tab.c"
     break;
 
   case 53:
-#line 163 "syntax.y"
+#line 185 "syntax.y"
         {yyval = create("LT");yyval->line = yyvsp[0]->line;}
-#line 1829 "syntax.tab.c"
+#line 1851 "syntax.tab.c"
     break;
 
   case 54:
-#line 164 "syntax.y"
+#line 186 "syntax.y"
         {yyval = create("LE");yyval->line = yyvsp[0]->line;}
-#line 1835 "syntax.tab.c"
+#line 1857 "syntax.tab.c"
     break;
 
   case 55:
-#line 165 "syntax.y"
+#line 187 "syntax.y"
         {yyval = create("GT");yyval->line = yyvsp[0]->line;}
-#line 1841 "syntax.tab.c"
+#line 1863 "syntax.tab.c"
     break;
 
   case 56:
-#line 166 "syntax.y"
+#line 188 "syntax.y"
         {yyval = create("GE");yyval->line = yyvsp[0]->line;}
-#line 1847 "syntax.tab.c"
+#line 1869 "syntax.tab.c"
     break;
 
   case 57:
-#line 167 "syntax.y"
+#line 189 "syntax.y"
         {yyval = create("NE");yyval->line = yyvsp[0]->line;}
-#line 1853 "syntax.tab.c"
+#line 1875 "syntax.tab.c"
     break;
 
   case 58:
-#line 168 "syntax.y"
+#line 190 "syntax.y"
         {yyval = create("EQ");yyval->line = yyvsp[0]->line;}
-#line 1859 "syntax.tab.c"
+#line 1881 "syntax.tab.c"
     break;
 
   case 59:
-#line 169 "syntax.y"
+#line 191 "syntax.y"
           {yyval = create("PLUS");yyval->line = yyvsp[0]->line;}
-#line 1865 "syntax.tab.c"
+#line 1887 "syntax.tab.c"
     break;
 
   case 60:
-#line 170 "syntax.y"
+#line 192 "syntax.y"
            {yyval = create("MINUS");yyval->line = yyvsp[0]->line;}
-#line 1871 "syntax.tab.c"
+#line 1893 "syntax.tab.c"
     break;
 
   case 61:
-#line 171 "syntax.y"
+#line 193 "syntax.y"
          {yyval = create("MUL");yyval->line = yyvsp[0]->line;}
-#line 1877 "syntax.tab.c"
+#line 1899 "syntax.tab.c"
     break;
 
   case 62:
-#line 172 "syntax.y"
+#line 194 "syntax.y"
          {yyval = create("DIV");yyval->line = yyvsp[0]->line;}
-#line 1883 "syntax.tab.c"
+#line 1905 "syntax.tab.c"
     break;
 
   case 63:
-#line 173 "syntax.y"
+#line 195 "syntax.y"
             {yyval = create("BITAND");yyval->line = yyvsp[0]->line;}
-#line 1889 "syntax.tab.c"
+#line 1911 "syntax.tab.c"
     break;
 
   case 64:
-#line 174 "syntax.y"
+#line 196 "syntax.y"
            {yyval = create("BITOR");yyval->line = yyvsp[0]->line;}
-#line 1895 "syntax.tab.c"
+#line 1917 "syntax.tab.c"
     break;
 
   case 65:
-#line 175 "syntax.y"
+#line 197 "syntax.y"
             {yyval = create("BITXOR");yyval->line = yyvsp[0]->line;}
-#line 1901 "syntax.tab.c"
+#line 1923 "syntax.tab.c"
     break;
 
   case 66:
-#line 177 "syntax.y"
+#line 199 "syntax.y"
                     {yyval = create("Exp"); add_son(yyval,yyvsp[-3]); add_son(yyval,yyvsp[-2]); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]);
                     if(getFuncType(yyvsp[-3]->id) == "") my_yyerror("No def for func",yyval->line); /*该函数当前没定义*/
                     else
@@ -1910,17 +1932,17 @@ yyreduce:
                         yyval->type = getFuncType(yyvsp[-3]->id);
                     }
                     }
-#line 1914 "syntax.tab.c"
+#line 1936 "syntax.tab.c"
     break;
 
   case 67:
-#line 186 "syntax.y"
+#line 208 "syntax.y"
                        {yyval = create("Exp"); add_son(yyval,yyvsp[-3]); my_yyerror("Missing right parentheses ')'",yyval->line); }
-#line 1920 "syntax.tab.c"
+#line 1942 "syntax.tab.c"
     break;
 
   case 68:
-#line 188 "syntax.y"
+#line 210 "syntax.y"
                     {yyval = create("Exp"); add_son(yyval,yyvsp[-3]); add_son(yyval,yyvsp[-2]); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]); 
                     
                     if (yyvsp[-1]->dim != 0 || yyvsp[-1]->type != "int") my_yyerror("Wrong index",yyval->line); /*数组坐标只能是整数*/
@@ -1930,59 +1952,59 @@ yyreduce:
                         yyval->type = yyvsp[-3]->type;
                     }
                     }
-#line 1934 "syntax.tab.c"
-    break;
-
-  case 69:
-#line 198 "syntax.y"
-                     {
-        yyval = create("Exp"); add_son(yyval,yyvsp[-2]); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]);
-        cerr << yyvsp[-2]->dim << ' ' << yyvsp[-2]->type << endl;
-        cerr << yyvsp[0]->dim << ' ' << yyvsp[0]->type << endl;
-        if (checkType(yyvsp[-2], yyvsp[0]) == 0) my_yyerror("diff type", yyval->line);/*数据类型不一致*/
-        else {
-            yyval->dim = yyvsp[-2]->dim; yyval->type = yyval->type;
-        }
-        }
-#line 1948 "syntax.tab.c"
-    break;
-
-  case 70:
-#line 208 "syntax.y"
-                {yyval = create("Exp"); add_son(yyval,yyvsp[-2]); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]);
-                yyval->dim = yyvsp[-1]->dim; yyval->type = yyvsp[-1]->type;
-                }
 #line 1956 "syntax.tab.c"
     break;
 
-  case 71:
-#line 212 "syntax.y"
-               {yyval = create("Exp"); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]);
-                yyval->dim = yyvsp[0]->dim; yyval->type = yyvsp[0]->type;
-                }
-#line 1964 "syntax.tab.c"
-    break;
-
-  case 72:
-#line 216 "syntax.y"
-             {yyval = create("Exp"); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]);}
+  case 69:
+#line 220 "syntax.y"
+                     {
+        yyval = create("Exp"); add_son(yyval,yyvsp[-2]); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]);
+        // cerr << $1->dim << ' ' << $1->type << endl;
+        // cerr << $3->dim << ' ' << $3->type << endl;
+        if (checkType(yyvsp[-2], yyvsp[0]) == 0) my_yyerror("diff type", yyval->line);/*数据类型不一致*/
+        else {
+            yyval->dim = yyvsp[-2]->dim; yyval->type = yyvsp[-2]->type;
+        }
+        }
 #line 1970 "syntax.tab.c"
     break;
 
+  case 70:
+#line 230 "syntax.y"
+                {yyval = create("Exp"); add_son(yyval,yyvsp[-2]); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]);
+                yyval->dim = yyvsp[-1]->dim; yyval->type = yyvsp[-1]->type;
+                }
+#line 1978 "syntax.tab.c"
+    break;
+
+  case 71:
+#line 234 "syntax.y"
+               {yyval = create("Exp"); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]);
+                yyval->dim = yyvsp[0]->dim; yyval->type = yyvsp[0]->type;
+                }
+#line 1986 "syntax.tab.c"
+    break;
+
+  case 72:
+#line 238 "syntax.y"
+             {yyval = create("Exp"); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]);}
+#line 1992 "syntax.tab.c"
+    break;
+
   case 73:
-#line 218 "syntax.y"
+#line 240 "syntax.y"
               {yyval = create("Exp"); add_son(yyval,yyvsp[-2]); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]);}
-#line 1976 "syntax.tab.c"
+#line 1998 "syntax.tab.c"
     break;
 
   case 74:
-#line 220 "syntax.y"
+#line 242 "syntax.y"
                 {yyval = create("Exp"); add_son(yyval,yyvsp[-2]); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]);}
-#line 1982 "syntax.tab.c"
+#line 2004 "syntax.tab.c"
     break;
 
   case 75:
-#line 222 "syntax.y"
+#line 244 "syntax.y"
         {yyval = create("Exp"); add_son(yyval,yyvsp[0]);
         if(getParaType(yyvsp[0]->id).first == "") my_yyerror("ID no def", yyval->line);
         else
@@ -1991,77 +2013,77 @@ yyreduce:
             yyval->type = getParaType(yyvsp[0]->id).first;
         }
         }
-#line 1995 "syntax.tab.c"
+#line 2017 "syntax.tab.c"
     break;
 
   case 76:
-#line 231 "syntax.y"
+#line 253 "syntax.y"
          {yyval = create("Exp"); add_son(yyval,yyvsp[0]);
         yyval->dim = 0; yyval->type = "int";
         yyvsp[0]->dim = 0; yyvsp[0]->type = "int";
         }
-#line 2004 "syntax.tab.c"
+#line 2026 "syntax.tab.c"
     break;
 
   case 77:
-#line 236 "syntax.y"
+#line 258 "syntax.y"
            {yyval = create("Exp"); add_son(yyval,yyvsp[0]);
             yyval->dim = 0; yyval->type = "float";
             yyvsp[0]->dim = 0; yyvsp[0]->type = "float";
             }
-#line 2013 "syntax.tab.c"
+#line 2035 "syntax.tab.c"
     break;
 
   case 78:
-#line 241 "syntax.y"
+#line 263 "syntax.y"
           {yyval = create("Exp"); add_son(yyval,yyvsp[0]);
             yyval->dim = 0; yyval->type = "char";
             yyvsp[0]->dim = 0; yyvsp[0]->type = "char";
     }
-#line 2022 "syntax.tab.c"
+#line 2044 "syntax.tab.c"
     break;
 
   case 79:
-#line 246 "syntax.y"
+#line 268 "syntax.y"
             {yyval = create("Exp"); add_son(yyval,yyvsp[0]);
             yyval->dim = 0; yyval->type = "string";
             yyvsp[0]->dim = 0; yyvsp[0]->type = "string";
     }
-#line 2031 "syntax.tab.c"
+#line 2053 "syntax.tab.c"
     break;
 
   case 80:
-#line 250 "syntax.y"
+#line 272 "syntax.y"
                         {yyval = create("Exp"); add_son(yyval,yyvsp[-2]); my_yyerror("Missing expression",yyval->line);}
-#line 2037 "syntax.tab.c"
+#line 2059 "syntax.tab.c"
     break;
 
   case 81:
-#line 252 "syntax.y"
+#line 274 "syntax.y"
                    {yyval = create("Exp"); add_son(yyval,yyvsp[-2]); my_yyerror("Missing right parentheses ')'",yyval->line);}
-#line 2043 "syntax.tab.c"
+#line 2065 "syntax.tab.c"
     break;
 
   case 82:
-#line 253 "syntax.y"
+#line 275 "syntax.y"
                  {yyval = create("Exp"); add_son(yyval,yyvsp[-2]); my_yyerror("Missing right parentheses ')'",yyval->line);}
-#line 2049 "syntax.tab.c"
+#line 2071 "syntax.tab.c"
     break;
 
   case 83:
-#line 256 "syntax.y"
+#line 278 "syntax.y"
                      {yyval = create("Args"); add_son(yyval,yyvsp[-2]); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]);}
-#line 2055 "syntax.tab.c"
+#line 2077 "syntax.tab.c"
     break;
 
   case 84:
-#line 257 "syntax.y"
+#line 279 "syntax.y"
          {yyval = create("Args"); add_son(yyval,yyvsp[0]);}
-#line 2061 "syntax.tab.c"
+#line 2083 "syntax.tab.c"
     break;
 
 
-#line 2065 "syntax.tab.c"
+#line 2087 "syntax.tab.c"
 
       default: break;
     }
@@ -2293,7 +2315,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 259 "syntax.y"
+#line 281 "syntax.y"
 
 void my_yyerror(const string s,int line) {
     fprintf(stderr, "Error type B at Line %d: %s\n",line, s.c_str());
@@ -2369,9 +2391,9 @@ void output(struct parsetree* root,int dep)
     cout<<root->name;
     if(root->left_son !=NULL) printf(" (%d)",root->line);
     if(root->type!="-1") printf(" (%s)",root->type.c_str());
-    printf("  --dim: %d", root->dim);
-    cout << "  --type:" << root->type;
-    cout << "  --id:" << root->id;
+    // printf("  --dim: %d", root->dim);
+    // cout << "  --type:" << root->type;
+    // cout << "  --id:" << root->id;
     printf("\n");
     struct parsetree* nxt = root->left_son;
     while(nxt!=NULL)
@@ -2383,11 +2405,11 @@ void output(struct parsetree* root,int dep)
 
 void decListIt(struct parsetree* root, string type)
 {
-    // cout << root->name << endl;
+    // cerr << root->name << ' ' << type << endl;
     if(root->name == "COMMA") return;
     if(root->name == "Dec")
     {
-        // cout << root->id << " " << root->dim << endl;
+        // cerr << root->id << " " << root->dim << endl;
         para_type[root->id] = make_pair(type, root->dim);
         return;
     }
