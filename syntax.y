@@ -4,6 +4,7 @@
     #include <iostream>
     #include <string>
     #include <unordered_map>
+    #include <list>
     #define true 1
     #define false 0
     using namespace std;
@@ -24,6 +25,8 @@
     int tot = 0;
 
     unordered_map<string, pair<string, int> > para_type;
+    unordered_map<string, string> func_type;
+    unordered_map<string, list<string>> func_args;
 
     void my_yyerror(const string s,int line);
     void yyerror(const string s);
@@ -32,8 +35,11 @@
     void add_son(struct parsetree* parent,struct parsetree* son);
 
     void decListIt(struct parsetree* root, string type);
+    pair<string, int> getType(string id);
+    // int checkType(const parsetree);
 
     void output(struct parsetree* root,int dep);
+    void varListIt(struct parsetree* root,list<string> re);
 
     #include "lex.yy.c"
 %}
@@ -87,7 +93,7 @@ ExtDefList : ExtDef ExtDefList{$$ = create("ExtDefList"); add_son($$,$1); add_so
 
 ExtDef : Specifier ExtDecList SEMI{$$ = create("ExtDef"); add_son($$,$1); add_son($$,$2); add_son($$,$3);}
     | Specifier SEMI{$$ = create("ExtDef"); add_son($$,$1); add_son($$,$2);}
-    | Specifier FunDec CompSt{$$ = create("ExtDef"); add_son($$,$1); add_son($$,$2); add_son($$,$3);}
+    | Specifier FunDec CompSt{$$ = create("ExtDef"); add_son($$,$1); add_son($$,$2); add_son($$,$3); func_type[$2->id]=$1->type;} //函数返回值 函数头 函数体 处理func_type
 
 ExtDecList : VarDec{$$ = create("ExtDecList"); add_son($$,$1);}
     | VarDec COMMA ExtDecList{$$ = create("ExtDecList"); add_son($$,$1); add_son($$,$2); add_son($$,$3);}
@@ -103,15 +109,15 @@ VarDec : ID{$$ = create("VarDec"); add_son($$,$1); $$->id=$1->id; $$->dim = 0;}
     | VarDec LB INT RB{$$ = create("VarDec"); add_son($$,$1); add_son($$,$2); add_son($$,$3); add_son($$,$4); $$->dim = $1->dim + 1; $$->id = $1->id;}
     | VarDec LB INT error{$$ = create("VarDec"); add_son($$,$1); my_yyerror("Missing right brackets ']'",$$->line);}
 
-FunDec : ID LP VarList RP{$$ = create("FunDec"); add_son($$,$1); add_son($$,$2); add_son($$,$3); add_son($$,$4);}
+FunDec : ID LP VarList RP{$$ = create("FunDec"); add_son($$,$1); add_son($$,$2); add_son($$,$3); add_son($$,$4); $$->id=$1->id; }//有参函数的定义 id向上传个fundec 处理func_args
     | ID LP VarList error{$$ = create("FunDec"); add_son($$,$1); my_yyerror("Missing right parentheses ')'",$$->line);}
-    | ID LP RP{$$ = create("FunDec"); add_son($$,$1); add_son($$,$2); add_son($$,$3);}
+    | ID LP RP{$$ = create("FunDec"); add_son($$,$1); add_son($$,$2); add_son($$,$3); $$->id=$1->id;} //无参函数的定义 id向上传个fundec
     | ID LP error{$$ = create("FunDec"); add_son($$,$1); my_yyerror("Missing right parentheses ')'",$$->line);}
 
-VarList : ParamDec COMMA VarList{$$ = create("VarList"); add_son($$,$1); add_son($$,$2); add_son($$,$3);}
-    | ParamDec{$$ = create("VarList"); add_son($$,$1);}
+VarList : ParamDec COMMA VarList{$$ = create("VarList"); add_son($$,$1); add_son($$,$2); add_son($$,$3);list<string> re;varListIt($$,re);} //参数列表 处理func_args
+    | ParamDec{$$ = create("VarList"); add_son($$,$1);} 
 
-ParamDec : Specifier VarDec{$$ = create("ParamDec"); add_son($$,$1); add_son($$,$2);}
+ParamDec : Specifier VarDec{$$ = create("ParamDec"); add_son($$,$1); add_son($$,$2); $$->type=$1->type;} //参数 类型+名字 把类型传递给paramDec
 
 CompSt : LC DefList StmtList RC{$$ = create("CompSt"); add_son($$,$1); add_son($$,$2); add_son($$,$3); add_son($$,$4);}
 
@@ -165,9 +171,19 @@ Operate : ASSIGN{$$ = create("ASSIGN");$$->line = $1->line;}
     | BITXOR{$$ = create("BITXOR");$$->line = $1->line;}
 
 Exp : ID LP Args RP {$$ = create("Exp"); add_son($$,$1); add_son($$,$2); add_son($$,$3); add_son($$,$4);}
+
     | ID LP Args error {$$ = create("Exp"); add_son($$,$1); my_yyerror("Missing right parentheses ')'",$$->line); }
-    | Exp LB Exp RB {$$ = create("Exp"); add_son($$,$1); add_son($$,$2); add_son($$,$3); add_son($$,$4);}
-    | Exp Operate Exp{$$ = create("Exp"); add_son($$,$1); add_son($$,$2); add_son($$,$3);}
+
+    | Exp LB Exp RB {$$ = create("Exp"); add_son($$,$1); add_son($$,$2); add_son($$,$3); add_son($$,$4); 
+                    $$->dim = $1->dim + 1; $$->type = $1->type;
+                    if ($2->dim != 0 && $2->type != "int") my_yyerror("Wrong index",$$->line); /*数组坐标只能是整数*/
+                    }
+
+    | Exp Operate Exp{
+        $$ = create("Exp"); add_son($$,$1); add_son($$,$2); add_son($$,$3);
+        // checkType()
+        }
+
     | LP Exp RP {$$ = create("Exp"); add_son($$,$1); add_son($$,$2); add_son($$,$3);}
     | MINUS Exp{$$ = create("Exp"); add_son($$,$1); add_son($$,$2);}
     | NOT Exp{$$ = create("Exp"); add_son($$,$1); add_son($$,$2);}
@@ -276,6 +292,26 @@ void decListIt(struct parsetree* root, string type)
         nxt = nxt->nxt_bro;
     }
 }
+void varListIt(struct parsetree* root,list<string> re)
+{
+    if(root->name == "COMMA") return;
+    if(root->name == "ParamDec")
+    {
+        re.push_back(root->type);
+        return;
+    }
+    struct parsetree* nxt = root->left_son;
+    while(nxt!=NULL)
+    {
+        varListIt(nxt,re);
+        nxt = nxt->nxt_bro;
+    }
+}
+
+pair<string, int> getType(string id)
+{
+    return para_type[id];
+}
 
 int main(int argc, char **argv) {
      char *file_path;
@@ -288,6 +324,9 @@ int main(int argc, char **argv) {
         yyparse();
          for (const auto& pair : para_type) {
         std::cout << pair.first << ": " << pair.second.first << ' ' << pair.second.second << std::endl;
+        }
+        for (const auto& pair : func_type) {
+        std::cout << pair.first << ": " << pair.second << std::endl;
         }
     }
     else

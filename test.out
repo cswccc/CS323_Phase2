@@ -3,18 +3,18 @@ Program (1)  --dim: 0  --type:-1  --id:-1
     ExtDef (1)  --dim: 0  --type:-1  --id:-1
       Specifier (1) (int)  --dim: 0  --type:int  --id:-1
         TYPE: int (int)  --dim: 0  --type:int  --id:-1
-      FunDec (1)  --dim: 0  --type:-1  --id:-1
+      FunDec (1)  --dim: 0  --type:-1  --id:sum
         ID: sum  --dim: 0  --type:-1  --id:sum
         LP  --dim: 0  --type:-1  --id:-1
         VarList (1)  --dim: 0  --type:-1  --id:-1
-          ParamDec (1)  --dim: 0  --type:-1  --id:-1
+          ParamDec (1) (int)  --dim: 0  --type:int  --id:-1
             Specifier (1) (int)  --dim: 0  --type:int  --id:-1
               TYPE: int (int)  --dim: 0  --type:int  --id:-1
             VarDec (1)  --dim: 0  --type:-1  --id:x
               ID: x  --dim: 0  --type:-1  --id:x
           COMMA  --dim: 0  --type:-1  --id:-1
           VarList (1)  --dim: 0  --type:-1  --id:-1
-            ParamDec (1)  --dim: 0  --type:-1  --id:-1
+            ParamDec (1) (int)  --dim: 0  --type:int  --id:-1
               Specifier (1) (int)  --dim: 0  --type:int  --id:-1
                 TYPE: int (int)  --dim: 0  --type:int  --id:-1
               VarDec (1)  --dim: 0  --type:-1  --id:y
@@ -30,58 +30,21 @@ Program (1)  --dim: 0  --type:-1  --id:-1
               Dec (3)  --dim: 0  --type:-1  --id:a
                 VarDec (3)  --dim: 0  --type:-1  --id:a
                   ID: a  --dim: 0  --type:-1  --id:a
-              COMMA  --dim: 0  --type:-1  --id:-1
-              DecList (3)  --dim: 0  --type:-1  --id:-1
-                Dec (3)  --dim: 0  --type:-1  --id:b
-                  VarDec (3)  --dim: 0  --type:-1  --id:b
-                    ID: b  --dim: 0  --type:-1  --id:b
             SEMI  --dim: 0  --type:-1  --id:-1
-          DefList (4)  --dim: 0  --type:-1  --id:-1
-            Def (4)  --dim: 0  --type:-1  --id:-1
-              Specifier (4) (int)  --dim: 0  --type:int  --id:-1
-                TYPE: int (int)  --dim: 0  --type:int  --id:-1
-              DecList (4)  --dim: 0  --type:-1  --id:-1
-                Dec (4)  --dim: 1  --type:-1  --id:ret
-                  VarDec (4)  --dim: 1  --type:-1  --id:ret
-                    VarDec (4)  --dim: 0  --type:-1  --id:ret
-                      ID: ret  --dim: 0  --type:-1  --id:ret
-                    LB  --dim: 0  --type:-1  --id:-1
-                    INT: 10  --dim: 0  --type:-1  --id:-1
-                    RB  --dim: 0  --type:-1  --id:-1
+        StmtList (4)  --dim: 0  --type:-1  --id:-1
+          Stmt (4)  --dim: 0  --type:-1  --id:-1
+            Exp (4)  --dim: 0  --type:-1  --id:-1
+              ID: a  --dim: 0  --type:-1  --id:a
+              LP  --dim: 0  --type:-1  --id:-1
+              Args (4)  --dim: 0  --type:-1  --id:-1
+                Exp (4)  --dim: 0  --type:-1  --id:-1
+                  INT: 1  --dim: 0  --type:-1  --id:-1
                 COMMA  --dim: 0  --type:-1  --id:-1
-                DecList (4)  --dim: 0  --type:-1  --id:-1
-                  Dec (4)  --dim: 2  --type:-1  --id:ret2
-                    VarDec (4)  --dim: 2  --type:-1  --id:ret2
-                      VarDec (4)  --dim: 1  --type:-1  --id:ret2
-                        VarDec (4)  --dim: 0  --type:-1  --id:ret2
-                          ID: ret2  --dim: 0  --type:-1  --id:ret2
-                        LB  --dim: 0  --type:-1  --id:-1
-                        INT: 11  --dim: 0  --type:-1  --id:-1
-                        RB  --dim: 0  --type:-1  --id:-1
-                      LB  --dim: 0  --type:-1  --id:-1
-                      INT: 12  --dim: 0  --type:-1  --id:-1
-                      RB  --dim: 0  --type:-1  --id:-1
-                  COMMA  --dim: 0  --type:-1  --id:-1
-                  DecList (4)  --dim: 0  --type:-1  --id:-1
-                    Dec (4)  --dim: 3  --type:-1  --id:ret3
-                      VarDec (4)  --dim: 3  --type:-1  --id:ret3
-                        VarDec (4)  --dim: 2  --type:-1  --id:ret3
-                          VarDec (4)  --dim: 1  --type:-1  --id:ret3
-                            VarDec (4)  --dim: 0  --type:-1  --id:ret3
-                              ID: ret3  --dim: 0  --type:-1  --id:ret3
-                            LB  --dim: 0  --type:-1  --id:-1
-                            INT: 11  --dim: 0  --type:-1  --id:-1
-                            RB  --dim: 0  --type:-1  --id:-1
-                          LB  --dim: 0  --type:-1  --id:-1
-                          INT: 12  --dim: 0  --type:-1  --id:-1
-                          RB  --dim: 0  --type:-1  --id:-1
-                        LB  --dim: 0  --type:-1  --id:-1
-                        INT: 12  --dim: 0  --type:-1  --id:-1
-                        RB  --dim: 0  --type:-1  --id:-1
-              SEMI  --dim: 0  --type:-1  --id:-1
+                Args (4)  --dim: 0  --type:-1  --id:-1
+                  Exp (4)  --dim: 0  --type:-1  --id:-1
+                    INT: 2  --dim: 0  --type:-1  --id:-1
+              RP  --dim: 0  --type:-1  --id:-1
+            SEMI  --dim: 0  --type:-1  --id:-1
         RC  --dim: 0  --type:-1  --id:-1
-ret3: int 3
-ret2: int 2
-b: int 0
-ret: int 1
 a: int 0
+sum: int
