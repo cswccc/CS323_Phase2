@@ -175,7 +175,7 @@ Operate : ASSIGN{$$ = create("ASSIGN");$$->line = $1->line;}
     | BITXOR{$$ = create("BITXOR");$$->line = $1->line;}
 
 Exp : ID LP Args RP {$$ = create("Exp"); add_son($$,$1); add_son($$,$2); add_son($$,$3); add_son($$,$4);
-                    if(getFuncType($1->id) == "") my_yyerror("",$$->line); /*该函数当前没定义*/
+                    if(getFuncType($1->id) == "") my_yyerror("No def for func",$$->line); /*该函数当前没定义*/
                     else
                     {
                         $$->dim = 0;
@@ -187,10 +187,9 @@ Exp : ID LP Args RP {$$ = create("Exp"); add_son($$,$1); add_son($$,$2); add_son
 
     | Exp LB Exp RB {$$ = create("Exp"); add_son($$,$1); add_son($$,$2); add_son($$,$3); add_son($$,$4); 
                     
-                    if ($2->dim != 0 || $2->type != "int") my_yyerror("Wrong index",$$->line); /*数组坐标只能是整数*/
+                    if ($3->dim != 0 || $3->type != "int") my_yyerror("Wrong index",$$->line); /*数组坐标只能是整数*/
                     else
                     {
-                        // if ($1->dim == -1) $1->dim = getParaType()
                         $$->dim = $1->dim - 1;
                         $$->type = $1->type;
                     }
@@ -200,7 +199,7 @@ Exp : ID LP Args RP {$$ = create("Exp"); add_son($$,$1); add_son($$,$2); add_son
         $$ = create("Exp"); add_son($$,$1); add_son($$,$2); add_son($$,$3);
         cerr << $1->dim << ' ' << $1->type << endl;
         cerr << $3->dim << ' ' << $3->type << endl;
-        if (checkType($1, $3) == 0) my_yyerror("dif type", $$->line);/*数据类型不一致*/
+        if (checkType($1, $3) == 0) my_yyerror("diff type", $$->line);/*数据类型不一致*/
         else {
             $$->dim = $1->dim; $$->type = $$->type;
         }
