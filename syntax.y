@@ -27,10 +27,13 @@
     struct parsetree* create(const string to_name);
     struct parsetree* create_add(const string to_name,const char* to_add);
     void add_son(struct parsetree* parent,struct parsetree* son);
-    void insert_para(string para, string type);
-    void insert_func(string func, string type);
-    string get_func_type(string func);
-    string get_type(string para);
+
+    string charToString(const char* c);
+    void insert_para(const char* para, const char* type);
+    void insert_func(const char* func, const char* type);
+    string get_func_type(const char* func);
+    string get_type(const char* para);
+
     void output(struct parsetree* root,int dep);
 
     #include "lex.yy.c"
@@ -220,6 +223,15 @@ void add_son(struct parsetree* parent,struct parsetree* son)
     }
 }
 
+string charToString(const char* c)
+{
+    string ret = "";
+    for (int i = 0; c[i] != '\0'; i++)
+        ret += c[i];
+    
+    return ret;
+}
+
 struct parsetree* create_add(const string to_name,const char* to_add)
 {
     struct parsetree* ret = (struct parsetree*) malloc(sizeof(struct parsetree));
@@ -227,33 +239,32 @@ struct parsetree* create_add(const string to_name,const char* to_add)
     ret->left_son = ret->right_son = NULL;
 
     string to_name_1 = to_name;
-
-    for (int i = 0; ; i++)
-        if (to_add[i] == '\0') break;
-        else to_name_1 += to_add[i];
+    for (int i = 0; to_add[i] != '\0'; i++)
+        to_name_1 += to_add[i];
 
     ret->name = to_name_1;
+
     return ret;
 }
 
-void insert_para(string para, string type)
+void insert_para(const char* para, const char* type)
 {
-    para_type[para] = type;
+    para_type[charToString(para)] = charToString(type);
 }
 
-void insert_func(string func, string type)
+void insert_func(const char* func, const char* type)
 {
-    func_type[func] = type;
+    func_type[charToString(func)] = charToString(type);
 }
 
-string get_para_type(string para)
+string get_para_type(const char* para)
 {
-    return para_type[para];
+    return para_type[charToString(para)];
 }
 
-string get_func_type(string func)
+string get_func_type(const char* func)
 {
-    return func_type[func];
+    return func_type[charToString(func)];
 }
 
 void output(struct parsetree* root,int dep)
