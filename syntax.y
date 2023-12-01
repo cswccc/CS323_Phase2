@@ -1,26 +1,40 @@
 %{
+    #include <stdlib.h>
+    #include <stdio.h>
+    #include <iostream>
+    #include <string>
+    #include <map>
+    #define true 1
+    #define false 0
+    using namespace std;
+
     struct parsetree
     {
-        char* name;
+        string name;
         struct parsetree* left_son;
         struct parsetree* right_son;
         struct parsetree* nxt_bro;
         int line;
     };
     #define YYSTYPE struct parsetree*
-    #define true 1
-    #define false 0
-    #include <stdlib.h>
-    #include <string.h>
-    #include <stdio.h>
+
     int tot = 0;
-    void my_yyerror(const char* s,int line);
-    void yyerror(const char* s);
-    struct parsetree* create(const char* to_name);
-    struct parsetree* create_add(const char* to_name,const char* to_add);
+    map<string, string> para_type;
+    map<string, string> func_type;
+
+    void my_yyerror(const string s,int line);
+    void yyerror(const string s);
+    struct parsetree* create(const string to_name);
+    struct parsetree* create_add(const string to_name,const char* to_add);
     void add_son(struct parsetree* parent,struct parsetree* son);
+    void insert_para(string para, string type);
+    void insert_func(string func, string type);
+    string get_func_type(string func);
+    string get_type(string para);
     void output(struct parsetree* root,int dep);
+
     #include "lex.yy.c"
+
 %}
 
 %token INT
@@ -173,28 +187,20 @@ Args : Exp COMMA Args{$$ = create("Args"); add_son($$,$1); add_son($$,$2); add_s
     | Exp{$$ = create("Args"); add_son($$,$1);}
 
 %%
-void my_yyerror(const char* s,int line) {
-    fprintf(stderr, "Error type B at Line %d: %s\n",line, s);
+void my_yyerror(const string s,int line) {
+    fprintf(stderr, "Error type B at Line %d: %s\n",line, s.c_str());
     ok = false;
 }
-void yyerror(const char* s) {
+void yyerror(const string s) {
     // fprintf(stderr, "Error %s\n",s);
     // ok = false;
 }
-// struct parsetree* create(char* to_name,int line) {
-//     // printf("%s\n",to_name);
-//     tot++;
-//     tree[tot].line = line;
-//     tree[tot].name = (char*)malloc(strlen(to_name)+1);
-//     memcpy(tree[tot].name, to_name, strlen(to_name)+1);
-//     return &tree[tot];
-// }
-struct parsetree* create(const char* to_name) {
+
+struct parsetree* create(const string to_name) {
     struct parsetree* ret = (struct parsetree*) malloc(sizeof(struct parsetree));
     ret->line = lines;
     ret->left_son = ret->right_son = NULL;
-    ret->name = (char*)malloc(strlen(to_name)+1);
-    memcpy(ret->name, to_name, strlen(to_name)+1);
+    ret->name = to_name;
     return ret;
 }
 
@@ -214,22 +220,47 @@ void add_son(struct parsetree* parent,struct parsetree* son)
     }
 }
 
-struct parsetree* create_add(const char* to_name,const char* to_add)
+struct parsetree* create_add(const string to_name,const char* to_add)
 {
     struct parsetree* ret = (struct parsetree*) malloc(sizeof(struct parsetree));
     ret->line = lines;
     ret->left_son = ret->right_son = NULL;
-    ret->name = (char*)malloc(strlen(to_add)+strlen(to_name)+1);
-    memcpy(ret->name, to_name, strlen(to_name));
-    memcpy(ret->name+strlen(to_name), to_add, strlen(to_add)+1);
+
+    string to_name_1 = to_name;
+
+    for (int i = 0; ; i++)
+        if (to_add[i] == '\0') break;
+        else to_name_1 += to_add[i];
+
+    ret->name = to_name_1;
     return ret;
+}
+
+void insert_para(string para, string type)
+{
+    para_type[para] = type;
+}
+
+void insert_func(string func, string type)
+{
+    func_type[func] = type;
+}
+
+string get_para_type(string para)
+{
+    return para_type[para];
+}
+
+string get_func_type(string func)
+{
+    return func_type[func];
 }
 
 void output(struct parsetree* root,int dep)
 {
     for(int i=0; i<dep; i++)
         printf("  ");
-    printf("%s",root->name);
+    cout<<root->name;
     if(root->left_son !=NULL) printf(" (%d)",root->line);
     printf("\n");
     struct parsetree* nxt = root->left_son;
@@ -239,13 +270,15 @@ void output(struct parsetree* root,int dep)
         nxt = nxt->nxt_bro;
     }
 }
+
 int main(int argc, char **argv) {
      char *file_path;
     if(argc < 2){
-        fprintf(stderr, "Usage: %s <file_path>\n", argv[0]);
           return EXIT_FAIL;
     } else if(argc == 2){
         file_path = argv[1];
+        string s="123";
+        cout<<s<<endl;
         freopen("test.c","r",stdin);
         freopen("test.out","w",stdout);
         yyparse();
