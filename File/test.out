@@ -3,203 +3,62 @@ Program (1)  --dim: -1  --type:-1  --id:-1
     ExtDef (1)  --dim: -1  --type:-1  --id:-1
       Specifier (1) (int)  --dim: -1  --type:int  --id:-1
         TYPE: int (int)  --dim: -1  --type:int  --id:-1
-      FunDec (1)  --dim: -1  --type:-1  --id:test_2_r10
-        ID: test_2_r10  --dim: -1  --type:-1  --id:test_2_r10
+      FunDec (1)  --dim: -1  --type:-1  --id:test_2_r02
+        ID: test_2_r02  --dim: -1  --type:-1  --id:test_2_r02
         LP  --dim: -1  --type:-1  --id:-1
         RP  --dim: -1  --type:-1  --id:-1
-      CompSt (2) (int)  --dim: -1  --type:int  --id:-1
+      CompSt (2) (float)  --dim: -1  --type:float  --id:-1
         LC  --dim: -1  --type:-1  --id:-1
         DefList (3)  --dim: -1  --type:-1  --id:-1
           Def (3) (int)  --dim: -1  --type:int  --id:-1
             Specifier (3) (int)  --dim: -1  --type:int  --id:-1
               TYPE: int (int)  --dim: -1  --type:int  --id:-1
             DecList (3) (0)  --dim: -1  --type:0  --id:-1
-              Dec (3) (int)  --dim: 4  --type:int  --id:a
-                VarDec (3) (int)  --dim: 4  --type:int  --id:a
-                  VarDec (3) (0)  --dim: 3  --type:0  --id:a
-                    VarDec (3) (0)  --dim: 2  --type:0  --id:a
-                      VarDec (3) (0)  --dim: 1  --type:0  --id:a
-                        VarDec (3) (0)  --dim: 0  --type:0  --id:a
-                          ID: a  --dim: 0  --type:-1  --id:a
-                        LB  --dim: -1  --type:-1  --id:-1
-                        INT: 2  --dim: -1  --type:-1  --id:-1
-                        RB  --dim: -1  --type:-1  --id:-1
-                      LB  --dim: -1  --type:-1  --id:-1
-                      INT: 4  --dim: -1  --type:-1  --id:-1
-                      RB  --dim: -1  --type:-1  --id:-1
-                    LB  --dim: -1  --type:-1  --id:-1
-                    INT: 6  --dim: -1  --type:-1  --id:-1
-                    RB  --dim: -1  --type:-1  --id:-1
-                  LB  --dim: -1  --type:-1  --id:-1
-                  INT: 8  --dim: -1  --type:-1  --id:-1
-                  RB  --dim: -1  --type:-1  --id:-1
+              Dec (3) (int)  --dim: 0  --type:int  --id:a1
+                VarDec (3) (int)  --dim: 0  --type:int  --id:a1
+                  ID: a1  --dim: 0  --type:-1  --id:a1
+              COMMA  --dim: -1  --type:-1  --id:-1
+              DecList (3) (0)  --dim: -1  --type:0  --id:-1
+                Dec (3) (int)  --dim: 0  --type:int  --id:a2
+                  VarDec (3) (int)  --dim: 0  --type:int  --id:a2
+                    ID: a2  --dim: 0  --type:-1  --id:a2
             SEMI  --dim: -1  --type:-1  --id:-1
           DefList (4)  --dim: -1  --type:-1  --id:-1
-            Def (4) (int)  --dim: -1  --type:int  --id:-1
-              Specifier (4) (int)  --dim: -1  --type:int  --id:-1
-                TYPE: int (int)  --dim: -1  --type:int  --id:-1
-              DecList (4) (0)  --dim: -1  --type:0  --id:-1
-                Dec (4) (int)  --dim: 3  --type:int  --id:b
-                  VarDec (4) (int)  --dim: 3  --type:int  --id:b
-                    VarDec (4) (0)  --dim: 2  --type:0  --id:b
-                      VarDec (4) (0)  --dim: 1  --type:0  --id:b
-                        VarDec (4) (0)  --dim: 0  --type:0  --id:b
-                          ID: b  --dim: 0  --type:-1  --id:b
-                        LB  --dim: -1  --type:-1  --id:-1
-                        INT: 4  --dim: -1  --type:-1  --id:-1
-                        RB  --dim: -1  --type:-1  --id:-1
-                      LB  --dim: -1  --type:-1  --id:-1
-                      INT: 6  --dim: -1  --type:-1  --id:-1
-                      RB  --dim: -1  --type:-1  --id:-1
-                    LB  --dim: -1  --type:-1  --id:-1
-                    INT: 8  --dim: -1  --type:-1  --id:-1
-                    RB  --dim: -1  --type:-1  --id:-1
-              SEMI  --dim: -1  --type:-1  --id:-1
-            DefList (5)  --dim: -1  --type:-1  --id:-1
-              Def (5) (int)  --dim: -1  --type:int  --id:-1
-                Specifier (5) (int)  --dim: -1  --type:int  --id:-1
-                  TYPE: int (int)  --dim: -1  --type:int  --id:-1
-                DecList (5) (0)  --dim: -1  --type:0  --id:-1
-                  Dec (5) (int)  --dim: 2  --type:int  --id:c
-                    VarDec (5) (int)  --dim: 2  --type:int  --id:c
-                      VarDec (5) (0)  --dim: 1  --type:0  --id:c
-                        VarDec (5) (0)  --dim: 0  --type:0  --id:c
-                          ID: c  --dim: 0  --type:-1  --id:c
-                        LB  --dim: -1  --type:-1  --id:-1
-                        INT: 6  --dim: -1  --type:-1  --id:-1
-                        RB  --dim: -1  --type:-1  --id:-1
-                      LB  --dim: -1  --type:-1  --id:-1
-                      INT: 8  --dim: -1  --type:-1  --id:-1
-                      RB  --dim: -1  --type:-1  --id:-1
-                SEMI  --dim: -1  --type:-1  --id:-1
-              DefList (6)  --dim: -1  --type:-1  --id:-1
-                Def (6) (int)  --dim: -1  --type:int  --id:-1
-                  Specifier (6) (int)  --dim: -1  --type:int  --id:-1
-                    TYPE: int (int)  --dim: -1  --type:int  --id:-1
-                  DecList (6) (0)  --dim: -1  --type:0  --id:-1
-                    Dec (6) (int)  --dim: 1  --type:int  --id:d
-                      VarDec (6) (int)  --dim: 1  --type:int  --id:d
-                        VarDec (6) (0)  --dim: 0  --type:0  --id:d
-                          ID: d  --dim: 0  --type:-1  --id:d
-                        LB  --dim: -1  --type:-1  --id:-1
-                        INT: 8  --dim: -1  --type:-1  --id:-1
-                        RB  --dim: -1  --type:-1  --id:-1
-                  SEMI  --dim: -1  --type:-1  --id:-1
-                DefList (7)  --dim: -1  --type:-1  --id:-1
-                  Def (7) (int)  --dim: -1  --type:int  --id:-1
-                    Specifier (7) (int)  --dim: -1  --type:int  --id:-1
-                      TYPE: int (int)  --dim: -1  --type:int  --id:-1
-                    DecList (7) (0)  --dim: -1  --type:0  --id:-1
-                      Dec (7) (int)  --dim: 0  --type:int  --id:e
-                        VarDec (7) (int)  --dim: 0  --type:int  --id:e
-                          ID: e  --dim: 0  --type:-1  --id:e
-                    SEMI  --dim: -1  --type:-1  --id:-1
-        StmtList (8) (int)  --dim: -1  --type:int  --id:-1
-          Stmt (8)  --dim: -1  --type:-1  --id:-1
-            Exp (8) (int)  --dim: 3  --type:int  --id:-1
-              LVAL (8) (int)  --dim: 3  --type:int  --id:-1
-                LVAL (8) (int)  --dim: 4  --type:int  --id:-1
-                  ID: a  --dim: -1  --type:-1  --id:a
-                LB  --dim: -1  --type:-1  --id:-1
-                Exp (8) (int)  --dim: 0  --type:int  --id:-1
-                  INT: 0 (int)  --dim: 0  --type:int  --id:-1
-              ASSIGN  --dim: -1  --type:-1  --id:-1
-              Exp (8) (int)  --dim: 3  --type:int  --id:-1
-                ID: b  --dim: -1  --type:-1  --id:b
-            SEMI  --dim: -1  --type:-1  --id:-1
-          StmtList (9) (int)  --dim: -1  --type:int  --id:-1
-            Stmt (9)  --dim: -1  --type:-1  --id:-1
-              Exp (9) (int)  --dim: 2  --type:int  --id:-1
-                LVAL (9) (int)  --dim: 2  --type:int  --id:-1
-                  LVAL (9) (int)  --dim: 3  --type:int  --id:-1
-                    LVAL (9) (int)  --dim: 4  --type:int  --id:-1
-                      ID: a  --dim: -1  --type:-1  --id:a
-                    LB  --dim: -1  --type:-1  --id:-1
-                    Exp (9) (int)  --dim: 0  --type:int  --id:-1
-                      INT: 0 (int)  --dim: 0  --type:int  --id:-1
-                  LB  --dim: -1  --type:-1  --id:-1
-                  Exp (9) (int)  --dim: 0  --type:int  --id:-1
-                    INT: 1 (int)  --dim: 0  --type:int  --id:-1
-                ASSIGN  --dim: -1  --type:-1  --id:-1
-                Exp (9) (int)  --dim: 2  --type:int  --id:-1
-                  ID: c  --dim: -1  --type:-1  --id:c
-              SEMI  --dim: -1  --type:-1  --id:-1
-            StmtList (10) (int)  --dim: -1  --type:int  --id:-1
-              Stmt (10)  --dim: -1  --type:-1  --id:-1
-                Exp (10) (int)  --dim: 1  --type:int  --id:-1
-                  LVAL (10) (int)  --dim: 1  --type:int  --id:-1
-                    LVAL (10) (int)  --dim: 2  --type:int  --id:-1
-                      LVAL (10) (int)  --dim: 3  --type:int  --id:-1
-                        LVAL (10) (int)  --dim: 4  --type:int  --id:-1
-                          ID: a  --dim: -1  --type:-1  --id:a
-                        LB  --dim: -1  --type:-1  --id:-1
-                        Exp (10) (int)  --dim: 0  --type:int  --id:-1
-                          INT: 0 (int)  --dim: 0  --type:int  --id:-1
-                      LB  --dim: -1  --type:-1  --id:-1
-                      Exp (10) (int)  --dim: 0  --type:int  --id:-1
-                        INT: 1 (int)  --dim: 0  --type:int  --id:-1
-                    LB  --dim: -1  --type:-1  --id:-1
-                    Exp (10) (int)  --dim: 0  --type:int  --id:-1
-                      INT: 3 (int)  --dim: 0  --type:int  --id:-1
+            Def (4) (float)  --dim: -1  --type:float  --id:-1
+              Specifier (4) (float)  --dim: -1  --type:float  --id:-1
+                TYPE: float (float)  --dim: -1  --type:float  --id:-1
+              DecList (4) ()  --dim: -1  --type:  --id:-1
+                Dec (4) (float)  --dim: 0  --type:float  --id:b
+                  VarDec (4) (float)  --dim: 0  --type:float  --id:b
+                    ID: b  --dim: 0  --type:-1  --id:b
                   ASSIGN  --dim: -1  --type:-1  --id:-1
-                  Exp (10) (int)  --dim: 1  --type:int  --id:-1
-                    ID: d  --dim: -1  --type:-1  --id:d
-                SEMI  --dim: -1  --type:-1  --id:-1
-              StmtList (11) (int)  --dim: -1  --type:int  --id:-1
-                Stmt (11)  --dim: -1  --type:-1  --id:-1
-                  Exp (11) (int)  --dim: 0  --type:int  --id:-1
-                    LVAL (11) (int)  --dim: 0  --type:int  --id:-1
-                      LVAL (11) (int)  --dim: 1  --type:int  --id:-1
-                        LVAL (11) (int)  --dim: 2  --type:int  --id:-1
-                          LVAL (11) (int)  --dim: 3  --type:int  --id:-1
-                            LVAL (11) (int)  --dim: 4  --type:int  --id:-1
-                              ID: a  --dim: -1  --type:-1  --id:a
-                            LB  --dim: -1  --type:-1  --id:-1
-                            Exp (11) (int)  --dim: 0  --type:int  --id:-1
-                              INT: 0 (int)  --dim: 0  --type:int  --id:-1
-                          LB  --dim: -1  --type:-1  --id:-1
-                          Exp (11) (int)  --dim: 0  --type:int  --id:-1
-                            INT: 1 (int)  --dim: 0  --type:int  --id:-1
-                        LB  --dim: -1  --type:-1  --id:-1
-                        Exp (11) (int)  --dim: 0  --type:int  --id:-1
-                          INT: 3 (int)  --dim: 0  --type:int  --id:-1
-                      LB  --dim: -1  --type:-1  --id:-1
-                      Exp (11) (int)  --dim: 0  --type:int  --id:-1
-                        INT: 5 (int)  --dim: 0  --type:int  --id:-1
-                    ASSIGN  --dim: -1  --type:-1  --id:-1
-                    Exp (11) (int)  --dim: 0  --type:int  --id:-1
-                      ID: e  --dim: -1  --type:-1  --id:e
-                  SEMI  --dim: -1  --type:-1  --id:-1
-                StmtList (13) (int)  --dim: -1  --type:int  --id:-1
-                  Stmt (13) (int)  --dim: -1  --type:int  --id:-1
-                    RETURN  --dim: -1  --type:-1  --id:-1
-                    Exp (13) (int)  --dim: 1  --type:int  --id:-1
-                      Exp (13) (int)  --dim: 2  --type:int  --id:-1
-                        Exp (13) (int)  --dim: 3  --type:int  --id:-1
-                          Exp (13) (int)  --dim: 4  --type:int  --id:-1
-                            ID: a  --dim: -1  --type:-1  --id:a
-                          LB  --dim: -1  --type:-1  --id:-1
-                          Exp (13) (int)  --dim: 0  --type:int  --id:-1
-                            ID: e  --dim: -1  --type:-1  --id:e
-                          RB  --dim: -1  --type:-1  --id:-1
-                        LB  --dim: -1  --type:-1  --id:-1
-                        Exp (13) (int)  --dim: 0  --type:int  --id:-1
-                          ID: e  --dim: -1  --type:-1  --id:e
-                        RB  --dim: -1  --type:-1  --id:-1
-                      LB  --dim: -1  --type:-1  --id:-1
-                      Exp (13) (int)  --dim: 0  --type:int  --id:-1
-                        ID: e  --dim: -1  --type:-1  --id:e
-                      RB  --dim: -1  --type:-1  --id:-1
-                    SEMI  --dim: -1  --type:-1  --id:-1
+                  Exp (4) ()  --dim: 0  --type:  --id:-1
+                    ID: diff  --dim: -1  --type:-1  --id:diff
+                    LP  --dim: -1  --type:-1  --id:-1
+                    Args (4)  --dim: -1  --type:-1  --id:-1
+                      Exp (4) (int)  --dim: 0  --type:int  --id:a1
+                        ID: a1  --dim: -1  --type:-1  --id:a1
+                      COMMA  --dim: -1  --type:-1  --id:-1
+                      Args (4)  --dim: -1  --type:-1  --id:-1
+                        Exp (4) (int)  --dim: 0  --type:int  --id:a2
+                          ID: a2  --dim: -1  --type:-1  --id:a2
+                    RP  --dim: -1  --type:-1  --id:-1
+              SEMI  --dim: -1  --type:-1  --id:-1
+        StmtList (5) (float)  --dim: -1  --type:float  --id:-1
+          Stmt (5) (float)  --dim: -1  --type:float  --id:-1
+            RETURN  --dim: -1  --type:-1  --id:-1
+            Exp (5) (float)  --dim: 0  --type:float  --id:b
+              ID: b  --dim: -1  --type:-1  --id:b
+            SEMI  --dim: -1  --type:-1  --id:-1
         RC  --dim: -1  --type:-1  --id:-1
 para_type------------
-e: int 0
-c: int 2
-b: int 3
-d: int 1
-a: int 4
+a1: int 0
+b: float 0
+a2: int 0
 func_type------------
-test_2_r10: int
+test_2_r02: int
+diff: 
 para_args------------
-test_2_r10: 
+diff: 
+test_2_r02: 
 struct_vars------------

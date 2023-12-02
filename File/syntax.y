@@ -46,11 +46,16 @@
     int checkType(const parsetree* p1, const parsetree* p2);
     pair<string, int> getParaType(string id);
     string getFuncType(string id);
+    int isNotStruct(string type);
 
     void output(struct parsetree* root,int dep);
     void varListIt(struct parsetree* root,list<pair<string, string>>& re);
    void varInStructListIt(struct parsetree* root,unordered_map<string, pair<string, int> >& varsInStruct);
     void decListItForStruct(struct parsetree* root,string type,unordered_map<string, pair<string, int> >& varsInStruct);
+     void argsListIt(struct parsetree* root,list<string>& argsList);
+     void checkReturnStmtListIt(struct parsetree* root,string type);
+     void checkReturnStmtIt(struct parsetree* root,string type);  
+
     #include "lex.yy.c"
 %}
 
@@ -108,7 +113,11 @@ ExtDef : Specifier ExtDecList SEMI{$$ = create("ExtDef"); add_son($$,$1); add_so
                             else func_type[$2->id] = $1->type;
                             // cerr<<"函数体返回值"<<$3->type<<endl;
                             // cerr<<"函数定义返回值"<<$1->type<<endl;
-                            if($3->type!=$1->type)  my_yyerror2('"' + $2->id + '"' + " return type wrong", $$->line, 8);//3是函数体返回值类型 1是定义返回值类型
+
+                            //comst->stmtlist->stmt->return 检查函数返回值类型
+                            //拿到stmtlist
+                            checkReturnStmtListIt($3->left_son->nxt_bro,$1->type);
+
 
                             } //函数返回值 函数头 函数体 处理func_type
 
@@ -162,15 +171,25 @@ else{
 
 Stmt : Exp SEMI{$$ = create("Stmt"); add_son($$,$1); add_son($$,$2);}
     | Assign SEMI{$$ = create("Stmt"); add_son($$, $1); add_son($$, $2);}
-    | Exp error{$$ = create("Stmt"); add_son($$,$1); add_son($$,$2); my_yyerror("Missing semicolon ';'",$$->line); cerr << "---" << endl;}
+    | Exp error{$$ = create("Stmt"); add_son($$,$1); add_son($$,$2); my_yyerror("Missing semicolon ';'",$$->line);}
     | Def{$$ = create("Stmt"); add_son($$,$1);}
-    | CompSt{$$ = create("Stmt"); add_son($$,$1);}
-     | RETURN Exp SEMI{$$ = create("Stmt"); add_son($$,$1); add_son($$,$2); add_son($$,$3); $$->type=$2->type; /*cerr<<"stmt "<<$$->type<<endl;*/ } //为了把 return a ;    a是exp  类型给到retrun a  stmt
+    | CompSt{$$ = create("Stmt"); add_son($$,$1);
+    //考虑返回值在if else语句中
+    $$->type=$1->type;
+    // cerr<<$1->type<<endl;
+    }
+    | RETURN Exp SEMI{$$ = create("Stmt"); add_son($$,$1); add_son($$,$2); add_son($$,$3); $$->type=$2->type; 
+     //返回值的维度不是0就报错
+     if($2->dim!=0) {my_yyerror2(" return type wrong", $$->line, 8);
+                     my_yyerror2(" indexing on non-array variable", $$->line, 10);}
+      } //为了把 return a ;    a是exp  类型给到retrun a  stmt
     | RETURN Exp error{$$ = create("Stmt"); add_son($$,$1); my_yyerror("Missing semicolon ';'",$$->line);}
     | RETURN error SEMI{$$ = create("Stmt"); add_son($$,$1); my_yyerror("Missing Expression",$$->line);}
-    | IF LP Exp RP Stmt{$$ = create("Stmt"); add_son($$,$1); add_son($$,$2); add_son($$,$3); add_son($$,$4); add_son($$,$5);}
+    | IF LP Exp RP Stmt{$$ = create("Stmt"); add_son($$,$1); add_son($$,$2); add_son($$,$3); add_son($$,$4); add_son($$,$5); $$->type=$5->type;}
     | IF LP Exp error Stmt{$$ = create("Stmt"); add_son($$,$1); my_yyerror("Missing right parentheses ')'",$$->line);}
-    | IF LP Exp RP Stmt ELSE Stmt{$$ = create("Stmt"); add_son($$,$1); add_son($$,$2); add_son($$,$3); add_son($$,$4); add_son($$,$5); add_son($$,$6); add_son($$,$7);}
+    | IF LP Exp RP Stmt ELSE Stmt{$$ = create("Stmt"); add_son($$,$1); add_son($$,$2); add_son($$,$3); add_son($$,$4); add_son($$,$5); add_son($$,$6); add_son($$,$7);
+
+    }
     | IF LP Exp error Stmt ELSE Stmt{$$ = create("Stmt"); add_son($$,$1); add_son($$,$2); add_son($$,$3); add_son($$,$4); add_son($$,$5); add_son($$,$6); add_son($$,$7);my_yyerror("Missing right parentheses ')'",$$->line);}
     | WHILE LP Exp RP Stmt{$$ = create("Stmt"); add_son($$,$1); add_son($$,$2); add_son($$,$3); add_son($$,$4); add_son($$,$5);}
     // | WHILE LP Exp error Stmt{$$ = create("Stmt"); add_son($$,$1); my_yyerror("Missing right parentheses222 ')'",$$->line);}
@@ -179,7 +198,7 @@ DefList : Def DefList{$$ = create("DefList"); add_son($$,$1); add_son($$,$2); va
     | {$$ = NULL;}
 
 Def : Specifier DecList SEMI{$$ = create("Def"); add_son($$,$1); add_son($$,$2); add_son($$,$3);
-                            // cerr << $1->type << ' ' << $2->type << endl;
+                            cerr << $1->type << ' ' << $2->type << endl;
                             // if($1->type != $2->type && $2->type != "0") my_yyerror2("unmatching types on both sides of assignment", $$->line, 5);
                             // else 
                             decListIt($2, $1->type); $$->type=$1->type;
@@ -191,10 +210,10 @@ DecList : Dec{$$ = create("DecList"); add_son($$,$1); $$->type = $1->type;
             if (getParaType($1->id).first != "") my_yyerror2('"' + $1->id + '"' + " is redefined", $$->line, 3); // 重复定义
             }
     | Dec COMMA DecList{$$ = create("DecList"); add_son($$,$1); add_son($$,$2); add_son($$,$3);
-                        // if ($1->type == "0") $$->type = $3->type;
-                        // else if ($3->type == "0") $$->type = $1->type;
-                        /*else*/ if ($1->type != $3->type) my_yyerror2("unmatching types on both sides of assignment", $$->line, 5);
-                        // else
+                        if ($1->type == "0") $$->type = $3->type;
+                        else if ($3->type == "0") $$->type = $1->type;
+                        else if ($1->type != $3->type) my_yyerror2("unmatching types on both sides of assignment", $$->line, 5);
+                        else
                             $$->type = $1->type;
                         }
 
@@ -202,12 +221,12 @@ Dec : VarDec{$$ = create("Dec"); add_son($$,$1); $$->id=$1->id; $$->dim = $1->di
     | VarDec ASSIGN Exp{$$ = create("Dec"); add_son($$,$1); add_son($$,$2); add_son($$,$3);
                         // cerr << $3->dim << ' ' << $3->type << endl;
                         if ($3->dim != $1->dim) my_yyerror2("unmatching types on both sides of assignment", $$->line, 5);
-                        // else
-                        // {
+                        else
+                        {
                             $$->type = $3->type;
                             $1->type = $3->type;//此时变量还未获取type
                             $$->id=$1->id; $$->dim = $1->dim;
-                        // }
+                        }
                         }
     | VarDec ASSIGN error{$$ = create("Dec"); add_son($$,$1);my_yyerror("Missing Expression ",$$->line); $$->id=$1->id;}
 
@@ -260,8 +279,18 @@ LVAL : ID {$$ = create("LVAL"); add_son($$, $1);
                     }
                     }
     | LVAL DOT ID {$$ = create("LVAL"); add_son($$, $1); add_son($$, $2); add_son($$, $3);//结构体取参
-        $$->type = struct_vars[$1->type][$3->type].first;
-        $$->dim = struct_vars[$1->type][$3->type].second;
+        if (struct_vars[$1->type][$3->id].first == "")
+        {
+            if (isNotStruct(getParaType($3->id).first) == 1) my_yyerror2("accessing with non-struct variable", $$->line, 13);
+            else my_yyerror2("ccessing an undefined structure member", $$->line, 14);
+            $$->dim = 0;
+        }
+        else
+        {
+            // cerr << $1->type << ' ' << $3->id << endl;
+            $$->type = struct_vars[$1->type][$3->id].first;
+            $$->dim = struct_vars[$1->type][$3->id].second;
+        }
     }
 
 Assign : LVAL ASSIGN Exp{
@@ -277,10 +306,35 @@ Assign : LVAL ASSIGN Exp{
         my_yyerror2("rvalue appears on the left-side of assignment", $$->line, 6);
     }
 
-Exp : ID LP Args RP {$$ = create("Exp"); add_son($$,$1); add_son($$,$2); add_son($$,$3); add_son($$,$4);
+Exp : ID LP Args RP {$$ = create("Exp"); add_son($$,$1); add_son($$,$2); add_son($$,$3); add_son($$,$4); //函数有参调用
                     if(getFuncType($1->id) == "") my_yyerror2('"' + $1->id + '"' + " is invoked without a definition", $$->line, 2); /*该函数当前没定义*/
                     // else
                     // {
+
+                    //需要递归args 去看它是不是匹配函数的参数
+                    list<string> argsList; //存args的类型 左到右
+                    argsListIt($3,argsList);
+                    list<pair<string,string>> func_argsList=func_args[$1->id];
+                    //长度判断
+                    if(argsList.size()!=func_argsList.size()) {my_yyerror2("invalid argument number, except"+to_string(func_argsList.size())+", got "+to_string(argsList.size()), $$->line, 9);}
+                    else{
+                    //类型判断
+                     // 获取索引为2的元素
+                     list<string>::iterator itargs = argsList.begin();
+                    //  std::advance(it, 2); // 将迭代器移动到索引为2的位置
+                    // int value = *it; // 获取该位置的值
+                     list<pair<string,string>>::iterator itfunc_args = func_argsList.begin();
+                    for(int i=0;i<argsList.size();i++){
+                        std::advance(itargs, i);
+                        std::advance(itfunc_args, i);
+                        string argsType=*itargs;
+                        pair<string,string> func_argsPair=*itfunc_args;
+                        if(argsType!=func_argsPair.second){
+                            my_yyerror2("invalid argument type at "+to_string(i)+", except "+func_argsPair.second+", got "+argsType, $$->line, 9);
+                        }
+                    }
+                    }
+
                         $$->dim = 0;
                         $$->type = getFuncType($1->id);
                     // }
@@ -319,10 +373,21 @@ Exp : ID LP Args RP {$$ = create("Exp"); add_son($$,$1); add_son($$,$2); add_son
 
     | NOT Exp{$$ = create("Exp"); add_son($$,$1); add_son($$,$2);}
 
-    | ID LP RP{$$ = create("Exp"); add_son($$,$1); add_son($$,$2); add_son($$,$3);}
+    | ID LP RP{$$ = create("Exp"); add_son($$,$1); add_son($$,$2); add_son($$,$3);  //函数无参调用 
+     $$->dim = 0;
+     $$->type = getFuncType($1->id);
+     list<pair<string,string>> func_argsList=func_args[$1->id];
+    //长度判断
+    if(func_argsList.size()!=0) {my_yyerror2("invalid argument number, except "+to_string(func_argsList.size())+", got 0", $$->line, 9);}
+     }
 
     | Exp DOT ID{$$ = create("Exp"); add_son($$,$1); add_son($$,$2); add_son($$,$3);
-                if (struct_vars[$1->type][$3->id].first == "") {}//结构体没这个变量
+                if (struct_vars[$1->type][$3->id].first == "")
+                {
+                    if (isNotStruct(getParaType($3->id).first) == 1) my_yyerror2("accessing with non-struct variable", $$->line, 13);
+                    else my_yyerror2("ccessing an undefined structure member", $$->line, 14);
+                    $$->dim = 0;
+                }//结构体没这个变量
                 else
                 {
                     $$->type = struct_vars[$1->type][$3->id].first;
@@ -336,7 +401,7 @@ Exp : ID LP Args RP {$$ = create("Exp"); add_son($$,$1); add_son($$,$2); add_son
         {
             $$->dim = getParaType($1->id).second;
             $$->type = getParaType($1->id).first;
-            // $$->id = $1->id;
+            $$->id = $1->id;
         }
         }
 
@@ -442,6 +507,11 @@ int checkType(const parsetree* p1, const parsetree* p2)
     return p1->dim == p2->dim && p1->type == p2->type ? true : false;
 }
 
+int isNotStruct(string type)
+{
+    return (type == "int" || type == "char" || type == "float" || type == "string") ? true : false;
+}
+
 void output(struct parsetree* root,int dep)
 {
     for(int i=0; i<dep; i++)
@@ -497,6 +567,7 @@ void varListIt(struct parsetree* root,list<pair<string, string>>& re)
         nxt = nxt->nxt_bro;
     }
 }
+
 void decListItForStruct(struct parsetree* root,string type,unordered_map<string, pair<string, int> >& varsInStruct)
 {
     if(root->name == "COMMA") return;
@@ -536,7 +607,64 @@ void varInStructListIt(struct parsetree* root,unordered_map<string, pair<string,
         nxt = nxt->nxt_bro;
     }
 }
+void argsListIt(struct parsetree* root,list<string>& argsList)
+{
+    // cerr << root->name << ' ' << type << endl;
+    if(root->name == "COMMA") return;
+    if(root->name == "Exp")
+    {
+        // cerr << root->id << " " << root->dim << endl;
+        argsList.push_back(para_type[root->id].first);
+        return;
+    }
+    struct parsetree* nxt = root->left_son;
+    while(nxt!=NULL)
+    {
+        argsListIt(nxt,argsList);
+        nxt = nxt->nxt_bro;
+    }
+}
 
+void checkReturnStmtListIt(struct parsetree* root,string type) //一个stmtlist
+{
+    
+    if(root->name == "Stmt")
+    {
+        cout<<"hhh"<<endl;
+        checkReturnStmtIt(root,type);
+        return;
+    }
+    struct parsetree* nxt = root->left_son;
+    while(nxt!=NULL)
+    {
+        checkReturnStmtListIt(nxt,type);
+        nxt = nxt->nxt_bro;
+    }
+}
+void checkReturnStmtIt(struct parsetree* root,string type) //一个stmt
+{
+    //  cerr<<root->name<<endl;
+      if(root->name=="RETURN"){
+
+            if(root->nxt_bro->type!=type){
+                my_yyerror2(" return type wrong", root->nxt_bro->line, 8);//3是函数体返回值类型 1是定义返回值类型
+            }
+            return;
+        }  
+    struct parsetree* nxt = root->left_son;
+    // cerr<<nxt->line<<endl;
+    while(nxt!=NULL)
+    {
+         
+       
+        if(root->name == "Stmt" || root->name=="CompSt" || root->name=="StmtList")
+        {
+           
+            checkReturnStmtIt(nxt,type);
+        } 
+        nxt = nxt->nxt_bro;
+    }
+}
 
 pair<string, int> getType(string id)
 {
