@@ -106,8 +106,8 @@ ExtDef : Specifier ExtDecList SEMI{$$ = create("ExtDef"); add_son($$,$1); add_so
     | Specifier FunDec CompSt{$$ = create("ExtDef"); add_son($$,$1); add_son($$,$2); add_son($$,$3);
                             if(getFuncType($2->id) != "") my_yyerror2('"' + $2->id + '"' + " is redefined", $$->line, 4);
                             else func_type[$2->id] = $1->type;
-                            cerr<<"函数体返回值"<<$3->type<<endl;
-                            cerr<<"函数定义返回值"<<$1->type<<endl;
+                            // cerr<<"函数体返回值"<<$3->type<<endl;
+                            // cerr<<"函数定义返回值"<<$1->type<<endl;
                             if($3->type!=$1->type)  my_yyerror2('"' + $2->id + '"' + " return type wrong", $$->line, 8);//3是函数体返回值类型 1是定义返回值类型
 
                             } //函数返回值 函数头 函数体 处理func_type
@@ -161,10 +161,11 @@ else{
     | {$$ = NULL;}
 
 Stmt : Exp SEMI{$$ = create("Stmt"); add_son($$,$1); add_son($$,$2);}
+    | Assign SEMI{$$ = create("Stmt"); add_son($$, $1); add_son($$, $2);}
     | Exp error{$$ = create("Stmt"); add_son($$,$1); add_son($$,$2); my_yyerror("Missing semicolon ';'",$$->line); cerr << "---" << endl;}
     | Def{$$ = create("Stmt"); add_son($$,$1);}
     | CompSt{$$ = create("Stmt"); add_son($$,$1);}
-     | RETURN Exp SEMI{$$ = create("Stmt"); add_son($$,$1); add_son($$,$2); add_son($$,$3); $$->type=$2->type; cerr<<"stmt "<<$$->type<<endl; } //为了把 return a ;    a是exp  类型给到retrun a  stmt
+     | RETURN Exp SEMI{$$ = create("Stmt"); add_son($$,$1); add_son($$,$2); add_son($$,$3); $$->type=$2->type; /*cerr<<"stmt "<<$$->type<<endl;*/ } //为了把 return a ;    a是exp  类型给到retrun a  stmt
     | RETURN Exp error{$$ = create("Stmt"); add_son($$,$1); my_yyerror("Missing semicolon ';'",$$->line);}
     | RETURN error SEMI{$$ = create("Stmt"); add_son($$,$1); my_yyerror("Missing Expression",$$->line);}
     | IF LP Exp RP Stmt{$$ = create("Stmt"); add_son($$,$1); add_son($$,$2); add_son($$,$3); add_son($$,$4); add_son($$,$5);}
@@ -179,7 +180,7 @@ DefList : Def DefList{$$ = create("DefList"); add_son($$,$1); add_son($$,$2); va
 
 Def : Specifier DecList SEMI{$$ = create("Def"); add_son($$,$1); add_son($$,$2); add_son($$,$3);
                             // cerr << $1->type << ' ' << $2->type << endl;
-                            if($1->type != $2->type && $2->type != "0") my_yyerror2("unmatching type on both sides of assignment", $$->line, 5);
+                            // if($1->type != $2->type && $2->type != "0") my_yyerror2("unmatching types on both sides of assignment", $$->line, 5);
                             // else 
                             decListIt($2, $1->type); $$->type=$1->type;
                             }
@@ -192,7 +193,7 @@ DecList : Dec{$$ = create("DecList"); add_son($$,$1); $$->type = $1->type;
     | Dec COMMA DecList{$$ = create("DecList"); add_son($$,$1); add_son($$,$2); add_son($$,$3);
                         // if ($1->type == "0") $$->type = $3->type;
                         // else if ($3->type == "0") $$->type = $1->type;
-                        /*else*/ if ($1->type != $3->type) my_yyerror2("unmatching type on both sides of assignment", $$->line, 5);
+                        /*else*/ if ($1->type != $3->type) my_yyerror2("unmatching types on both sides of assignment", $$->line, 5);
                         // else
                             $$->type = $1->type;
                         }
@@ -200,7 +201,7 @@ DecList : Dec{$$ = create("DecList"); add_son($$,$1); $$->type = $1->type;
 Dec : VarDec{$$ = create("Dec"); add_son($$,$1); $$->id=$1->id; $$->dim = $1->dim; $$->type = "0";}
     | VarDec ASSIGN Exp{$$ = create("Dec"); add_son($$,$1); add_son($$,$2); add_son($$,$3);
                         // cerr << $3->dim << ' ' << $3->type << endl;
-                        if ($3->dim != $1->dim) my_yyerror2("unmatching type on both sides of assignment", $$->line, 5);
+                        if ($3->dim != $1->dim) my_yyerror2("unmatching types on both sides of assignment", $$->line, 5);
                         // else
                         // {
                             $$->type = $3->type;
@@ -250,12 +251,31 @@ LVAL : ID {$$ = create("LVAL"); add_son($$, $1);
                 $$->dim = getParaType($1->id).second;
             // }
             }
+    | LVAL LB Exp RB {$$ = create("LVAL"); add_son($$, $1); add_son($$, $2); add_son($$, $3);
+                    if ($3->type != "int" && $3->dim != 0) my_yyerror2("indexing by non-integer", $$->line, 12);
+                    else
+                    {
+                        $$->type = $1->type;
+                        $$->dim = $1->dim - 1;
+                    }
+                    }
     | LVAL DOT ID {$$ = create("LVAL"); add_son($$, $1); add_son($$, $2); add_son($$, $3);//结构体取参
         $$->type = struct_vars[$1->type][$3->type].first;
         $$->dim = struct_vars[$1->type][$3->type].second;
     }
 
-// Assign : LVAL ASSIGN RVAL {}
+Assign : LVAL ASSIGN Exp{
+        $$ = create("Exp"); add_son($$,$1); add_son($$,$2); add_son($$,$3);
+        if (checkType($1, $3) == 0) my_yyerror2("unmatching types on both sides of assignment", $$->line, 5);/*数据类型不一致*/
+        else if ($1->dim < 0 || $3->dim < 0) my_yyerror2("indexing on non-array variable", $$->line, 12);
+        else 
+        {
+            $$->dim = $1->dim; $$->type = $1->type;
+        }
+    }
+    | Exp ASSIGN Exp{//右值在左侧
+        my_yyerror2("rvalue appears on the left-side of assignment", $$->line, 6);
+    }
 
 Exp : ID LP Args RP {$$ = create("Exp"); add_son($$,$1); add_son($$,$2); add_son($$,$3); add_son($$,$4);
                     if(getFuncType($1->id) == "") my_yyerror2('"' + $1->id + '"' + " is invoked without a definition", $$->line, 2); /*该函数当前没定义*/
@@ -270,36 +290,24 @@ Exp : ID LP Args RP {$$ = create("Exp"); add_son($$,$1); add_son($$,$2); add_son
 
     | Exp LB Exp RB {$$ = create("Exp"); add_son($$,$1); add_son($$,$2); add_son($$,$3); add_son($$,$4); 
                     
-                    if ($3->dim != 0 || $3->type != "int") my_yyerror("Wrong index",$$->line); /*数组坐标只能是整数*/
-                    // else
-                    // {
+                    if ($3->dim != 0 || $3->type != "int") my_yyerror2("indexing by non-integer", $$->line, 12); /*数组坐标只能是整数*/
+                    else
+                    {
                         $$->dim = $1->dim - 1;
                         $$->type = $1->type;
-                    // }
                     }
-    | LVAL ASSIGN Exp{
-        $$ = create("Exp"); add_son($$,$1); add_son($$,$2); add_son($$,$3);
-        if (checkType($1, $3) == 0) my_yyerror2("unmatching type on both sides of assignment", $$->line, 5);/*数据类型不一致*/
-        else 
-        {
-            $$->dim = $1->dim; $$->type = $1->type;
-        }
-    }
+                    }
 
     | Exp Operate2 Exp{
         $$ = create("Exp"); add_son($$,$1); add_son($$,$2); add_son($$,$3);
         // cerr << $1->dim << ' ' << $1->type << endl;
         // cerr << $3->dim << ' ' << $3->type << endl;
-        if (checkType($1, $3) == 0) my_yyerror2("unmatching operands", $$->line, 7);/*数据类型不一致*/
+        if (checkType($1, $3) == 0) my_yyerror2("unmatching operand", $$->line, 7);/*数据类型不一致*/
         else 
         {
             $$->dim = $1->dim; $$->type = $1->type;
         }
         }
-    
-    | Exp ASSIGN Exp{//右值在左侧
-        my_yyerror2("rvalue appears on the left-side of assignment", $$->line, 6);
-    }
 
     | LP Exp RP {$$ = create("Exp"); add_son($$,$1); add_son($$,$2); add_son($$,$3);
                 $$->dim = $2->dim; $$->type = $2->type;
@@ -363,13 +371,13 @@ Args : Exp COMMA Args{$$ = create("Args"); add_son($$,$1); add_son($$,$2); add_s
 %%
 void my_yyerror(const string s,int line) {
     fprintf(stderr, "Error type B at Line %d: %s\n",line, s.c_str());
-    ok = false;
+    // ok = false;
 }
 
 void my_yyerror2(const string s, int line, int type)
 {
     fprintf(stderr, "Error type %d at Line %d: %s\n", type, line, s.c_str());
-    ok = false;
+    // ok = false;
 }
 void yyerror(const string s) {
     // fprintf(stderr, "Error %s\n",s);
