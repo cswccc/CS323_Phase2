@@ -14,7 +14,7 @@
 | **Type 8**  | a function’s return value type mismatches the declared type  | Finish   |
 | **Type 9**  | a function’s arguments mismatch the declared parameters (either types or numbers, or both) | Finish   |
 | **Type 10** | applying indexing operator ([…]) on non-array type variables | Finish   |
-| **Type 11** | applying function invocation operator (foo(…)) on non-function names |          |
+| **Type 11** | applying function invocation operator (foo(…)) on non-function names | Finish   |
 | **Type 12** | array indexing with a non-integer type expression            | Finish   |
 | **Type 13** | accessing members of a non-structure variable (i.e., misuse the dot operator) | Finish   |
 | **Type 14** | accessing an undefined structure member                      | Finish   |
@@ -22,12 +22,6 @@
 
 
 
-
-
-test_09
-
-test_10
-
 test_11
 
-test_12
+test_15

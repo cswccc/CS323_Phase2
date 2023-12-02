@@ -129,12 +129,11 @@ Specifier : TYPE{$$ = create("Specifier"); add_son($$,$1); $$->type=$1->type;}
     | StructSpecifier{$$ = create("Specifier"); add_son($$,$1); $$->type=$1->type;}
 
 StructSpecifier : STRUCT ID LC DefList RC{$$ = create("StructSpecifier"); add_son($$,$1); add_son($$,$2); add_son($$,$3); add_son($$,$4); add_son($$,$5); struct_vars[$2->id]=$4->varsInStruct;
-                                        if (struct_vars[$2->id].empty()) {} // 当前结构体类型不存在
+                                        // if (!struct_vars[$2->id].empty()) {my_yyerror2("redefine the same structure type", $$->line, 15);} // 重复定义
                                         $$->type = $$->id;
                                         } //strcut 名字 {vars}
     | STRUCT ID LC DefList error{$$ = create("StructSpecifier"); add_son($$,$1); my_yyerror("Missing right curly '}'",$$->line);}
     | STRUCT ID{$$ = create("StructSpecifier"); add_son($$,$1); add_son($$,$2);
-                if (struct_vars[$2->id].empty()) {} // 当前结构体类型不存在
                 $$->type = $2->id;
                 // cerr << $$->type << endl;
                 }
@@ -181,7 +180,7 @@ Stmt : Exp SEMI{$$ = create("Stmt"); add_son($$,$1); add_son($$,$2);}
     }
     | RETURN Exp SEMI{$$ = create("Stmt"); add_son($$,$1); add_son($$,$2); add_son($$,$3); $$->type=$2->type; 
      //返回值的维度不是0就报错
-     if($2->dim!=0) {my_yyerror2(" return type wrong", $$->line, 8);
+     if($2->dim!=0) {my_yyerror2("incompatiable return type", $$->line, 8);
                      my_yyerror2(" indexing on non-array variable", $$->line, 10);}
       } //为了把 return a ;    a是exp  类型给到retrun a  stmt
     | RETURN Exp error{$$ = create("Stmt"); add_son($$,$1); my_yyerror("Missing semicolon ';'",$$->line);}
@@ -200,7 +199,7 @@ DefList : Def DefList{$$ = create("DefList"); add_son($$,$1); add_son($$,$2); va
 
 Def : Specifier DecList SEMI{$$ = create("Def"); add_son($$,$1); add_son($$,$2); add_son($$,$3);
                             // cerr << $1->type << ' ' << $2->type << endl;
-                            if($1->type != $2->type && $2->type != "0") my_yyerror2("unmatching types on both sides of assignment", $$->line, 5);
+                            if($1->type != $2->type && $2->type != "0") {my_yyerror2("unmatching types on both sides of assignment", $$->line, 5);}
                             // else 
                             decListIt($2, $1->type); $$->type=$1->type;
                             }
@@ -310,7 +309,11 @@ Assign : LVAL ASSIGN Exp {
     }
 
 Exp : ID LP Args RP {$$ = create("Exp"); add_son($$,$1); add_son($$,$2); add_son($$,$3); add_son($$,$4); //函数有参调用
-                    if(getFuncType($1->id) == "") my_yyerror2('"' + $1->id + '"' + " is invoked without a definition", $$->line, 2); /*该函数当前没定义*/
+                    if(getFuncType($1->id) == "") 
+                    {
+                        if(getParaType($1->id).first == "") my_yyerror2('"' + $1->id + '"' + " is invoked without a definition", $$->line, 2);
+                        else my_yyerror2("invoking non-function variable", $$->line, 11);
+                    } /*该函数当前没定义*/
                     // else
                     // {
 
@@ -319,7 +322,7 @@ Exp : ID LP Args RP {$$ = create("Exp"); add_son($$,$1); add_son($$,$2); add_son
                     argsListIt($3,argsList);
                     list<pair<string,string>> func_argsList=func_args[$1->id];
                     //长度判断
-                    if(argsList.size()!=func_argsList.size()) {my_yyerror2("invalid argument number, except"+to_string(func_argsList.size())+", got "+to_string(argsList.size()), $$->line, 9);}
+                    if(argsList.size()!=func_argsList.size()) {my_yyerror2("invalid argument number, except "+to_string(func_argsList.size())+", got "+to_string(argsList.size()), $$->line, 9);}
                     else{
                     //类型判断
                      // 获取索引为2的元素
@@ -333,7 +336,7 @@ Exp : ID LP Args RP {$$ = create("Exp"); add_son($$,$1); add_son($$,$2); add_son
                         string argsType=*itargs;
                         pair<string,string> func_argsPair=*itfunc_args;
                         if(argsType!=func_argsPair.second){
-                            my_yyerror2("invalid argument type at "+to_string(i)+", except "+func_argsPair.second+", got "+argsType, $$->line, 9);
+                            my_yyerror2("invalid argument type at "+to_string(i)+ ", except "+func_argsPair.second+", got "+argsType, $$->line, 9);
                         }
                     }
                     }
@@ -346,7 +349,6 @@ Exp : ID LP Args RP {$$ = create("Exp"); add_son($$,$1); add_son($$,$2); add_son
     | ID LP Args error {$$ = create("Exp"); add_son($$,$1); my_yyerror("Missing right parentheses ')'",$$->line); }
 
     | Exp LB Exp RB {$$ = create("Exp"); add_son($$,$1); add_son($$,$2); add_son($$,$3); add_son($$,$4); 
-                    
                     if ($3->dim != 0 || $3->type != "int") my_yyerror2("indexing by non-integer", $$->line, 12); /*数组坐标只能是整数*/
                     else
                     {
@@ -377,12 +379,18 @@ Exp : ID LP Args RP {$$ = create("Exp"); add_son($$,$1); add_son($$,$2); add_son
     | NOT Exp{$$ = create("Exp"); add_son($$,$1); add_son($$,$2);}
 
     | ID LP RP{$$ = create("Exp"); add_son($$,$1); add_son($$,$2); add_son($$,$3);  //函数无参调用 
-     $$->dim = 0;
-     $$->type = getFuncType($1->id);
-     list<pair<string,string>> func_argsList=func_args[$1->id];
-    //长度判断
-    if(func_argsList.size()!=0) {my_yyerror2("invalid argument number, except "+to_string(func_argsList.size())+", got 0", $$->line, 9);}
-     }
+            if(getFuncType($1->id) == "") 
+            {
+                if(getParaType($1->id).first == "") my_yyerror2('"' + $1->id + '"' + " is invoked without a definition", $$->line, 2);
+                else my_yyerror2("invoking non-function variable", $$->line, 11);
+            }
+
+            $$->dim = 0;
+            $$->type = getFuncType($1->id);
+            list<pair<string,string>> func_argsList=func_args[$1->id];
+            //长度判断
+            if(func_argsList.size()!=0) {my_yyerror2("invalid argument number, except "+to_string(func_argsList.size())+", got 0", $$->line, 9);}
+            }
 
     | Exp DOT ID{$$ = create("Exp"); add_son($$,$1); add_son($$,$2); add_son($$,$3);
                 if (struct_vars[$1->type][$3->id].first == "")
@@ -650,7 +658,7 @@ void checkReturnStmtIt(struct parsetree* root,string type) //一个stmt
       if(root->name=="RETURN"){
             // cerr << type << endl;
             if(root->nxt_bro->type != type){
-                my_yyerror2(" return type wrong", root->nxt_bro->line, 8);//3是函数体返回值类型 1是定义返回值类型
+                my_yyerror2("incompatiable return type", root->nxt_bro->line, 8);//3是函数体返回值类型 1是定义返回值类型
             }
             return;
         }  

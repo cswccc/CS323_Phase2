@@ -1,137 +1,127 @@
 Program (1)  --dim: -1  --type:-1  --id:-1
   ExtDefList (1)  --dim: -1  --type:-1  --id:-1
     ExtDef (1)  --dim: -1  --type:-1  --id:-1
-      Specifier (1) (int)  --dim: -1  --type:int  --id:-1
-        TYPE: int (int)  --dim: -1  --type:int  --id:-1
-      FunDec (1)  --dim: -1  --type:-1  --id:sum
-        ID: sum  --dim: -1  --type:-1  --id:sum
-        LP  --dim: -1  --type:-1  --id:-1
-        VarList (1)  --dim: -1  --type:-1  --id:-1
-          ParamDec (1) (int)  --dim: 0  --type:int  --id:x
-            Specifier (1) (int)  --dim: -1  --type:int  --id:-1
-              TYPE: int (int)  --dim: -1  --type:int  --id:-1
-            VarDec (1) (0)  --dim: 0  --type:0  --id:x
-              ID: x  --dim: 0  --type:-1  --id:x
-          COMMA  --dim: -1  --type:-1  --id:-1
-          VarList (1)  --dim: -1  --type:-1  --id:-1
-            ParamDec (1) (int)  --dim: 0  --type:int  --id:y
-              Specifier (1) (int)  --dim: -1  --type:int  --id:-1
-                TYPE: int (int)  --dim: -1  --type:int  --id:-1
-              VarDec (1) (0)  --dim: 0  --type:0  --id:y
-                ID: y  --dim: 0  --type:-1  --id:y
-        RP  --dim: -1  --type:-1  --id:-1
-      CompSt (2) (int)  --dim: -1  --type:int  --id:-1
-        LC  --dim: -1  --type:-1  --id:-1
-        DefList (3)  --dim: -1  --type:-1  --id:-1
-          Def (3) (int)  --dim: -1  --type:int  --id:-1
-            Specifier (3) (int)  --dim: -1  --type:int  --id:-1
-              TYPE: int (int)  --dim: -1  --type:int  --id:-1
-            DecList (3) (0)  --dim: -1  --type:0  --id:-1
-              Dec (3) (int)  --dim: 0  --type:int  --id:res
-                VarDec (3) (int)  --dim: 0  --type:int  --id:res
-                  ID: res  --dim: 0  --type:-1  --id:res
-                ASSIGN  --dim: -1  --type:-1  --id:-1
-                Exp (3)  --dim: -1  --type:-1  --id:-1
-                  Exp (3) (int)  --dim: 0  --type:int  --id:x
-                    ID: x  --dim: -1  --type:-1  --id:x
-                  PLUS  --dim: -1  --type:-1  --id:-1
-                  Exp (3)  --dim: -1  --type:-1  --id:-1
-                    Exp (3) (int)  --dim: 0  --type:int  --id:y
-                      ID: y  --dim: -1  --type:-1  --id:y
-                    PLUS  --dim: -1  --type:-1  --id:-1
-                    Exp (3)  --dim: -1  --type:-1  --id:-1
-                      ID: z  --dim: -1  --type:-1  --id:z
-            SEMI  --dim: -1  --type:-1  --id:-1
-        StmtList (4) (int)  --dim: -1  --type:int  --id:-1
-          Stmt (4) (int)  --dim: -1  --type:int  --id:-1
-            RETURN  --dim: -1  --type:-1  --id:-1
-            Exp (4) (int)  --dim: 0  --type:int  --id:res
-              ID: res  --dim: -1  --type:-1  --id:res
-            SEMI  --dim: -1  --type:-1  --id:-1
-        RC  --dim: -1  --type:-1  --id:-1
-    ExtDefList (6)  --dim: -1  --type:-1  --id:-1
-      ExtDef (6)  --dim: -1  --type:-1  --id:-1
-        Specifier (6) (int)  --dim: -1  --type:int  --id:-1
-          TYPE: int (int)  --dim: -1  --type:int  --id:-1
-        FunDec (6)  --dim: -1  --type:-1  --id:test_2_r01
-          ID: test_2_r01  --dim: -1  --type:-1  --id:test_2_r01
-          LP  --dim: -1  --type:-1  --id:-1
-          RP  --dim: -1  --type:-1  --id:-1
-        CompSt (7) (int)  --dim: -1  --type:int  --id:-1
+      Specifier (1)  --dim: -1  --type:-1  --id:-1
+        StructSpecifier (1)  --dim: -1  --type:-1  --id:-1
+          STRUCT  --dim: -1  --type:-1  --id:-1
+          ID: Apple  --dim: -1  --type:-1  --id:Apple
           LC  --dim: -1  --type:-1  --id:-1
-          DefList (8)  --dim: -1  --type:-1  --id:-1
-            Def (8) (int)  --dim: -1  --type:int  --id:-1
-              Specifier (8) (int)  --dim: -1  --type:int  --id:-1
+          DefList (3)  --dim: -1  --type:-1  --id:-1
+            Def (3) (int)  --dim: -1  --type:int  --id:-1
+              Specifier (3) (int)  --dim: -1  --type:int  --id:-1
                 TYPE: int (int)  --dim: -1  --type:int  --id:-1
-              DecList (8) (int)  --dim: -1  --type:int  --id:-1
-                Dec (8) (int)  --dim: 0  --type:int  --id:a1
-                  VarDec (8) (int)  --dim: 0  --type:int  --id:a1
-                    ID: a1  --dim: 0  --type:-1  --id:a1
-                  ASSIGN  --dim: -1  --type:-1  --id:-1
-                  Exp (8) (int)  --dim: 0  --type:int  --id:-1
-                    INT: 1 (int)  --dim: 0  --type:int  --id:-1
+              DecList (3) (0)  --dim: -1  --type:0  --id:-1
+                Dec (3) (int)  --dim: 0  --type:int  --id:weight
+                  VarDec (3) (int)  --dim: 0  --type:int  --id:weight
+                    ID: weight  --dim: 0  --type:-1  --id:weight
               SEMI  --dim: -1  --type:-1  --id:-1
+            DefList (4)  --dim: -1  --type:-1  --id:-1
+              Def (4) (float)  --dim: -1  --type:float  --id:-1
+                Specifier (4) (float)  --dim: -1  --type:float  --id:-1
+                  TYPE: float (float)  --dim: -1  --type:float  --id:-1
+                DecList (4) (0)  --dim: -1  --type:0  --id:-1
+                  Dec (4) (float)  --dim: 0  --type:float  --id:round
+                    VarDec (4) (float)  --dim: 0  --type:float  --id:round
+                      ID: round  --dim: 0  --type:-1  --id:round
+                SEMI  --dim: -1  --type:-1  --id:-1
+              DefList (5)  --dim: -1  --type:-1  --id:-1
+                Def (5) (float)  --dim: -1  --type:float  --id:-1
+                  Specifier (5) (float)  --dim: -1  --type:float  --id:-1
+                    TYPE: float (float)  --dim: -1  --type:float  --id:-1
+                  DecList (5) (0)  --dim: -1  --type:0  --id:-1
+                    Dec (5) (float)  --dim: 0  --type:float  --id:price
+                      VarDec (5) (float)  --dim: 0  --type:float  --id:price
+                        ID: price  --dim: 0  --type:-1  --id:price
+                  SEMI  --dim: -1  --type:-1  --id:-1
+          RC  --dim: -1  --type:-1  --id:-1
+      SEMI  --dim: -1  --type:-1  --id:-1
+    ExtDefList (7)  --dim: -1  --type:-1  --id:-1
+      ExtDef (7)  --dim: -1  --type:-1  --id:-1
+        Specifier (7)  --dim: -1  --type:-1  --id:-1
+          StructSpecifier (7)  --dim: -1  --type:-1  --id:-1
+            STRUCT  --dim: -1  --type:-1  --id:-1
+            ID: Apple  --dim: -1  --type:-1  --id:Apple
+            LC  --dim: -1  --type:-1  --id:-1
             DefList (9)  --dim: -1  --type:-1  --id:-1
               Def (9) (int)  --dim: -1  --type:int  --id:-1
                 Specifier (9) (int)  --dim: -1  --type:int  --id:-1
                   TYPE: int (int)  --dim: -1  --type:int  --id:-1
                 DecList (9) (0)  --dim: -1  --type:0  --id:-1
-                  Dec (9) (int)  --dim: 0  --type:int  --id:b
-                    VarDec (9) (int)  --dim: 0  --type:int  --id:b
-                      ID: b  --dim: 0  --type:-1  --id:b
-                    ASSIGN  --dim: -1  --type:-1  --id:-1
-                    Exp (9)  --dim: -1  --type:-1  --id:-1
-                      Exp (9) (int)  --dim: 0  --type:int  --id:a1
-                        ID: a1  --dim: -1  --type:-1  --id:a1
-                      PLUS  --dim: -1  --type:-1  --id:-1
-                      Exp (9)  --dim: -1  --type:-1  --id:-1
-                        ID: a  --dim: -1  --type:-1  --id:a
+                  Dec (9) (int)  --dim: 0  --type:int  --id:round
+                    VarDec (9) (int)  --dim: 0  --type:int  --id:round
+                      ID: round  --dim: 0  --type:-1  --id:round
                 SEMI  --dim: -1  --type:-1  --id:-1
               DefList (10)  --dim: -1  --type:-1  --id:-1
-                Def (10) (int)  --dim: -1  --type:int  --id:-1
-                  Specifier (10) (int)  --dim: -1  --type:int  --id:-1
-                    TYPE: int (int)  --dim: -1  --type:int  --id:-1
-                  DecList (10) (int)  --dim: -1  --type:int  --id:-1
-                    Dec (10) (int)  --dim: 0  --type:int  --id:b
-                      VarDec (10) (int)  --dim: 0  --type:int  --id:b
-                        ID: b  --dim: 0  --type:-1  --id:b
-                      ASSIGN  --dim: -1  --type:-1  --id:-1
-                      Exp (10) (int)  --dim: 0  --type:int  --id:-1
-                        ID: sum  --dim: -1  --type:-1  --id:sum
-                        LP  --dim: -1  --type:-1  --id:-1
-                        Args (10)  --dim: -1  --type:-1  --id:-1
-                          Exp (10)  --dim: -1  --type:-1  --id:-1
-                            ID: a  --dim: -1  --type:-1  --id:a
-                          COMMA  --dim: -1  --type:-1  --id:-1
-                          Args (10)  --dim: -1  --type:-1  --id:-1
-                            Exp (10) (int)  --dim: 0  --type:int  --id:b
-                              ID: b  --dim: -1  --type:-1  --id:b
-                        RP  --dim: -1  --type:-1  --id:-1
+                Def (10) (float)  --dim: -1  --type:float  --id:-1
+                  Specifier (10) (float)  --dim: -1  --type:float  --id:-1
+                    TYPE: float (float)  --dim: -1  --type:float  --id:-1
+                  DecList (10) (0)  --dim: -1  --type:0  --id:-1
+                    Dec (10) (float)  --dim: 0  --type:float  --id:weight
+                      VarDec (10) (float)  --dim: 0  --type:float  --id:weight
+                        ID: weight  --dim: 0  --type:-1  --id:weight
                   SEMI  --dim: -1  --type:-1  --id:-1
-          StmtList (11) (int)  --dim: -1  --type:int  --id:-1
-            Stmt (11) (int)  --dim: -1  --type:int  --id:-1
-              RETURN  --dim: -1  --type:-1  --id:-1
-              Exp (11) (int)  --dim: 0  --type:int  --id:-1
-                INT: 0 (int)  --dim: 0  --type:int  --id:-1
-              SEMI  --dim: -1  --type:-1  --id:-1
-          RC  --dim: -1  --type:-1  --id:-1
+                DefList (11)  --dim: -1  --type:-1  --id:-1
+                  Def (11) (float)  --dim: -1  --type:float  --id:-1
+                    Specifier (11) (float)  --dim: -1  --type:float  --id:-1
+                      TYPE: float (float)  --dim: -1  --type:float  --id:-1
+                    DecList (11) (0)  --dim: -1  --type:0  --id:-1
+                      Dec (11) (float)  --dim: 0  --type:float  --id:price
+                        VarDec (11) (float)  --dim: 0  --type:float  --id:price
+                          ID: price  --dim: 0  --type:-1  --id:price
+                    SEMI  --dim: -1  --type:-1  --id:-1
+            RC  --dim: -1  --type:-1  --id:-1
+        SEMI  --dim: -1  --type:-1  --id:-1
+      ExtDefList (13)  --dim: -1  --type:-1  --id:-1
+        ExtDef (13)  --dim: -1  --type:-1  --id:-1
+          Specifier (13) (int)  --dim: -1  --type:int  --id:-1
+            TYPE: int (int)  --dim: -1  --type:int  --id:-1
+          FunDec (13)  --dim: -1  --type:-1  --id:test_2_r15
+            ID: test_2_r15  --dim: -1  --type:-1  --id:test_2_r15
+            LP  --dim: -1  --type:-1  --id:-1
+            RP  --dim: -1  --type:-1  --id:-1
+          CompSt (14) (int)  --dim: -1  --type:int  --id:-1
+            LC  --dim: -1  --type:-1  --id:-1
+            DefList (15)  --dim: -1  --type:-1  --id:-1
+              Def (15) (Apple)  --dim: -1  --type:Apple  --id:-1
+                Specifier (15) (Apple)  --dim: -1  --type:Apple  --id:-1
+                  StructSpecifier (15) (Apple)  --dim: -1  --type:Apple  --id:-1
+                    STRUCT  --dim: -1  --type:-1  --id:-1
+                    ID: Apple  --dim: -1  --type:-1  --id:Apple
+                DecList (15) (0)  --dim: -1  --type:0  --id:-1
+                  Dec (15) (Apple)  --dim: 0  --type:Apple  --id:aa
+                    VarDec (15) (Apple)  --dim: 0  --type:Apple  --id:aa
+                      ID: aa  --dim: 0  --type:-1  --id:aa
+                SEMI  --dim: -1  --type:-1  --id:-1
+            StmtList (16) (int)  --dim: -1  --type:int  --id:-1
+              Stmt (16)  --dim: -1  --type:-1  --id:-1
+                Exp (16)  --dim: -1  --type:-1  --id:-1
+                  LVAL (16) (float)  --dim: 0  --type:float  --id:-1
+                    LVAL (16) (Apple)  --dim: 0  --type:Apple  --id:-1
+                      ID: aa  --dim: -1  --type:-1  --id:aa
+                    DOT  --dim: -1  --type:-1  --id:-1
+                    ID: price  --dim: -1  --type:-1  --id:price
+                  ASSIGN  --dim: -1  --type:-1  --id:-1
+                  Exp (16) (int)  --dim: 0  --type:int  --id:-1
+                    INT: 2 (int)  --dim: 0  --type:int  --id:-1
+                SEMI  --dim: -1  --type:-1  --id:-1
+              StmtList (17) (int)  --dim: -1  --type:int  --id:-1
+                Stmt (17) (int)  --dim: -1  --type:int  --id:-1
+                  RETURN  --dim: -1  --type:-1  --id:-1
+                  Exp (17) (int)  --dim: 0  --type:int  --id:-1
+                    INT: 0 (int)  --dim: 0  --type:int  --id:-1
+                  SEMI  --dim: -1  --type:-1  --id:-1
+            RC  --dim: -1  --type:-1  --id:-1
 para_type------------
-b: int 0
-a:  0
--1:  0
-a1: int 0
-z:  0
-x: int 0
-res: int 0
-y: int 0
+aa: Apple 0
+price: float 0
+round: int 0
+weight: float 0
 func_type------------
-test_2_r01: int
-sum: int
+test_2_r15: int
 para_args------------
-test_2_r01: 
-sum: 
-x int
-
-y int
-
+test_2_r15: 
 struct_vars------------
+Apple: 
+price float 0
+weight float 0
+round int 0
