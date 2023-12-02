@@ -6,6 +6,7 @@
     #include <unordered_map>
     #include <list>
     #include <utility>
+    #include <fstream>
     #define true 1
     #define false 0
     using namespace std;
@@ -119,7 +120,6 @@ ExtDef : Specifier ExtDecList SEMI{$$ = create("ExtDef"); add_son($$,$1); add_so
                             checkReturnStmtListIt($3->left_son->nxt_bro,$1->type);
                             checkReturnStmtListIt($3->left_son->nxt_bro->nxt_bro,$1->type);
 
-
                             } //函数返回值 函数头 函数体 处理func_type
 
 ExtDecList : VarDec{$$ = create("ExtDecList"); add_son($$,$1);}
@@ -130,7 +130,61 @@ Specifier : TYPE{$$ = create("Specifier"); add_son($$,$1); $$->type=$1->type;}
 
 StructSpecifier : STRUCT ID LC DefList RC{$$ = create("StructSpecifier"); add_son($$,$1); add_son($$,$2); add_son($$,$3); add_son($$,$4); add_son($$,$5);
                                         if (!struct_vars[$2->id].empty()) {my_yyerror2("redefine the same structure type", $$->line, 15);} // 重复定义
-                                        struct_vars[$2->id]=$4->varsInStruct;
+                                        else struct_vars[$2->id]=$4->varsInStruct;
+                                        // bonus 如果结构体的变量一样认为他们重复 数量 对应
+                                        unordered_map<string,pair<string,int>> newOne=$4->varsInStruct;
+                                        bool repeat=false;
+                                        for (const auto& varsListInStruct : struct_vars) {
+                                            if(varsListInStruct.first!=$2->id){  //把自己排除在外
+                                                bool rep=true;
+                                                //数量不同不可能相同
+                                                if(varsListInStruct.second.size()==$4->varsInStruct.size()){
+                                                    //newOne inStruct_vars 做两边对应 正反都要对应
+                                                    unordered_map<string,pair<string,int>> inStruct_vars=varsListInStruct.second;
+                                                    for(const auto& oneVarsS:inStruct_vars){
+                                                        bool ok=false;
+                                                        pair<string,int> pS=oneVarsS.second; //得到这个pair
+                                                        for(const auto& oneVarsN:newOne){
+                                                            pair<string,int> pN=oneVarsN.second;
+                                                            if(pN.first==pS.first && pN.second==pS.second){
+                                                                ok=true;
+                                                                break;
+                                                            }
+                                                        }
+                                                        if(!ok){
+                                                            rep=false;
+                                                        }
+                                                    }
+
+                                                    
+                                                     for(const auto& oneVarsN:newOne){
+                                                        bool ok=false;
+                                                        pair<string,int> pN=oneVarsN.second; //得到这个pair
+                                                        for(const auto& oneVarsS:inStruct_vars){
+                                                            pair<string,int> pS=oneVarsS.second;
+                                                            if(pN.first==pS.first && pN.second==pS.second){
+                                                                ok=true;
+                                                                break;
+                                                            }
+                                                        }
+                                                        if(!ok){
+                                                            rep=false;
+                                                        }
+                                                    }
+
+                                                }else{
+                                                    rep=false;
+                                                }
+                                                if(rep){
+                                                    repeat=true;
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                        if(repeat){
+                                            my_yyerror2("redefine the same structure type S", $$->line, 15);
+                                        }
+
                                         $$->type = $$->id;
                                         } //strcut 名字 {vars}
     | STRUCT ID LC DefList error{$$ = create("StructSpecifier"); add_son($$,$1); my_yyerror("Missing right curly '}'",$$->line);}
@@ -317,7 +371,7 @@ Exp : ID LP Args RP {$$ = create("Exp"); add_son($$,$1); add_son($$,$2); add_son
                     } /*该函数当前没定义*/
                     // else
                     // {
-
+                    
                     //需要递归args 去看它是不是匹配函数的参数
                     list<string> argsList; //存args的类型 左到右
                     argsListIt($3,argsList);
@@ -331,9 +385,14 @@ Exp : ID LP Args RP {$$ = create("Exp"); add_son($$,$1); add_son($$,$2); add_son
                     //  std::advance(it, 2); // 将迭代器移动到索引为2的位置
                     // int value = *it; // 获取该位置的值
                      list<pair<string,string>>::iterator itfunc_args = func_argsList.begin();
+                     
                     for(int i=0;i<argsList.size();i++){
-                        std::advance(itargs, i);
-                        std::advance(itfunc_args, i);
+                        if(i != 0)
+                        {
+                            std::advance(itargs, 1);
+                            std::advance(itfunc_args, 1);
+                        }
+                        
                         string argsType=*itargs;
                         pair<string,string> func_argsPair=*itfunc_args;
                         if(argsType!=func_argsPair.second){
@@ -341,7 +400,6 @@ Exp : ID LP Args RP {$$ = create("Exp"); add_son($$,$1); add_son($$,$2); add_son
                         }
                     }
                     }
-
                         $$->dim = 0;
                         $$->type = getFuncType($1->id);
                     // }
@@ -448,13 +506,13 @@ Args : Exp COMMA Args{$$ = create("Args"); add_son($$,$1); add_son($$,$2); add_s
 %%
 void my_yyerror(const string s,int line) {
     fprintf(stderr, "Error type B at Line %d: %s\n",line, s.c_str());
-    // ok = false;
+    ok = false;
 }
 
 void my_yyerror2(const string s, int line, int type)
 {
     fprintf(stderr, "Error type %d at Line %d: %s\n", type, line, s.c_str());
-    // ok = false;
+    ok = false;
 }
 void yyerror(const string s) {
     // fprintf(stderr, "Error %s\n",s);
@@ -642,7 +700,7 @@ void checkReturnStmtListIt(struct parsetree* root,string type) //一个stmtlist
     
     if(root->name == "Stmt")
     {
-        // cout<<"hhh"<<endl;
+        // cerr<<"hhh"<<endl;
         checkReturnStmtIt(root,type);
         return;
     }
@@ -692,34 +750,34 @@ int main(int argc, char **argv) {
         freopen("test.c","r",stdin);
         freopen("test.out","w",stdout);
         yyparse();
-        cout<<"para_type------------"<<endl;
-         for (const auto& pair : para_type) {
-        std::cout << pair.first << ": " << pair.second.first << ' ' << pair.second.second << std::endl;
-        }
+    //     cerr<<"para_type------------"<<endl;
+    //      for (const auto& pair : para_type) {
+    //     std::cerr << pair.first << ": " << pair.second.first << ' ' << pair.second.second << std::endl;
+    //     }
         
-        cout<<"func_type------------"<<endl;
-         for (const auto& pair : func_type) {
-        std::cout << pair.first << ": " << pair.second << std::endl;
-        }
+    //     cerr<<"func_type------------"<<endl;
+    //      for (const auto& pair : func_type) {
+    //     std::cerr << pair.first << ": " << pair.second << std::endl;
+    //     }
         
-        cout<<"para_args------------"<<endl;
-         for (const auto& pair : func_args) {
-        std::cout << pair.first << ": " << std::endl;
-        for (const auto& pair1: pair.second) {
-        std::cout << pair1.first << ' ' << pair1.second <<  endl;
-         cout<<endl;
-        }
-         }
+    //     cerr<<"para_args------------"<<endl;
+    //      for (const auto& pair : func_args) {
+    //     std::cerr << pair.first << ": " << std::endl;
+    //     for (const auto& pair1: pair.second) {
+    //     std::cerr << pair1.first << ' ' << pair1.second <<  endl;
+    //      cerr<<endl;
+    //     }
+    //      }
         
-        cout<<"struct_vars------------"<<endl;
-          for (const auto& pair : struct_vars) {
-        std::cout << pair.first << ": "<<std::endl;
-        for (const auto& pair1: pair.second) {
-        std::cout << pair1.first << ' ' << pair1.second.first << " " << pair1.second.second<< endl;
+    //     cerr<<"struct_vars------------"<<endl;
+    //       for (const auto& pair : struct_vars) {
+    //     std::cerr << pair.first << ": "<<std::endl;
+    //     for (const auto& pair1: pair.second) {
+    //     std::cerr << pair1.first << ' ' << pair1.second.first << " " << pair1.second.second<< endl;
 
-        // cerr << getParaType("amy").second << endl;
-    }
-    }
+    //     // cerr << getParaType("amy").second << endl;
+    // }
+    // }
     }
     else
     {

@@ -1,0 +1,6 @@
+Error type 12 at Line 17: indexing by non-integer
+Error type 5 at Line 17: unmatching types on both sides of assignment
+Error type 5 at Line 19: unmatching types on both sides of assignment
+Error type 3 at Line 21: "z" is redefined
+Error type 5 at Line 21: unmatching types on both sides of assignment
+Error type 8 at Line 23: incompatiable return type

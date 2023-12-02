@@ -1,0 +1,15 @@
+Error type 1 at Line 3: "a" is used without a definition
+Error type 1 at Line 3: "b" is used without a definition
+Error type 1 at Line 3: "c" is used without a definition
+Error type 7 at Line 3: unmatching operand
+Error type 7 at Line 3: unmatching operand
+Error type 5 at Line 3: unmatching types on both sides of assignment
+Error type 1 at Line 4: "a" is used without a definition
+Error type 1 at Line 4: "b" is used without a definition
+Error type 7 at Line 4: unmatching operand
+Error type 5 at Line 4: unmatching types on both sides of assignment
+Error type 3 at Line 4: "xs" is redefined
+Error type 1 at Line 6: "a1" is used without a definition
+Error type 1 at Line 6: "b1" is used without a definition
+Error type 7 at Line 6: unmatching operand
+Error type 5 at Line 6: unmatching types on both sides of assignment

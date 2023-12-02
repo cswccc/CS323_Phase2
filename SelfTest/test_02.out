@@ -1,0 +1,9 @@
+Error type 5 at Line 7: unmatching types on both sides of assignment
+Error type 7 at Line 9: unmatching operand
+Error type 5 at Line 9: unmatching types on both sides of assignment
+Error type 7 at Line 10: unmatching operand
+Error type 5 at Line 10: unmatching types on both sides of assignment
+Error type 12 at Line 12: indexing by non-integer
+Error type 7 at Line 12: unmatching operand
+Error type 5 at Line 12: unmatching types on both sides of assignment
+Error type 8 at Line 14: incompatiable return type
