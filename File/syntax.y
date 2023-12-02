@@ -128,8 +128,9 @@ ExtDecList : VarDec{$$ = create("ExtDecList"); add_son($$,$1);}
 Specifier : TYPE{$$ = create("Specifier"); add_son($$,$1); $$->type=$1->type;}
     | StructSpecifier{$$ = create("Specifier"); add_son($$,$1); $$->type=$1->type;}
 
-StructSpecifier : STRUCT ID LC DefList RC{$$ = create("StructSpecifier"); add_son($$,$1); add_son($$,$2); add_son($$,$3); add_son($$,$4); add_son($$,$5); struct_vars[$2->id]=$4->varsInStruct;
-                                        // if (!struct_vars[$2->id].empty()) {my_yyerror2("redefine the same structure type", $$->line, 15);} // 重复定义
+StructSpecifier : STRUCT ID LC DefList RC{$$ = create("StructSpecifier"); add_son($$,$1); add_son($$,$2); add_son($$,$3); add_son($$,$4); add_son($$,$5);
+                                        if (!struct_vars[$2->id].empty()) {my_yyerror2("redefine the same structure type", $$->line, 15);} // 重复定义
+                                        struct_vars[$2->id]=$4->varsInStruct;
                                         $$->type = $$->id;
                                         } //strcut 名字 {vars}
     | STRUCT ID LC DefList error{$$ = create("StructSpecifier"); add_son($$,$1); my_yyerror("Missing right curly '}'",$$->line);}

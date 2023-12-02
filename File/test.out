@@ -4,34 +4,34 @@ Program (1)  --dim: -1  --type:-1  --id:-1
       Specifier (1)  --dim: -1  --type:-1  --id:-1
         StructSpecifier (1)  --dim: -1  --type:-1  --id:-1
           STRUCT  --dim: -1  --type:-1  --id:-1
-          ID: Apple  --dim: -1  --type:-1  --id:Apple
+          ID: a  --dim: -1  --type:-1  --id:a
           LC  --dim: -1  --type:-1  --id:-1
           DefList (3)  --dim: -1  --type:-1  --id:-1
             Def (3) (int)  --dim: -1  --type:int  --id:-1
               Specifier (3) (int)  --dim: -1  --type:int  --id:-1
                 TYPE: int (int)  --dim: -1  --type:int  --id:-1
               DecList (3) (0)  --dim: -1  --type:0  --id:-1
-                Dec (3) (int)  --dim: 0  --type:int  --id:weight
-                  VarDec (3) (int)  --dim: 0  --type:int  --id:weight
-                    ID: weight  --dim: 0  --type:-1  --id:weight
+                Dec (3) (int)  --dim: 0  --type:int  --id:b
+                  VarDec (3) (int)  --dim: 0  --type:int  --id:b
+                    ID: b  --dim: 0  --type:-1  --id:b
               SEMI  --dim: -1  --type:-1  --id:-1
             DefList (4)  --dim: -1  --type:-1  --id:-1
               Def (4) (float)  --dim: -1  --type:float  --id:-1
                 Specifier (4) (float)  --dim: -1  --type:float  --id:-1
                   TYPE: float (float)  --dim: -1  --type:float  --id:-1
                 DecList (4) (0)  --dim: -1  --type:0  --id:-1
-                  Dec (4) (float)  --dim: 0  --type:float  --id:round
-                    VarDec (4) (float)  --dim: 0  --type:float  --id:round
-                      ID: round  --dim: 0  --type:-1  --id:round
+                  Dec (4) (float)  --dim: 0  --type:float  --id:c
+                    VarDec (4) (float)  --dim: 0  --type:float  --id:c
+                      ID: c  --dim: 0  --type:-1  --id:c
                 SEMI  --dim: -1  --type:-1  --id:-1
               DefList (5)  --dim: -1  --type:-1  --id:-1
                 Def (5) (float)  --dim: -1  --type:float  --id:-1
                   Specifier (5) (float)  --dim: -1  --type:float  --id:-1
                     TYPE: float (float)  --dim: -1  --type:float  --id:-1
                   DecList (5) (0)  --dim: -1  --type:0  --id:-1
-                    Dec (5) (float)  --dim: 0  --type:float  --id:price
-                      VarDec (5) (float)  --dim: 0  --type:float  --id:price
-                        ID: price  --dim: 0  --type:-1  --id:price
+                    Dec (5) (float)  --dim: 0  --type:float  --id:d
+                      VarDec (5) (float)  --dim: 0  --type:float  --id:d
+                        ID: d  --dim: 0  --type:-1  --id:d
                   SEMI  --dim: -1  --type:-1  --id:-1
           RC  --dim: -1  --type:-1  --id:-1
       SEMI  --dim: -1  --type:-1  --id:-1
@@ -40,7 +40,7 @@ Program (1)  --dim: -1  --type:-1  --id:-1
         Specifier (7)  --dim: -1  --type:-1  --id:-1
           StructSpecifier (7)  --dim: -1  --type:-1  --id:-1
             STRUCT  --dim: -1  --type:-1  --id:-1
-            ID: Apple  --dim: -1  --type:-1  --id:Apple
+            ID: a  --dim: -1  --type:-1  --id:a
             LC  --dim: -1  --type:-1  --id:-1
             DefList (9)  --dim: -1  --type:-1  --id:-1
               Def (9) (int)  --dim: -1  --type:int  --id:-1
@@ -95,7 +95,7 @@ Program (1)  --dim: -1  --type:-1  --id:-1
             StmtList (16) (int)  --dim: -1  --type:int  --id:-1
               Stmt (16)  --dim: -1  --type:-1  --id:-1
                 Exp (16)  --dim: -1  --type:-1  --id:-1
-                  LVAL (16) (float)  --dim: 0  --type:float  --id:-1
+                  LVAL (16)  --dim: 0  --type:-1  --id:-1
                     LVAL (16) (Apple)  --dim: 0  --type:Apple  --id:-1
                       ID: aa  --dim: -1  --type:-1  --id:aa
                     DOT  --dim: -1  --type:-1  --id:-1
@@ -114,14 +114,19 @@ Program (1)  --dim: -1  --type:-1  --id:-1
 para_type------------
 aa: Apple 0
 price: float 0
-round: int 0
 weight: float 0
+round: int 0
+d: float 0
+c: float 0
+b: int 0
 func_type------------
 test_2_r15: int
 para_args------------
 test_2_r15: 
 struct_vars------------
 Apple: 
+price  0
+a: 
 price float 0
 weight float 0
 round int 0

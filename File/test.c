@@ -1,10 +1,10 @@
-struct Apple
+struct a
 {
-  int weight;
-  float round;
-  float price;
+  int b;
+  float c;
+  float d;
 };
-struct Apple
+struct a
 {
   int round;
   float weight;
