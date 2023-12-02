@@ -117,6 +117,7 @@ ExtDef : Specifier ExtDecList SEMI{$$ = create("ExtDef"); add_son($$,$1); add_so
                             //comst->stmtlist->stmt->return 检查函数返回值类型
                             //拿到stmtlist
                             checkReturnStmtListIt($3->left_son->nxt_bro,$1->type);
+                            checkReturnStmtListIt($3->left_son->nxt_bro->nxt_bro,$1->type);
 
 
                             } //函数返回值 函数头 函数体 处理func_type
@@ -198,8 +199,8 @@ DefList : Def DefList{$$ = create("DefList"); add_son($$,$1); add_son($$,$2); va
     | {$$ = NULL;}
 
 Def : Specifier DecList SEMI{$$ = create("Def"); add_son($$,$1); add_son($$,$2); add_son($$,$3);
-                            cerr << $1->type << ' ' << $2->type << endl;
-                            // if($1->type != $2->type && $2->type != "0") my_yyerror2("unmatching types on both sides of assignment", $$->line, 5);
+                            // cerr << $1->type << ' ' << $2->type << endl;
+                            if($1->type != $2->type && $2->type != "0") my_yyerror2("unmatching types on both sides of assignment", $$->line, 5);
                             // else 
                             decListIt($2, $1->type); $$->type=$1->type;
                             }
@@ -212,7 +213,7 @@ DecList : Dec{$$ = create("DecList"); add_son($$,$1); $$->type = $1->type;
     | Dec COMMA DecList{$$ = create("DecList"); add_son($$,$1); add_son($$,$2); add_son($$,$3);
                         if ($1->type == "0") $$->type = $3->type;
                         else if ($3->type == "0") $$->type = $1->type;
-                        else if ($1->type != $3->type) my_yyerror2("unmatching types on both sides of assignment", $$->line, 5);
+                        else if ($1->type != $3->type) $$->type = "-1"; // 定义的变量类型不同
                         else
                             $$->type = $1->type;
                         }
@@ -220,7 +221,7 @@ DecList : Dec{$$ = create("DecList"); add_son($$,$1); $$->type = $1->type;
 Dec : VarDec{$$ = create("Dec"); add_son($$,$1); $$->id=$1->id; $$->dim = $1->dim; $$->type = "0";}
     | VarDec ASSIGN Exp{$$ = create("Dec"); add_son($$,$1); add_son($$,$2); add_son($$,$3);
                         // cerr << $3->dim << ' ' << $3->type << endl;
-                        if ($3->dim != $1->dim) my_yyerror2("unmatching types on both sides of assignment", $$->line, 5);
+                        if ($3->dim != $1->dim) {my_yyerror2("unmatching types on both sides of assignment", $$->line, 5); $$->type = "0";}
                         else
                         {
                             $$->type = $3->type;
@@ -293,9 +294,9 @@ LVAL : ID {$$ = create("LVAL"); add_son($$, $1);
         }
     }
 
-Assign : LVAL ASSIGN Exp{
+Assign : LVAL ASSIGN Exp {
         $$ = create("Exp"); add_son($$,$1); add_son($$,$2); add_son($$,$3);
-        if (checkType($1, $3) == 0) my_yyerror2("unmatching types on both sides of assignment", $$->line, 5);/*数据类型不一致*/
+        if (checkType($1, $3) == 0) { my_yyerror2("unmatching types on both sides of assignment", $$->line, 5);}/*数据类型不一致*/
         else if ($1->dim < 0 || $3->dim < 0) my_yyerror2("indexing on non-array variable", $$->line, 12);
         else 
         {
@@ -436,13 +437,13 @@ Args : Exp COMMA Args{$$ = create("Args"); add_son($$,$1); add_son($$,$2); add_s
 %%
 void my_yyerror(const string s,int line) {
     fprintf(stderr, "Error type B at Line %d: %s\n",line, s.c_str());
-    // ok = false;
+    ok = false;
 }
 
 void my_yyerror2(const string s, int line, int type)
 {
     fprintf(stderr, "Error type %d at Line %d: %s\n", type, line, s.c_str());
-    // ok = false;
+    ok = false;
 }
 void yyerror(const string s) {
     // fprintf(stderr, "Error %s\n",s);
@@ -630,7 +631,7 @@ void checkReturnStmtListIt(struct parsetree* root,string type) //一个stmtlist
     
     if(root->name == "Stmt")
     {
-        cout<<"hhh"<<endl;
+        // cout<<"hhh"<<endl;
         checkReturnStmtIt(root,type);
         return;
     }
@@ -645,8 +646,8 @@ void checkReturnStmtIt(struct parsetree* root,string type) //一个stmt
 {
     //  cerr<<root->name<<endl;
       if(root->name=="RETURN"){
-
-            if(root->nxt_bro->type!=type){
+            // cerr << type << endl;
+            if(root->nxt_bro->type != type){
                 my_yyerror2(" return type wrong", root->nxt_bro->line, 8);//3是函数体返回值类型 1是定义返回值类型
             }
             return;

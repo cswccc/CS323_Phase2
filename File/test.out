@@ -1,64 +1,20 @@
-Program (1)  --dim: -1  --type:-1  --id:-1
-  ExtDefList (1)  --dim: -1  --type:-1  --id:-1
-    ExtDef (1)  --dim: -1  --type:-1  --id:-1
-      Specifier (1) (int)  --dim: -1  --type:int  --id:-1
-        TYPE: int (int)  --dim: -1  --type:int  --id:-1
-      FunDec (1)  --dim: -1  --type:-1  --id:test_2_r02
-        ID: test_2_r02  --dim: -1  --type:-1  --id:test_2_r02
-        LP  --dim: -1  --type:-1  --id:-1
-        RP  --dim: -1  --type:-1  --id:-1
-      CompSt (2) (float)  --dim: -1  --type:float  --id:-1
-        LC  --dim: -1  --type:-1  --id:-1
-        DefList (3)  --dim: -1  --type:-1  --id:-1
-          Def (3) (int)  --dim: -1  --type:int  --id:-1
-            Specifier (3) (int)  --dim: -1  --type:int  --id:-1
-              TYPE: int (int)  --dim: -1  --type:int  --id:-1
-            DecList (3) (0)  --dim: -1  --type:0  --id:-1
-              Dec (3) (int)  --dim: 0  --type:int  --id:a1
-                VarDec (3) (int)  --dim: 0  --type:int  --id:a1
-                  ID: a1  --dim: 0  --type:-1  --id:a1
-              COMMA  --dim: -1  --type:-1  --id:-1
-              DecList (3) (0)  --dim: -1  --type:0  --id:-1
-                Dec (3) (int)  --dim: 0  --type:int  --id:a2
-                  VarDec (3) (int)  --dim: 0  --type:int  --id:a2
-                    ID: a2  --dim: 0  --type:-1  --id:a2
-            SEMI  --dim: -1  --type:-1  --id:-1
-          DefList (4)  --dim: -1  --type:-1  --id:-1
-            Def (4) (float)  --dim: -1  --type:float  --id:-1
-              Specifier (4) (float)  --dim: -1  --type:float  --id:-1
-                TYPE: float (float)  --dim: -1  --type:float  --id:-1
-              DecList (4) ()  --dim: -1  --type:  --id:-1
-                Dec (4) (float)  --dim: 0  --type:float  --id:b
-                  VarDec (4) (float)  --dim: 0  --type:float  --id:b
-                    ID: b  --dim: 0  --type:-1  --id:b
-                  ASSIGN  --dim: -1  --type:-1  --id:-1
-                  Exp (4) ()  --dim: 0  --type:  --id:-1
-                    ID: diff  --dim: -1  --type:-1  --id:diff
-                    LP  --dim: -1  --type:-1  --id:-1
-                    Args (4)  --dim: -1  --type:-1  --id:-1
-                      Exp (4) (int)  --dim: 0  --type:int  --id:a1
-                        ID: a1  --dim: -1  --type:-1  --id:a1
-                      COMMA  --dim: -1  --type:-1  --id:-1
-                      Args (4)  --dim: -1  --type:-1  --id:-1
-                        Exp (4) (int)  --dim: 0  --type:int  --id:a2
-                          ID: a2  --dim: -1  --type:-1  --id:a2
-                    RP  --dim: -1  --type:-1  --id:-1
-              SEMI  --dim: -1  --type:-1  --id:-1
-        StmtList (5) (float)  --dim: -1  --type:float  --id:-1
-          Stmt (5) (float)  --dim: -1  --type:float  --id:-1
-            RETURN  --dim: -1  --type:-1  --id:-1
-            Exp (5) (float)  --dim: 0  --type:float  --id:b
-              ID: b  --dim: -1  --type:-1  --id:b
-            SEMI  --dim: -1  --type:-1  --id:-1
-        RC  --dim: -1  --type:-1  --id:-1
 para_type------------
+b: int 0
+a:  0
 a1: int 0
-b: float 0
-a2: int 0
+-1: int -1
+z:  0
+x: int 0
+res:  0
+y: int 0
 func_type------------
-test_2_r02: int
-diff: 
+test_2_r01: int
+sum: int
 para_args------------
-diff: 
-test_2_r02: 
+test_2_r01: 
+sum: 
+x int
+
+y int
+
 struct_vars------------
