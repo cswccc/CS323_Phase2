@@ -182,7 +182,7 @@ Stmt : Exp SEMI{$$ = create("Stmt"); add_son($$,$1); add_son($$,$2);}
     | RETURN Exp SEMI{$$ = create("Stmt"); add_son($$,$1); add_son($$,$2); add_son($$,$3); $$->type=$2->type; 
      //返回值的维度不是0就报错
      if($2->dim!=0) {my_yyerror2("incompatiable return type", $$->line, 8);
-                     my_yyerror2(" indexing on non-array variable", $$->line, 10);}
+                     if($2->dim < 0) my_yyerror2(" indexing on non-array variable", $$->line, 10);}
       } //为了把 return a ;    a是exp  类型给到retrun a  stmt
     | RETURN Exp error{$$ = create("Stmt"); add_son($$,$1); my_yyerror("Missing semicolon ';'",$$->line);}
     | RETURN error SEMI{$$ = create("Stmt"); add_son($$,$1); my_yyerror("Missing Expression",$$->line);}
@@ -516,7 +516,7 @@ string getFuncType(string id)
 
 int checkType(const parsetree* p1, const parsetree* p2)
 {
-    return p1->dim == p2->dim && p1->type == p2->type ? true : false;
+    return (p1->dim == p2->dim && p1->type == p2->type && (p1->dim >= 0 && p1->type != "-1") && (p2->dim >= 0 && p2->type != "-1")) ? true : false;
 }
 
 int isNotStruct(string type)

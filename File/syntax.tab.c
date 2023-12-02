@@ -1771,7 +1771,7 @@ else{
                      {yyval = create("Stmt"); add_son(yyval,yyvsp[-2]); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]); yyval->type=yyvsp[-1]->type; 
      //返回值的维度不是0就报错
      if(yyvsp[-1]->dim!=0) {my_yyerror2("incompatiable return type", yyval->line, 8);
-                     my_yyerror2(" indexing on non-array variable", yyval->line, 10);}
+                     if(yyvsp[-1]->dim < 0) my_yyerror2(" indexing on non-array variable", yyval->line, 10);}
       }
 #line 1777 "syntax.tab.c"
     break;
@@ -2670,7 +2670,7 @@ string getFuncType(string id)
 
 int checkType(const parsetree* p1, const parsetree* p2)
 {
-    return p1->dim == p2->dim && p1->type == p2->type ? true : false;
+    return (p1->dim == p2->dim && p1->type == p2->type && (p1->dim >= 0 && p1->type != "-1") && (p2->dim >= 0 && p2->type != "-1")) ? true : false;
 }
 
 int isNotStruct(string type)

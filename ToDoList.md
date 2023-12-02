@@ -18,7 +18,7 @@
 | **Type 12** | array indexing with a non-integer type expression            | Finish   |
 | **Type 13** | accessing members of a non-structure variable (i.e., misuse the dot operator) | Finish   |
 | **Type 14** | accessing an undefined structure member                      | Finish   |
-| **Type 15** | redefine the same structure type                             |          |
+| **Type 15** | redefine the same structure type                             | Finish   |
 
 
 

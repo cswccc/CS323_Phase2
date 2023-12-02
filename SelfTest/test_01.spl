@@ -1,0 +1,24 @@
+struct a
+{
+    int c[10];
+    float d;
+};
+
+struct b
+{
+    struct a aa[100];
+    int f;
+};
+
+int f(int x, int y)
+{
+    struct b bb[10];
+
+    float dd = bb[0].aa[0].c[0.0];
+
+    int z = dd;
+
+    float z = x + y;
+
+    return z;
+}
