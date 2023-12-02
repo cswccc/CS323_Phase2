@@ -221,12 +221,14 @@ DecList : Dec{$$ = create("DecList"); add_son($$,$1); $$->type = $1->type;
 Dec : VarDec{$$ = create("Dec"); add_son($$,$1); $$->id=$1->id; $$->dim = $1->dim; $$->type = "0";}
     | VarDec ASSIGN Exp{$$ = create("Dec"); add_son($$,$1); add_son($$,$2); add_son($$,$3);
                         // cerr << $3->dim << ' ' << $3->type << endl;
-                        if ($3->dim != $1->dim) {my_yyerror2("unmatching types on both sides of assignment", $$->line, 5); $$->type = "0";}
+                        // cerr << $1->id << endl;
+                        // cerr << $1->dim << ' ' << $1->type << endl;
+                        $$->id = $1->id; $$->dim = $1->dim; $$->type = "0";
+                        if ($3->dim != $1->dim) {my_yyerror2("unmatching types on both sides of assignment", $$->line, 5);}
                         else
                         {
                             $$->type = $3->type;
                             $1->type = $3->type;//此时变量还未获取type
-                            $$->id=$1->id; $$->dim = $1->dim;
                         }
                         }
     | VarDec ASSIGN error{$$ = create("Dec"); add_son($$,$1);my_yyerror("Missing Expression ",$$->line); $$->id=$1->id;}
@@ -437,13 +439,13 @@ Args : Exp COMMA Args{$$ = create("Args"); add_son($$,$1); add_son($$,$2); add_s
 %%
 void my_yyerror(const string s,int line) {
     fprintf(stderr, "Error type B at Line %d: %s\n",line, s.c_str());
-    ok = false;
+    // ok = false;
 }
 
 void my_yyerror2(const string s, int line, int type)
 {
     fprintf(stderr, "Error type %d at Line %d: %s\n", type, line, s.c_str());
-    ok = false;
+    // ok = false;
 }
 void yyerror(const string s) {
     // fprintf(stderr, "Error %s\n",s);
