@@ -8,7 +8,7 @@
 | **Type 2**  | a function is invoked without a definition                   | Finish   |
 | **Type 3**  | a variable is redefined in the same scope                    | Finish   |
 | **Type 4**  | a function is redefined (in the global scope, since we don’t have nested functions) | Finish   |
-| **Type 5**  | unmatching types appear at both sides of the assignment operator (=) |          |
+| **Type 5**  | unmatching types appear at both sides of the assignment operator (=) | Finish   |
 | **Type 6**  | rvalue appears on the left-hand side of the assignment operator |          |
 | **Type 7**  | unmatching operands, such as adding an integer to a structure variable |          |
 | **Type 8**  | a function’s return value type mismatches the declared type  |          |

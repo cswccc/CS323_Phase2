@@ -106,17 +106,28 @@ ExtDef : Specifier ExtDecList SEMI{$$ = create("ExtDef"); add_son($$,$1); add_so
     | Specifier FunDec CompSt{$$ = create("ExtDef"); add_son($$,$1); add_son($$,$2); add_son($$,$3);
                             if(getFuncType($2->id) != "") my_yyerror2('"' + $2->id + '"' + " is redefined", $$->line, 4);
                             else func_type[$2->id] = $1->type;
+                            cerr<<"函数体返回值"<<$3->type<<endl;
+                            cerr<<"函数定义返回值"<<$1->type<<endl;
+                            if($3->type!=$1->type)  my_yyerror2('"' + $2->id + '"' + " return type wrong", $$->line, 8);//3是函数体返回值类型 1是定义返回值类型
+
                             } //函数返回值 函数头 函数体 处理func_type
 
 ExtDecList : VarDec{$$ = create("ExtDecList"); add_son($$,$1);}
     | VarDec COMMA ExtDecList{$$ = create("ExtDecList"); add_son($$,$1); add_son($$,$2); add_son($$,$3);}
 
 Specifier : TYPE{$$ = create("Specifier"); add_son($$,$1); $$->type=$1->type;}
-    | StructSpecifier{$$ = create("Specifier"); add_son($$,$1);}
+    | StructSpecifier{$$ = create("Specifier"); add_son($$,$1); $$->type=$1->type;}
 
-StructSpecifier : STRUCT ID LC DefList RC{$$ = create("StructSpecifier"); add_son($$,$1); add_son($$,$2); add_son($$,$3); add_son($$,$4); add_son($$,$5); struct_vars[$2->id]=$4->varsInStruct;} //strcut 名字 {vars}
+StructSpecifier : STRUCT ID LC DefList RC{$$ = create("StructSpecifier"); add_son($$,$1); add_son($$,$2); add_son($$,$3); add_son($$,$4); add_son($$,$5); struct_vars[$2->id]=$4->varsInStruct;
+                                        if (struct_vars[$2->id].empty()) {} // 当前结构体类型不存在
+                                        $$->type = $$->id;
+                                        } //strcut 名字 {vars}
     | STRUCT ID LC DefList error{$$ = create("StructSpecifier"); add_son($$,$1); my_yyerror("Missing right curly '}'",$$->line);}
-    | STRUCT ID{$$ = create("StructSpecifier"); add_son($$,$1); add_son($$,$2);}
+    | STRUCT ID{$$ = create("StructSpecifier"); add_son($$,$1); add_son($$,$2);
+                if (struct_vars[$2->id].empty()) {} // 当前结构体类型不存在
+                $$->type = $2->id;
+                // cerr << $$->type << endl;
+                }
 
 VarDec : ID{$$ = create("VarDec"); add_son($$,$1); if($1->dim == -1) $1->dim = 0; $$->dim = $1->dim; $$->id=$1->id; $$->type = "0";}
     | VarDec LB INT RB{$$ = create("VarDec"); add_son($$,$1); add_son($$,$2); add_son($$,$3); add_son($$,$4); 
@@ -136,18 +147,24 @@ VarList : ParamDec COMMA VarList{$$ = create("VarList"); add_son($$,$1); add_son
 
 ParamDec : Specifier VarDec{$$ = create("ParamDec"); add_son($$,$1); add_son($$,$2); $$->type=$1->type; $$->id=$2->id;$$->dim = $2->dim;} //参数 类型+名字 把类型传递给paramDec
 
-CompSt : LC DefList StmtList RC{$$ = create("CompSt"); add_son($$,$1); add_son($$,$2); add_son($$,$3); add_son($$,$4);}
+CompSt : LC DefList StmtList RC{$$ = create("CompSt"); add_son($$,$1); add_son($$,$2); add_son($$,$3); add_son($$,$4); $$->type=$3->type; } //把函数里面的CompSt type换成最后一条stmtlist的类型
 
 CompSt : LC DefList StmtList error{$$ = create("CompSt"); add_son($$,$1); my_yyerror("Missing right curly '}'",$$->line);}
 
-StmtList : Stmt StmtList{$$ = create("StmtList"); add_son($$,$1); add_son($$,$2);}
+StmtList : Stmt StmtList{$$ = create("StmtList"); add_son($$,$1); add_son($$,$2); 
+
+if ($2==NULL){$$->type=$1->type;}
+else{
+    $$->type=$2->type;
+}
+}  //把函数里面的stmtlist type换成最后一条stmt的类型
     | {$$ = NULL;}
 
 Stmt : Exp SEMI{$$ = create("Stmt"); add_son($$,$1); add_son($$,$2);}
-    | Exp error{$$ = create("Stmt"); add_son($$,$1); add_son($$,$2); my_yyerror("Missing semicolon ';'",$$->line);}
+    | Exp error{$$ = create("Stmt"); add_son($$,$1); add_son($$,$2); my_yyerror("Missing semicolon ';'",$$->line); cerr << "---" << endl;}
     | Def{$$ = create("Stmt"); add_son($$,$1);}
     | CompSt{$$ = create("Stmt"); add_son($$,$1);}
-    | RETURN Exp SEMI{$$ = create("Stmt"); add_son($$,$1); add_son($$,$2); add_son($$,$3);}
+     | RETURN Exp SEMI{$$ = create("Stmt"); add_son($$,$1); add_son($$,$2); add_son($$,$3); $$->type=$2->type; cerr<<"stmt "<<$$->type<<endl; } //为了把 return a ;    a是exp  类型给到retrun a  stmt
     | RETURN Exp error{$$ = create("Stmt"); add_son($$,$1); my_yyerror("Missing semicolon ';'",$$->line);}
     | RETURN error SEMI{$$ = create("Stmt"); add_son($$,$1); my_yyerror("Missing Expression",$$->line);}
     | IF LP Exp RP Stmt{$$ = create("Stmt"); add_son($$,$1); add_son($$,$2); add_son($$,$3); add_son($$,$4); add_son($$,$5);}
@@ -162,19 +179,20 @@ DefList : Def DefList{$$ = create("DefList"); add_son($$,$1); add_son($$,$2); va
 
 Def : Specifier DecList SEMI{$$ = create("Def"); add_son($$,$1); add_son($$,$2); add_son($$,$3);
                             // cerr << $1->type << ' ' << $2->type << endl;
-                            if($1->type != $2->type && $2->type != "0") my_yyerror("para diff type", $$->line);
+                            if($1->type != $2->type && $2->type != "0") my_yyerror2("unmatching type on both sides of assignment", $$->line, 5);
                             // else 
                             decListIt($2, $1->type); $$->type=$1->type;
                             }
     | Specifier DecList error{$$ = create("Def"); add_son($$,$1); my_yyerror("Missing semicolon ';'",$$->line);}
 
 DecList : Dec{$$ = create("DecList"); add_son($$,$1); $$->type = $1->type;
+            // cerr << $$->type << endl;
             if (getParaType($1->id).first != "") my_yyerror2('"' + $1->id + '"' + " is redefined", $$->line, 3); // 重复定义
             }
     | Dec COMMA DecList{$$ = create("DecList"); add_son($$,$1); add_son($$,$2); add_son($$,$3);
                         // if ($1->type == "0") $$->type = $3->type;
                         // else if ($3->type == "0") $$->type = $1->type;
-                        /*else*/ if ($1->type != $3->type) my_yyerror("para diff type", $$->line);
+                        /*else*/ if ($1->type != $3->type) my_yyerror2("unmatching type on both sides of assignment", $$->line, 5);
                         // else
                             $$->type = $1->type;
                         }
@@ -182,7 +200,7 @@ DecList : Dec{$$ = create("DecList"); add_son($$,$1); $$->type = $1->type;
 Dec : VarDec{$$ = create("Dec"); add_son($$,$1); $$->id=$1->id; $$->dim = $1->dim; $$->type = "0";}
     | VarDec ASSIGN Exp{$$ = create("Dec"); add_son($$,$1); add_son($$,$2); add_son($$,$3);
                         // cerr << $3->dim << ' ' << $3->type << endl;
-                        if ($3->dim != $1->dim) my_yyerror("Miss match type",$$->line);
+                        if ($3->dim != $1->dim) my_yyerror2("unmatching type on both sides of assignment", $$->line, 5);
                         // else
                         // {
                             $$->type = $3->type;
@@ -209,6 +227,36 @@ Operate : ASSIGN{$$ = create("ASSIGN");$$->line = $1->line;}
     | BITOR{$$ = create("BITOR");$$->line = $1->line;}
     | BITXOR{$$ = create("BITXOR");$$->line = $1->line;}
 
+Operate2 : AND{$$ = create("AND");$$->line = $1->line;}
+    | OR{$$ = create("OR");$$->line = $1->line;}
+    | LT{$$ = create("LT");$$->line = $1->line;}
+    | LE{$$ = create("LE");$$->line = $1->line;}
+    | GT{$$ = create("GT");$$->line = $1->line;}
+    | GE{$$ = create("GE");$$->line = $1->line;}
+    | NE{$$ = create("NE");$$->line = $1->line;}
+    | EQ{$$ = create("EQ");$$->line = $1->line;}
+    | PLUS{$$ = create("PLUS");$$->line = $1->line;}
+    | MINUS{$$ = create("MINUS");$$->line = $1->line;}
+    | MUL{$$ = create("MUL");$$->line = $1->line;}
+    | DIV{$$ = create("DIV");$$->line = $1->line;}
+    | BITAND{$$ = create("BITAND");$$->line = $1->line;}
+    | BITOR{$$ = create("BITOR");$$->line = $1->line;}
+    | BITXOR{$$ = create("BITXOR");$$->line = $1->line;}
+
+LVAL : ID {$$ = create("LVAL"); add_son($$, $1);
+            // if (getParaType($1->id).first != "")
+            // {
+                $$->type = getParaType($1->id).first;
+                $$->dim = getParaType($1->id).second;
+            // }
+            }
+    | LVAL DOT ID {$$ = create("LVAL"); add_son($$, $1); add_son($$, $2); add_son($$, $3);//结构体取参
+        $$->type = struct_vars[$1->type][$3->type].first;
+        $$->dim = struct_vars[$1->type][$3->type].second;
+    }
+
+// Assign : LVAL ASSIGN RVAL {}
+
 Exp : ID LP Args RP {$$ = create("Exp"); add_son($$,$1); add_son($$,$2); add_son($$,$3); add_son($$,$4);
                     if(getFuncType($1->id) == "") my_yyerror2('"' + $1->id + '"' + " is invoked without a definition", $$->line, 2); /*该函数当前没定义*/
                     // else
@@ -229,17 +277,29 @@ Exp : ID LP Args RP {$$ = create("Exp"); add_son($$,$1); add_son($$,$2); add_son
                         $$->type = $1->type;
                     // }
                     }
+    | LVAL ASSIGN Exp{
+        $$ = create("Exp"); add_son($$,$1); add_son($$,$2); add_son($$,$3);
+        if (checkType($1, $3) == 0) my_yyerror2("unmatching type on both sides of assignment", $$->line, 5);/*数据类型不一致*/
+        else 
+        {
+            $$->dim = $1->dim; $$->type = $1->type;
+        }
+    }
 
-    | Exp Operate Exp{
+    | Exp Operate2 Exp{
         $$ = create("Exp"); add_son($$,$1); add_son($$,$2); add_son($$,$3);
         // cerr << $1->dim << ' ' << $1->type << endl;
         // cerr << $3->dim << ' ' << $3->type << endl;
-        if (checkType($1, $3) == 0) my_yyerror("diff type" + $1->id + " " + $3->id, $$->line);/*数据类型不一致*/
-        // else 
-        // {
+        if (checkType($1, $3) == 0) my_yyerror2("unmatching operands", $$->line, 7);/*数据类型不一致*/
+        else 
+        {
             $$->dim = $1->dim; $$->type = $1->type;
-        // }
         }
+        }
+    
+    | Exp ASSIGN Exp{//右值在左侧
+        my_yyerror2("rvalue appears on the left-side of assignment", $$->line, 6);
+    }
 
     | LP Exp RP {$$ = create("Exp"); add_son($$,$1); add_son($$,$2); add_son($$,$3);
                 $$->dim = $2->dim; $$->type = $2->type;
@@ -253,15 +313,23 @@ Exp : ID LP Args RP {$$ = create("Exp"); add_son($$,$1); add_son($$,$2); add_son
 
     | ID LP RP{$$ = create("Exp"); add_son($$,$1); add_son($$,$2); add_son($$,$3);}
 
-    | Exp DOT ID{$$ = create("Exp"); add_son($$,$1); add_son($$,$2); add_son($$,$3);}
+    | Exp DOT ID{$$ = create("Exp"); add_son($$,$1); add_son($$,$2); add_son($$,$3);
+                if (struct_vars[$1->type][$3->id].first == "") {}//结构体没这个变量
+                else
+                {
+                    $$->type = struct_vars[$1->type][$3->id].first;
+                    $$->dim = struct_vars[$1->type][$3->id].second;
+                }
+                }
 
     | ID{$$ = create("Exp"); add_son($$,$1);
         if(getParaType($1->id).first == "") my_yyerror2('"' + $1->id + '"' + " is used without a definition", $$->line, 1);
-        // else
-        // {
+        else
+        {
             $$->dim = getParaType($1->id).second;
             $$->type = getParaType($1->id).first;
-        // }
+            // $$->id = $1->id;
+        }
         }
 
     | INT{$$ = create("Exp"); add_son($$,$1);
@@ -409,6 +477,8 @@ void varListIt(struct parsetree* root,list<pair<string, string>>& re)
     if(root->name == "COMMA") return;
     if(root->name == "ParamDec")
     {
+         para_type[root->id]=make_pair(root->type,0);
+        //这里是函数参数是不是要唯一的  不判断就不会显示 现在是没判断的
         re.push_back(make_pair(root->id,root->type));
         return;
     }
@@ -498,6 +568,8 @@ int main(int argc, char **argv) {
         std::cout << pair.first << ": "<<std::endl;
         for (const auto& pair1: pair.second) {
         std::cout << pair1.first << ' ' << pair1.second.first << " " << pair1.second.second<< endl;
+
+        // cerr << getParaType("amy").second << endl;
     }
     }
     }

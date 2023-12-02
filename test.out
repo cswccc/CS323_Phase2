@@ -1,83 +1,13 @@
-Program (17)  --dim: -1  --type:-1  --id:-1
-  ExtDefList (17)  --dim: -1  --type:-1  --id:-1
-    ExtDef (17)  --dim: -1  --type:-1  --id:-1
-      Specifier (17) (int)  --dim: -1  --type:int  --id:-1
-        TYPE: int (int)  --dim: -1  --type:int  --id:-1
-      FunDec (17)  --dim: -1  --type:-1  --id:check
-        ID: check  --dim: -1  --type:-1  --id:check
-        LP  --dim: -1  --type:-1  --id:-1
-        VarList (17)  --dim: -1  --type:-1  --id:-1
-          ParamDec (17) (int)  --dim: 0  --type:int  --id:x
-            Specifier (17) (int)  --dim: -1  --type:int  --id:-1
-              TYPE: int (int)  --dim: -1  --type:int  --id:-1
-            VarDec (17) (0)  --dim: 0  --type:0  --id:x
-              ID: x  --dim: 0  --type:-1  --id:x
-          COMMA  --dim: -1  --type:-1  --id:-1
-          VarList (17)  --dim: -1  --type:-1  --id:-1
-            ParamDec (17) (float)  --dim: 0  --type:float  --id:y
-              Specifier (17) (float)  --dim: -1  --type:float  --id:-1
-                TYPE: float (float)  --dim: -1  --type:float  --id:-1
-              VarDec (17) (0)  --dim: 0  --type:0  --id:y
-                ID: y  --dim: 0  --type:-1  --id:y
-            COMMA  --dim: -1  --type:-1  --id:-1
-            VarList (17)  --dim: -1  --type:-1  --id:-1
-              ParamDec (17) (char)  --dim: 0  --type:char  --id:z
-                Specifier (17) (char)  --dim: -1  --type:char  --id:-1
-                  TYPE: char (char)  --dim: -1  --type:char  --id:-1
-                VarDec (17) (0)  --dim: 0  --type:0  --id:z
-                  ID: z  --dim: 0  --type:-1  --id:z
-        RP  --dim: -1  --type:-1  --id:-1
-      CompSt (17)  --dim: -1  --type:-1  --id:-1
-        LC  --dim: -1  --type:-1  --id:-1
-        DefList (18)  --dim: -1  --type:-1  --id:-1
-          Def (18) (int)  --dim: -1  --type:int  --id:-1
-            Specifier (18) (int)  --dim: -1  --type:int  --id:-1
-              TYPE: int (int)  --dim: -1  --type:int  --id:-1
-            DecList (18) (int)  --dim: -1  --type:int  --id:-1
-              Dec (18) (int)  --dim: 0  --type:int  --id:a
-                VarDec (18) (int)  --dim: 0  --type:int  --id:a
-                  ID: a  --dim: 0  --type:-1  --id:a
-                ASSIGN  --dim: -1  --type:-1  --id:-1
-                Exp (18) (int)  --dim: 0  --type:int  --id:-1
-                  INT: 10 (int)  --dim: 0  --type:int  --id:-1
-            SEMI  --dim: -1  --type:-1  --id:-1
-          DefList (19)  --dim: -1  --type:-1  --id:-1
-            Def (19) (float)  --dim: -1  --type:float  --id:-1
-              Specifier (19) (float)  --dim: -1  --type:float  --id:-1
-                TYPE: float (float)  --dim: -1  --type:float  --id:-1
-              DecList (19) (float)  --dim: -1  --type:float  --id:-1
-                Dec (19) (float)  --dim: 0  --type:float  --id:b
-                  VarDec (19) (float)  --dim: 0  --type:float  --id:b
-                    ID: b  --dim: 0  --type:-1  --id:b
-                  ASSIGN  --dim: -1  --type:-1  --id:-1
-                  Exp (19) (float)  --dim: 0  --type:float  --id:-1
-                    FLOAT: 11.111 (float)  --dim: 0  --type:float  --id:-1
-              SEMI  --dim: -1  --type:-1  --id:-1
-            DefList (20)  --dim: -1  --type:-1  --id:-1
-              Def (20) (char)  --dim: -1  --type:char  --id:-1
-                Specifier (20) (char)  --dim: -1  --type:char  --id:-1
-                  TYPE: char (char)  --dim: -1  --type:char  --id:-1
-                DecList (20) (char)  --dim: -1  --type:char  --id:-1
-                  Dec (20) (char)  --dim: 0  --type:char  --id:c
-                    VarDec (20) (char)  --dim: 0  --type:char  --id:c
-                      ID: c  --dim: 0  --type:-1  --id:c
-                    ASSIGN  --dim: -1  --type:-1  --id:-1
-                    Exp (20) (char)  --dim: 0  --type:char  --id:-1
-                      CHAR: '1' (char)  --dim: 0  --type:char  --id:-1
-                SEMI  --dim: -1  --type:-1  --id:-1
-        RC  --dim: -1  --type:-1  --id:-1
 para_type------------
-c: char 0
-b: float 0
-a: int 0
+aa: Apple 0
+round: float 0
+weight: int 0
 func_type------------
-check: int
+test_2_r05: int
 para_args------------
-check: 
-x int
-
-y float
-
-z char
-
+test_2_r05: 
 struct_vars------------
+Apple: 
+-1  0
+round float 0
+weight int 0

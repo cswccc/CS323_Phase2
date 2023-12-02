@@ -529,16 +529,16 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  9
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   360
+#define YYLAST   369
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  41
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  21
+#define YYNNTS  23
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  84
+#define YYNRULES  103
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  133
+#define YYNSTATES  140
 
 #define YYUNDEFTOK  2
 #define YYMAXUTOK   295
@@ -589,15 +589,17 @@ static const yytype_int8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int16 yyrline[] =
 {
-       0,    99,    99,   101,   102,   104,   105,   106,   111,   112,
-     114,   115,   117,   118,   119,   121,   122,   126,   128,   130,
-     131,   132,   134,   135,   137,   139,   141,   143,   144,   146,
-     147,   148,   149,   150,   151,   152,   153,   154,   155,   156,
-     157,   160,   161,   163,   169,   171,   174,   182,   183,   193,
-     195,   196,   197,   198,   199,   200,   201,   202,   203,   204,
-     205,   206,   207,   208,   209,   210,   212,   221,   223,   233,
-     244,   248,   252,   254,   256,   258,   267,   272,   277,   282,
-     286,   288,   289,   292,   293
+       0,    99,    99,   101,   102,   104,   105,   106,   115,   116,
+     118,   119,   121,   125,   126,   132,   133,   137,   139,   141,
+     142,   143,   145,   146,   148,   150,   152,   154,   161,   163,
+     164,   165,   166,   167,   168,   169,   170,   171,   172,   173,
+     174,   177,   178,   180,   186,   188,   192,   200,   201,   211,
+     213,   214,   215,   216,   217,   218,   219,   220,   221,   222,
+     223,   224,   225,   226,   227,   228,   230,   231,   232,   233,
+     234,   235,   236,   237,   238,   239,   240,   241,   242,   243,
+     244,   246,   253,   260,   269,   271,   280,   289,   300,   304,
+     308,   312,   314,   316,   325,   335,   340,   345,   350,   354,
+     356,   357,   360,   361
 };
 #endif
 
@@ -613,7 +615,8 @@ static const char *const yytname[] =
   "UNDEFINE", "BITAND", "BITOR", "BITXOR", "$accept", "Program",
   "ExtDefList", "ExtDef", "ExtDecList", "Specifier", "StructSpecifier",
   "VarDec", "FunDec", "VarList", "ParamDec", "CompSt", "StmtList", "Stmt",
-  "DefList", "Def", "DecList", "Dec", "Operate", "Exp", "Args", YY_NULLPTR
+  "DefList", "Def", "DecList", "Dec", "Operate", "Operate2", "LVAL", "Exp",
+  "Args", YY_NULLPTR
 };
 #endif
 
@@ -635,7 +638,7 @@ static const yytype_int16 yytoknum[] =
 #define yypact_value_is_default(Yyn) \
   ((Yyn) == YYPACT_NINF)
 
-#define YYTABLE_NINF (-1)
+#define YYTABLE_NINF (-82)
 
 #define yytable_value_is_error(Yyn) \
   0
@@ -644,20 +647,20 @@ static const yytype_int16 yytoknum[] =
      STATE-NUM.  */
 static const yytype_int16 yypact[] =
 {
-      76,   -54,    14,    45,   -54,    76,   132,   -54,   -22,   -54,
-     -54,    13,   -54,    47,   -10,    56,    76,    55,   -54,    83,
-      84,    76,   -54,    83,     6,    76,   -54,   -54,    83,    26,
-      80,   -54,   -54,    22,   203,    -8,    46,    96,   -54,   -54,
-     -54,    64,   -54,   -54,    76,   -54,   -54,   -54,   -54,   -54,
-      88,   112,   113,   157,   214,   214,   214,   -54,   -54,    18,
-     203,   -54,    12,   165,   -54,   -54,    83,   -54,   149,   214,
-     214,   100,    53,   320,   320,    81,   -54,   -54,   -54,   -54,
-     133,   -54,   -54,   -54,   -54,   -54,   -54,   -54,   -54,   -54,
-     -54,   -54,   -54,   -54,   -54,   214,   -54,   -54,   -54,   199,
-     -54,   320,   -54,   -54,   -54,   236,    57,   109,   264,   -54,
-     -54,   -54,   -54,   -54,   -54,   292,   -54,   320,   214,   -54,
-     -54,   203,   203,   203,   -54,   -54,   134,   135,   -54,   203,
-     203,   -54,   -54
+      67,   -54,    14,    27,   -54,    67,    20,   -54,   -12,   -54,
+     -54,    -1,   -54,    32,    10,    -3,    67,     7,   -54,    30,
+      78,    67,   -54,    30,     5,    67,   -54,   -54,    30,    12,
+      81,   -54,   -54,    11,   212,     3,    23,    82,   -54,   -54,
+     -54,    71,   -54,   -54,    67,   -54,   -54,   -54,   -54,   -54,
+      17,    69,    97,   170,   223,   223,   223,   -54,   -54,     6,
+     212,   -54,    55,    38,   178,   -54,   -54,    30,   -54,   162,
+     223,   223,   110,    66,   329,   329,    94,   -54,   -54,   -54,
+     123,   223,   -54,   124,   -54,   223,   127,   130,   135,   136,
+     150,   151,   154,   155,   156,   157,   158,   163,   223,   168,
+     169,   171,   176,   223,   -54,   329,   -54,   -54,   -54,   245,
+      22,   122,   273,   -54,   -54,   -54,   -54,   -54,   -54,   329,
+     -54,   329,   301,   -54,   329,   223,   -54,   -54,   212,   212,
+     212,   -54,   -54,   177,   180,   -54,   212,   212,   -54,   -54
 };
 
   /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -669,117 +672,117 @@ static const yytype_int8 yydefact[] =
        3,    15,     6,     0,     8,     0,    42,     0,     5,     0,
        0,    42,     7,     0,     0,    42,    21,    20,     0,     0,
       23,    15,     9,     0,    28,    47,     0,    45,    13,    12,
-      41,    24,    19,    18,     0,    17,    16,    76,    77,    78,
-      75,     0,     0,     0,     0,     0,     0,    79,    32,     0,
-      28,    31,     0,     0,    44,    43,     0,    22,     0,     0,
-       0,     0,     0,    71,    72,     0,    26,    25,    27,    30,
-       0,    29,    50,    53,    54,    55,    56,    57,    58,    59,
-      60,    61,    62,    51,    52,     0,    63,    64,    65,     0,
-      49,    48,    46,    82,    73,    84,     0,     0,     0,    35,
-      34,    33,    81,    70,    74,     0,    80,    69,     0,    67,
-      66,     0,     0,     0,    68,    83,    37,    36,    40,     0,
-       0,    39,    38
+      41,    24,    19,    18,     0,    17,    16,    95,    96,    97,
+      94,     0,     0,     0,     0,     0,     0,    98,    32,     0,
+      28,    31,     0,     0,     0,    44,    43,     0,    22,     0,
+       0,     0,     0,     0,    90,    91,     0,    26,    25,    27,
+       0,     0,    30,     0,    29,    50,    68,    69,    70,    71,
+      72,    73,    74,    75,    76,    77,    66,    67,     0,    78,
+      79,    80,     0,     0,    49,    48,    46,   101,    92,   103,
+       0,     0,     0,    35,    34,    33,   100,    89,    82,    86,
+      93,    88,     0,    99,    87,     0,    84,    83,     0,     0,
+       0,    85,   102,    37,    36,    40,     0,     0,    39,    38
 };
 
   /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int16 yypgoto[] =
 {
-     -54,   -54,   146,   -54,   137,     4,   -54,   -17,   -54,   115,
-     -54,   142,   104,    -6,    -7,    43,    99,   -54,   -54,   -53,
-      49
+     -54,   -54,   173,   -54,   182,     4,   -54,   -18,   -54,   144,
+     -54,   181,   137,   -28,    48,   164,   128,   -54,   -54,   -54,
+     -54,   -53,    79
 };
 
   /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
       -1,     3,     4,     5,    13,    23,     7,    14,    15,    29,
-      30,    58,    59,    60,    24,    61,    36,    37,    99,    62,
-     106
+      30,    58,    59,    60,    24,    61,    36,    37,   102,   103,
+      62,    63,   110
 };
 
   /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
      positive, shift that token.  If negative, reduce the rule whose
      number is the opposite.  If YYTABLE_NINF, syntax error.  */
-static const yytype_uint8 yytable[] =
+static const yytype_int16 yytable[] =
 {
-      72,    73,    74,    75,     6,    19,    35,    38,    63,     6,
-     101,    41,    16,    79,    34,   105,   107,   108,    40,    76,
-       8,    28,    20,    45,    20,    80,    81,    42,    82,    83,
-      84,    85,    86,    87,    88,    89,    90,    91,    92,    93,
-      94,    39,   115,    17,    95,     9,   117,    64,    28,    35,
-      96,    97,    98,    77,   110,    46,    26,    43,   119,    25,
-      65,    18,     1,     2,    25,   105,    80,   111,    25,    82,
-      83,    84,    85,    86,    87,    88,    89,    90,    91,    92,
-      93,    94,   112,     1,     2,    95,    27,    33,   120,    31,
-      21,    96,    97,    98,    80,    44,    20,    82,    83,    84,
+      73,    74,    75,    76,     6,    35,    38,    77,    26,     6,
+      41,   105,    45,    42,     1,     2,   109,   111,   112,    64,
+       8,    28,    16,   126,    65,    19,    11,     9,   119,    17,
+     -81,    21,   121,   -81,    12,    20,    31,    66,    27,    82,
+      39,    78,    20,    43,    46,   122,    18,    69,    28,    35,
+     124,    83,    84,   127,    85,    86,    87,    88,    89,    90,
+      91,    92,    93,    94,    95,    96,    97,   114,    80,    34,
+      98,    81,   109,    40,     1,     2,    99,   100,   101,    83,
+     115,    33,    85,    86,    87,    88,    89,    90,    91,    92,
+      93,    94,    95,    96,    97,   116,    44,    67,    98,    70,
+     133,   134,   135,    20,    99,   100,   101,    83,   138,   139,
       85,    86,    87,    88,    89,    90,    91,    92,    93,    94,
-     121,    66,   113,    95,   109,   126,   127,   128,    68,    96,
-      97,    98,    80,   131,   132,    82,    83,    84,    85,    86,
-      87,    88,    89,    90,    91,    92,    93,    94,    11,   114,
-     122,    95,    69,    70,   129,   130,    12,    96,    97,    98,
-     103,    10,    47,    48,    49,    50,    32,    22,    71,    67,
-      47,    48,    49,    50,    78,   102,   100,   125,    47,    48,
-      49,    50,     0,    54,     0,     0,     0,     0,    55,    56,
-     104,    54,     0,     0,     0,    57,    55,    56,     0,    54,
-       0,     0,     0,    57,    55,    56,     0,     0,     0,     0,
-     116,    57,    47,    48,    49,    50,    47,    48,    49,    50,
-       1,     2,    51,     0,    52,    53,     0,    47,    48,    49,
-      50,     0,     0,    54,     0,     0,     0,    54,    55,    56,
-       0,     0,    55,    56,     0,    57,     0,    21,    54,    57,
-       0,     0,     0,    55,    56,     0,     0,     0,     0,    80,
-      57,   118,    82,    83,    84,    85,    86,    87,    88,    89,
-      90,    91,    92,    93,    94,     0,     0,     0,    95,     0,
-       0,     0,     0,     0,    96,    97,    98,    80,     0,     0,
-      82,    83,    84,    85,    86,    87,    88,    89,    90,    91,
-      92,    93,    94,     0,     0,   123,    95,     0,     0,     0,
-       0,     0,    96,    97,    98,    80,     0,     0,    82,    83,
-      84,    85,    86,    87,    88,    89,    90,    91,    92,    93,
-      94,     0,     0,     0,    95,   124,     0,     0,     0,     0,
-      96,    97,    98,    80,     0,     0,    82,    83,    84,    85,
-      86,    87,    88,    89,    90,    91,    92,    93,    94,     0,
-       0,     0,    95,     0,     0,     0,     0,     0,    96,    97,
-      98
+      95,    96,    97,   128,   113,   117,    98,    71,   -53,   118,
+     120,   -54,    99,   100,   101,    83,   -55,   -56,    85,    86,
+      87,    88,    89,    90,    91,    92,    93,    94,    95,    96,
+      97,   -57,   -58,   129,    98,   -59,   -60,   -61,   -62,   -51,
+      99,   100,   101,   107,   -52,    47,    48,    49,    50,   -63,
+     -64,    72,   -65,    47,    48,    49,    50,   123,    10,   104,
+      25,    47,    48,    49,    50,    25,    54,   136,    68,    25,
+     137,    55,    56,   108,    54,   106,    22,    79,    57,    55,
+      56,    32,    54,     0,   132,     0,    57,    55,    56,     0,
+       0,     0,     0,     0,    57,    47,    48,    49,    50,     1,
+       2,    51,     0,    52,    53,     0,    47,    48,    49,    50,
+       0,     0,     0,     0,     0,     0,    54,     0,     0,     0,
+       0,    55,    56,     0,     0,     0,    21,    54,    57,     0,
+       0,     0,    55,    56,     0,     0,     0,     0,    83,    57,
+     125,    85,    86,    87,    88,    89,    90,    91,    92,    93,
+      94,    95,    96,    97,     0,     0,     0,    98,     0,     0,
+       0,     0,     0,    99,   100,   101,    83,     0,     0,    85,
+      86,    87,    88,    89,    90,    91,    92,    93,    94,    95,
+      96,    97,     0,     0,   130,    98,     0,     0,     0,     0,
+       0,    99,   100,   101,    83,     0,     0,    85,    86,    87,
+      88,    89,    90,    91,    92,    93,    94,    95,    96,    97,
+       0,     0,     0,    98,   131,     0,     0,     0,     0,    99,
+     100,   101,    83,     0,     0,    85,    86,    87,    88,    89,
+      90,    91,    92,    93,    94,    95,    96,    97,     0,     0,
+       0,    98,     0,     0,     0,     0,     0,    99,   100,   101
 };
 
 static const yytype_int16 yycheck[] =
 {
-      53,    54,    55,    56,     0,    15,    23,     1,    16,     5,
-      63,    28,    34,     1,    21,    68,    69,    70,    25,     1,
-       6,    17,    32,     1,    32,    13,    14,     1,    16,    17,
-      18,    19,    20,    21,    22,    23,    24,    25,    26,    27,
-      28,    35,    95,    30,    32,     0,    99,     1,    44,    66,
-      38,    39,    40,    35,     1,    33,     1,    31,     1,    16,
-      14,    14,     7,     8,    21,   118,    13,    14,    25,    16,
-      17,    18,    19,    20,    21,    22,    23,    24,    25,    26,
-      27,    28,     1,     7,     8,    32,    31,     3,    31,     6,
-      34,    38,    39,    40,    13,    15,    32,    16,    17,    18,
-      19,    20,    21,    22,    23,    24,    25,    26,    27,    28,
-       1,    15,    31,    32,    14,   121,   122,   123,    30,    38,
-      39,    40,    13,   129,   130,    16,    17,    18,    19,    20,
-      21,    22,    23,    24,    25,    26,    27,    28,     6,     6,
-      31,    32,    30,    30,    10,    10,    14,    38,    39,    40,
-       1,     5,     3,     4,     5,     6,    19,    15,     1,    44,
-       3,     4,     5,     6,    60,    66,     1,   118,     3,     4,
-       5,     6,    -1,    24,    -1,    -1,    -1,    -1,    29,    30,
-      31,    24,    -1,    -1,    -1,    36,    29,    30,    -1,    24,
-      -1,    -1,    -1,    36,    29,    30,    -1,    -1,    -1,    -1,
-       1,    36,     3,     4,     5,     6,     3,     4,     5,     6,
-       7,     8,     9,    -1,    11,    12,    -1,     3,     4,     5,
-       6,    -1,    -1,    24,    -1,    -1,    -1,    24,    29,    30,
-      -1,    -1,    29,    30,    -1,    36,    -1,    34,    24,    36,
-      -1,    -1,    -1,    29,    30,    -1,    -1,    -1,    -1,    13,
-      36,    15,    16,    17,    18,    19,    20,    21,    22,    23,
-      24,    25,    26,    27,    28,    -1,    -1,    -1,    32,    -1,
-      -1,    -1,    -1,    -1,    38,    39,    40,    13,    -1,    -1,
+      53,    54,    55,    56,     0,    23,     1,     1,     1,     5,
+      28,    64,     1,     1,     7,     8,    69,    70,    71,    16,
+       6,    17,    34,     1,     1,    15,     6,     0,    81,    30,
+      13,    34,    85,    16,    14,    32,     6,    14,    31,     1,
+      35,    35,    32,    31,    33,    98,    14,    30,    44,    67,
+     103,    13,    14,    31,    16,    17,    18,    19,    20,    21,
+      22,    23,    24,    25,    26,    27,    28,     1,    13,    21,
+      32,    16,   125,    25,     7,     8,    38,    39,    40,    13,
+      14,     3,    16,    17,    18,    19,    20,    21,    22,    23,
+      24,    25,    26,    27,    28,     1,    15,    15,    32,    30,
+     128,   129,   130,    32,    38,    39,    40,    13,   136,   137,
       16,    17,    18,    19,    20,    21,    22,    23,    24,    25,
-      26,    27,    28,    -1,    -1,    31,    32,    -1,    -1,    -1,
-      -1,    -1,    38,    39,    40,    13,    -1,    -1,    16,    17,
+      26,    27,    28,     1,    14,    31,    32,    30,     1,     6,
+       6,     1,    38,    39,    40,    13,     1,     1,    16,    17,
       18,    19,    20,    21,    22,    23,    24,    25,    26,    27,
-      28,    -1,    -1,    -1,    32,    33,    -1,    -1,    -1,    -1,
-      38,    39,    40,    13,    -1,    -1,    16,    17,    18,    19,
-      20,    21,    22,    23,    24,    25,    26,    27,    28,    -1,
-      -1,    -1,    32,    -1,    -1,    -1,    -1,    -1,    38,    39,
-      40
+      28,     1,     1,    31,    32,     1,     1,     1,     1,     1,
+      38,    39,    40,     1,     1,     3,     4,     5,     6,     1,
+       1,     1,     1,     3,     4,     5,     6,     1,     5,     1,
+      16,     3,     4,     5,     6,    21,    24,    10,    44,    25,
+      10,    29,    30,    31,    24,    67,    15,    60,    36,    29,
+      30,    19,    24,    -1,   125,    -1,    36,    29,    30,    -1,
+      -1,    -1,    -1,    -1,    36,     3,     4,     5,     6,     7,
+       8,     9,    -1,    11,    12,    -1,     3,     4,     5,     6,
+      -1,    -1,    -1,    -1,    -1,    -1,    24,    -1,    -1,    -1,
+      -1,    29,    30,    -1,    -1,    -1,    34,    24,    36,    -1,
+      -1,    -1,    29,    30,    -1,    -1,    -1,    -1,    13,    36,
+      15,    16,    17,    18,    19,    20,    21,    22,    23,    24,
+      25,    26,    27,    28,    -1,    -1,    -1,    32,    -1,    -1,
+      -1,    -1,    -1,    38,    39,    40,    13,    -1,    -1,    16,
+      17,    18,    19,    20,    21,    22,    23,    24,    25,    26,
+      27,    28,    -1,    -1,    31,    32,    -1,    -1,    -1,    -1,
+      -1,    38,    39,    40,    13,    -1,    -1,    16,    17,    18,
+      19,    20,    21,    22,    23,    24,    25,    26,    27,    28,
+      -1,    -1,    -1,    32,    33,    -1,    -1,    -1,    -1,    38,
+      39,    40,    13,    -1,    -1,    16,    17,    18,    19,    20,
+      21,    22,    23,    24,    25,    26,    27,    28,    -1,    -1,
+      -1,    32,    -1,    -1,    -1,    -1,    -1,    38,    39,    40
 };
 
   /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
@@ -792,14 +795,14 @@ static const yytype_int8 yystos[] =
       51,     6,    45,     3,    55,    48,    57,    58,     1,    35,
       55,    48,     1,    31,    15,     1,    33,     3,     4,     5,
        6,     9,    11,    12,    24,    29,    30,    36,    52,    53,
-      54,    56,    60,    16,     1,    14,    15,    50,    30,    30,
-      30,     1,    60,    60,    60,    60,     1,    35,    53,     1,
-      13,    14,    16,    17,    18,    19,    20,    21,    22,    23,
-      24,    25,    26,    27,    28,    32,    38,    39,    40,    59,
-       1,    60,    57,     1,    31,    60,    61,    60,    60,    14,
-       1,    14,     1,    31,     6,    60,     1,    60,    15,     1,
-      31,     1,    31,    31,    33,    61,    54,    54,    54,    10,
-      10,    54,    54
+      54,    56,    61,    62,    16,     1,    14,    15,    50,    30,
+      30,    30,     1,    62,    62,    62,    62,     1,    35,    53,
+      13,    16,     1,    13,    14,    16,    17,    18,    19,    20,
+      21,    22,    23,    24,    25,    26,    27,    28,    32,    38,
+      39,    40,    59,    60,     1,    62,    57,     1,    31,    62,
+      63,    62,    62,    14,     1,    14,     1,    31,     6,    62,
+       6,    62,    62,     1,    62,    15,     1,    31,     1,    31,
+      31,    33,    63,    54,    54,    54,    10,    10,    54,    54
 };
 
   /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
@@ -813,7 +816,9 @@ static const yytype_int8 yyr1[] =
       59,    59,    59,    59,    59,    59,    59,    59,    59,    59,
       59,    59,    59,    59,    59,    59,    60,    60,    60,    60,
       60,    60,    60,    60,    60,    60,    60,    60,    60,    60,
-      60,    60,    60,    61,    61
+      60,    61,    61,    62,    62,    62,    62,    62,    62,    62,
+      62,    62,    62,    62,    62,    62,    62,    62,    62,    62,
+      62,    62,    63,    63
 };
 
   /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
@@ -825,9 +830,11 @@ static const yytype_int8 yyr2[] =
        2,     1,     1,     3,     3,     3,     5,     5,     7,     7,
        5,     2,     0,     3,     3,     1,     3,     1,     3,     3,
        1,     1,     1,     1,     1,     1,     1,     1,     1,     1,
-       1,     1,     1,     1,     1,     1,     4,     4,     4,     3,
-       3,     2,     2,     3,     3,     1,     1,     1,     1,     1,
-       3,     3,     3,     3,     1
+       1,     1,     1,     1,     1,     1,     1,     1,     1,     1,
+       1,     1,     1,     1,     1,     1,     1,     1,     1,     1,
+       1,     1,     3,     4,     4,     4,     3,     3,     3,     3,
+       2,     2,     3,     3,     1,     1,     1,     1,     1,     3,
+       3,     3,     3,     1
 };
 
 
@@ -1525,31 +1532,31 @@ yyreduce:
   case 2:
 #line 99 "syntax.y"
                     {yyval = create("Program");add_son(yyval,yyvsp[0]);if(ok) output(yyval,0);}
-#line 1529 "syntax.tab.c"
+#line 1536 "syntax.tab.c"
     break;
 
   case 3:
 #line 101 "syntax.y"
                               {yyval = create("ExtDefList"); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]);}
-#line 1535 "syntax.tab.c"
+#line 1542 "syntax.tab.c"
     break;
 
   case 4:
 #line 102 "syntax.y"
       {yyval = NULL;}
-#line 1541 "syntax.tab.c"
+#line 1548 "syntax.tab.c"
     break;
 
   case 5:
 #line 104 "syntax.y"
                                   {yyval = create("ExtDef"); add_son(yyval,yyvsp[-2]); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]);}
-#line 1547 "syntax.tab.c"
+#line 1554 "syntax.tab.c"
     break;
 
   case 6:
 #line 105 "syntax.y"
                     {yyval = create("ExtDef"); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]);}
-#line 1553 "syntax.tab.c"
+#line 1560 "syntax.tab.c"
     break;
 
   case 7:
@@ -1557,272 +1564,290 @@ yyreduce:
                              {yyval = create("ExtDef"); add_son(yyval,yyvsp[-2]); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]);
                             if(getFuncType(yyvsp[-1]->id) != "") my_yyerror2('"' + yyvsp[-1]->id + '"' + " is redefined", yyval->line, 4);
                             else func_type[yyvsp[-1]->id] = yyvsp[-2]->type;
+                            cerr<<"函数体返回值"<<yyvsp[0]->type<<endl;
+                            cerr<<"函数定义返回值"<<yyvsp[-2]->type<<endl;
+                            if(yyvsp[0]->type!=yyvsp[-2]->type)  my_yyerror2('"' + yyvsp[-1]->id + '"' + " return type wrong", yyval->line, 8);//3是函数体返回值类型 1是定义返回值类型
+
                             }
-#line 1562 "syntax.tab.c"
+#line 1573 "syntax.tab.c"
     break;
 
   case 8:
-#line 111 "syntax.y"
+#line 115 "syntax.y"
                    {yyval = create("ExtDecList"); add_son(yyval,yyvsp[0]);}
-#line 1568 "syntax.tab.c"
+#line 1579 "syntax.tab.c"
     break;
 
   case 9:
-#line 112 "syntax.y"
+#line 116 "syntax.y"
                              {yyval = create("ExtDecList"); add_son(yyval,yyvsp[-2]); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]);}
-#line 1574 "syntax.tab.c"
+#line 1585 "syntax.tab.c"
     break;
 
   case 10:
-#line 114 "syntax.y"
+#line 118 "syntax.y"
                 {yyval = create("Specifier"); add_son(yyval,yyvsp[0]); yyval->type=yyvsp[0]->type;}
-#line 1580 "syntax.tab.c"
+#line 1591 "syntax.tab.c"
     break;
 
   case 11:
-#line 115 "syntax.y"
-                     {yyval = create("Specifier"); add_son(yyval,yyvsp[0]);}
-#line 1586 "syntax.tab.c"
+#line 119 "syntax.y"
+                     {yyval = create("Specifier"); add_son(yyval,yyvsp[0]); yyval->type=yyvsp[0]->type;}
+#line 1597 "syntax.tab.c"
     break;
 
   case 12:
-#line 117 "syntax.y"
-                                         {yyval = create("StructSpecifier"); add_son(yyval,yyvsp[-4]); add_son(yyval,yyvsp[-3]); add_son(yyval,yyvsp[-2]); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]); struct_vars[yyvsp[-3]->id]=yyvsp[-1]->varsInStruct;}
-#line 1592 "syntax.tab.c"
+#line 121 "syntax.y"
+                                         {yyval = create("StructSpecifier"); add_son(yyval,yyvsp[-4]); add_son(yyval,yyvsp[-3]); add_son(yyval,yyvsp[-2]); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]); struct_vars[yyvsp[-3]->id]=yyvsp[-1]->varsInStruct;
+                                        if (struct_vars[yyvsp[-3]->id].empty()) {} // 当前结构体类型不存在
+                                        yyval->type = yyval->id;
+                                        }
+#line 1606 "syntax.tab.c"
     break;
 
   case 13:
-#line 118 "syntax.y"
+#line 125 "syntax.y"
                                 {yyval = create("StructSpecifier"); add_son(yyval,yyvsp[-4]); my_yyerror("Missing right curly '}'",yyval->line);}
-#line 1598 "syntax.tab.c"
+#line 1612 "syntax.tab.c"
     break;
 
   case 14:
-#line 119 "syntax.y"
-               {yyval = create("StructSpecifier"); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]);}
-#line 1604 "syntax.tab.c"
+#line 126 "syntax.y"
+               {yyval = create("StructSpecifier"); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]);
+                if (struct_vars[yyvsp[0]->id].empty()) {} // 当前结构体类型不存在
+                yyval->type = yyvsp[0]->id;
+                // cerr << $$->type << endl;
+                }
+#line 1622 "syntax.tab.c"
     break;
 
   case 15:
-#line 121 "syntax.y"
+#line 132 "syntax.y"
            {yyval = create("VarDec"); add_son(yyval,yyvsp[0]); if(yyvsp[0]->dim == -1) yyvsp[0]->dim = 0; yyval->dim = yyvsp[0]->dim; yyval->id=yyvsp[0]->id; yyval->type = "0";}
-#line 1610 "syntax.tab.c"
+#line 1628 "syntax.tab.c"
     break;
 
   case 16:
-#line 122 "syntax.y"
+#line 133 "syntax.y"
                       {yyval = create("VarDec"); add_son(yyval,yyvsp[-3]); add_son(yyval,yyvsp[-2]); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]); 
                         if(yyvsp[-3]->dim == -1) yyvsp[-3]->dim = 0;
                         yyval->dim = yyvsp[-3]->dim + 1; yyval->id = yyvsp[-3]->id; yyval->type = "0";
                         }
-#line 1619 "syntax.tab.c"
+#line 1637 "syntax.tab.c"
     break;
 
   case 17:
-#line 126 "syntax.y"
+#line 137 "syntax.y"
                          {yyval = create("VarDec"); add_son(yyval,yyvsp[-3]); my_yyerror("Missing right brackets ']'",yyval->line);}
-#line 1625 "syntax.tab.c"
+#line 1643 "syntax.tab.c"
     break;
 
   case 18:
-#line 128 "syntax.y"
+#line 139 "syntax.y"
                          {yyval = create("FunDec"); add_son(yyval,yyvsp[-3]); add_son(yyval,yyvsp[-2]); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]); yyval->id=yyvsp[-3]->id; func_args[yyvsp[-3]->id]=yyvsp[-1]->argsList;
                         }
-#line 1632 "syntax.tab.c"
-    break;
-
-  case 19:
-#line 130 "syntax.y"
-                         {yyval = create("FunDec"); add_son(yyval,yyvsp[-3]); my_yyerror("Missing right parentheses ')'",yyval->line);}
-#line 1638 "syntax.tab.c"
-    break;
-
-  case 20:
-#line 131 "syntax.y"
-              {yyval = create("FunDec"); add_son(yyval,yyvsp[-2]); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]); yyval->id=yyvsp[-2]->id; list<pair<string, string>> argsList;func_args[yyvsp[-2]->id]=argsList;}
-#line 1644 "syntax.tab.c"
-    break;
-
-  case 21:
-#line 132 "syntax.y"
-                 {yyval = create("FunDec"); add_son(yyval,yyvsp[-2]); my_yyerror("Missing right parentheses ')'",yyval->line);}
 #line 1650 "syntax.tab.c"
     break;
 
-  case 22:
-#line 134 "syntax.y"
-                                {yyval = create("VarList"); add_son(yyval,yyvsp[-2]); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]);varListIt(yyval,yyval->argsList);}
+  case 19:
+#line 141 "syntax.y"
+                         {yyval = create("FunDec"); add_son(yyval,yyvsp[-3]); my_yyerror("Missing right parentheses ')'",yyval->line);}
 #line 1656 "syntax.tab.c"
     break;
 
-  case 23:
-#line 135 "syntax.y"
-              {yyval = create("VarList"); add_son(yyval,yyvsp[0]);varListIt(yyval,yyval->argsList);}
+  case 20:
+#line 142 "syntax.y"
+              {yyval = create("FunDec"); add_son(yyval,yyvsp[-2]); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]); yyval->id=yyvsp[-2]->id; list<pair<string, string>> argsList;func_args[yyvsp[-2]->id]=argsList;}
 #line 1662 "syntax.tab.c"
     break;
 
-  case 24:
-#line 137 "syntax.y"
-                           {yyval = create("ParamDec"); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]); yyval->type=yyvsp[-1]->type; yyval->id=yyvsp[0]->id;yyval->dim = yyvsp[0]->dim;}
+  case 21:
+#line 143 "syntax.y"
+                 {yyval = create("FunDec"); add_son(yyval,yyvsp[-2]); my_yyerror("Missing right parentheses ')'",yyval->line);}
 #line 1668 "syntax.tab.c"
     break;
 
-  case 25:
-#line 139 "syntax.y"
-                               {yyval = create("CompSt"); add_son(yyval,yyvsp[-3]); add_son(yyval,yyvsp[-2]); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]);}
+  case 22:
+#line 145 "syntax.y"
+                                {yyval = create("VarList"); add_son(yyval,yyvsp[-2]); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]);varListIt(yyval,yyval->argsList);}
 #line 1674 "syntax.tab.c"
     break;
 
-  case 26:
-#line 141 "syntax.y"
-                                  {yyval = create("CompSt"); add_son(yyval,yyvsp[-3]); my_yyerror("Missing right curly '}'",yyval->line);}
+  case 23:
+#line 146 "syntax.y"
+              {yyval = create("VarList"); add_son(yyval,yyvsp[0]);varListIt(yyval,yyval->argsList);}
 #line 1680 "syntax.tab.c"
     break;
 
-  case 27:
-#line 143 "syntax.y"
-                        {yyval = create("StmtList"); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]);}
+  case 24:
+#line 148 "syntax.y"
+                           {yyval = create("ParamDec"); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]); yyval->type=yyvsp[-1]->type; yyval->id=yyvsp[0]->id;yyval->dim = yyvsp[0]->dim;}
 #line 1686 "syntax.tab.c"
     break;
 
-  case 28:
-#line 144 "syntax.y"
-      {yyval = NULL;}
+  case 25:
+#line 150 "syntax.y"
+                               {yyval = create("CompSt"); add_son(yyval,yyvsp[-3]); add_son(yyval,yyvsp[-2]); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]); yyval->type=yyvsp[-1]->type; }
 #line 1692 "syntax.tab.c"
     break;
 
-  case 29:
-#line 146 "syntax.y"
-               {yyval = create("Stmt"); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]);}
+  case 26:
+#line 152 "syntax.y"
+                                  {yyval = create("CompSt"); add_son(yyval,yyvsp[-3]); my_yyerror("Missing right curly '}'",yyval->line);}
 #line 1698 "syntax.tab.c"
     break;
 
-  case 30:
-#line 147 "syntax.y"
-               {yyval = create("Stmt"); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]); my_yyerror("Missing semicolon ';'",yyval->line);}
-#line 1704 "syntax.tab.c"
-    break;
+  case 27:
+#line 154 "syntax.y"
+                        {yyval = create("StmtList"); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]); 
 
-  case 31:
-#line 148 "syntax.y"
-         {yyval = create("Stmt"); add_son(yyval,yyvsp[0]);}
+if (yyvsp[0]==NULL){yyval->type=yyvsp[-1]->type;}
+else{
+    yyval->type=yyvsp[0]->type;
+}
+}
 #line 1710 "syntax.tab.c"
     break;
 
-  case 32:
-#line 149 "syntax.y"
-            {yyval = create("Stmt"); add_son(yyval,yyvsp[0]);}
+  case 28:
+#line 161 "syntax.y"
+      {yyval = NULL;}
 #line 1716 "syntax.tab.c"
     break;
 
-  case 33:
-#line 150 "syntax.y"
-                     {yyval = create("Stmt"); add_son(yyval,yyvsp[-2]); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]);}
+  case 29:
+#line 163 "syntax.y"
+               {yyval = create("Stmt"); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]);}
 #line 1722 "syntax.tab.c"
     break;
 
-  case 34:
-#line 151 "syntax.y"
-                      {yyval = create("Stmt"); add_son(yyval,yyvsp[-2]); my_yyerror("Missing semicolon ';'",yyval->line);}
+  case 30:
+#line 164 "syntax.y"
+               {yyval = create("Stmt"); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]); my_yyerror("Missing semicolon ';'",yyval->line);}
 #line 1728 "syntax.tab.c"
     break;
 
-  case 35:
-#line 152 "syntax.y"
-                       {yyval = create("Stmt"); add_son(yyval,yyvsp[-2]); my_yyerror("Missing Expression",yyval->line);}
+  case 31:
+#line 165 "syntax.y"
+         {yyval = create("Stmt"); add_son(yyval,yyvsp[0]);}
 #line 1734 "syntax.tab.c"
     break;
 
-  case 36:
-#line 153 "syntax.y"
-                       {yyval = create("Stmt"); add_son(yyval,yyvsp[-4]); add_son(yyval,yyvsp[-3]); add_son(yyval,yyvsp[-2]); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]);}
+  case 32:
+#line 166 "syntax.y"
+            {yyval = create("Stmt"); add_son(yyval,yyvsp[0]);}
 #line 1740 "syntax.tab.c"
     break;
 
-  case 37:
-#line 154 "syntax.y"
-                          {yyval = create("Stmt"); add_son(yyval,yyvsp[-4]); my_yyerror("Missing right parentheses ')'",yyval->line);}
+  case 33:
+#line 167 "syntax.y"
+                      {yyval = create("Stmt"); add_son(yyval,yyvsp[-2]); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]); yyval->type=yyvsp[-1]->type; cerr<<"stmt "<<yyval->type<<endl; }
 #line 1746 "syntax.tab.c"
     break;
 
-  case 38:
-#line 155 "syntax.y"
-                                 {yyval = create("Stmt"); add_son(yyval,yyvsp[-6]); add_son(yyval,yyvsp[-5]); add_son(yyval,yyvsp[-4]); add_son(yyval,yyvsp[-3]); add_son(yyval,yyvsp[-2]); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]);}
+  case 34:
+#line 168 "syntax.y"
+                      {yyval = create("Stmt"); add_son(yyval,yyvsp[-2]); my_yyerror("Missing semicolon ';'",yyval->line);}
 #line 1752 "syntax.tab.c"
     break;
 
-  case 39:
-#line 156 "syntax.y"
-                                    {yyval = create("Stmt"); add_son(yyval,yyvsp[-6]); add_son(yyval,yyvsp[-5]); add_son(yyval,yyvsp[-4]); add_son(yyval,yyvsp[-3]); add_son(yyval,yyvsp[-2]); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]);my_yyerror("Missing right parentheses ')'",yyval->line);}
+  case 35:
+#line 169 "syntax.y"
+                       {yyval = create("Stmt"); add_son(yyval,yyvsp[-2]); my_yyerror("Missing Expression",yyval->line);}
 #line 1758 "syntax.tab.c"
     break;
 
-  case 40:
-#line 157 "syntax.y"
-                          {yyval = create("Stmt"); add_son(yyval,yyvsp[-4]); add_son(yyval,yyvsp[-3]); add_son(yyval,yyvsp[-2]); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]);}
+  case 36:
+#line 170 "syntax.y"
+                       {yyval = create("Stmt"); add_son(yyval,yyvsp[-4]); add_son(yyval,yyvsp[-3]); add_son(yyval,yyvsp[-2]); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]);}
 #line 1764 "syntax.tab.c"
     break;
 
-  case 41:
-#line 160 "syntax.y"
-                     {yyval = create("DefList"); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]); varInStructListIt(yyval,yyval->varsInStruct);}
+  case 37:
+#line 171 "syntax.y"
+                          {yyval = create("Stmt"); add_son(yyval,yyvsp[-4]); my_yyerror("Missing right parentheses ')'",yyval->line);}
 #line 1770 "syntax.tab.c"
     break;
 
-  case 42:
-#line 161 "syntax.y"
-      {yyval = NULL;}
+  case 38:
+#line 172 "syntax.y"
+                                 {yyval = create("Stmt"); add_son(yyval,yyvsp[-6]); add_son(yyval,yyvsp[-5]); add_son(yyval,yyvsp[-4]); add_son(yyval,yyvsp[-3]); add_son(yyval,yyvsp[-2]); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]);}
 #line 1776 "syntax.tab.c"
     break;
 
+  case 39:
+#line 173 "syntax.y"
+                                    {yyval = create("Stmt"); add_son(yyval,yyvsp[-6]); add_son(yyval,yyvsp[-5]); add_son(yyval,yyvsp[-4]); add_son(yyval,yyvsp[-3]); add_son(yyval,yyvsp[-2]); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]);my_yyerror("Missing right parentheses ')'",yyval->line);}
+#line 1782 "syntax.tab.c"
+    break;
+
+  case 40:
+#line 174 "syntax.y"
+                          {yyval = create("Stmt"); add_son(yyval,yyvsp[-4]); add_son(yyval,yyvsp[-3]); add_son(yyval,yyvsp[-2]); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]);}
+#line 1788 "syntax.tab.c"
+    break;
+
+  case 41:
+#line 177 "syntax.y"
+                     {yyval = create("DefList"); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]); varInStructListIt(yyval,yyval->varsInStruct);}
+#line 1794 "syntax.tab.c"
+    break;
+
+  case 42:
+#line 178 "syntax.y"
+      {yyval = NULL;}
+#line 1800 "syntax.tab.c"
+    break;
+
   case 43:
-#line 163 "syntax.y"
+#line 180 "syntax.y"
                             {yyval = create("Def"); add_son(yyval,yyvsp[-2]); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]);
                             // cerr << $1->type << ' ' << $2->type << endl;
-                            if(yyvsp[-2]->type != yyvsp[-1]->type && yyvsp[-1]->type != "0") my_yyerror("para diff type", yyval->line);
+                            if(yyvsp[-2]->type != yyvsp[-1]->type && yyvsp[-1]->type != "0") my_yyerror2("unmatching type on both sides of assignment", yyval->line, 5);
                             // else 
                             decListIt(yyvsp[-1], yyvsp[-2]->type); yyval->type=yyvsp[-2]->type;
                             }
-#line 1787 "syntax.tab.c"
+#line 1811 "syntax.tab.c"
     break;
 
   case 44:
-#line 169 "syntax.y"
+#line 186 "syntax.y"
                              {yyval = create("Def"); add_son(yyval,yyvsp[-2]); my_yyerror("Missing semicolon ';'",yyval->line);}
-#line 1793 "syntax.tab.c"
+#line 1817 "syntax.tab.c"
     break;
 
   case 45:
-#line 171 "syntax.y"
+#line 188 "syntax.y"
              {yyval = create("DecList"); add_son(yyval,yyvsp[0]); yyval->type = yyvsp[0]->type;
+            // cerr << $$->type << endl;
             if (getParaType(yyvsp[0]->id).first != "") my_yyerror2('"' + yyvsp[0]->id + '"' + " is redefined", yyval->line, 3); // 重复定义
             }
-#line 1801 "syntax.tab.c"
+#line 1826 "syntax.tab.c"
     break;
 
   case 46:
-#line 174 "syntax.y"
+#line 192 "syntax.y"
                        {yyval = create("DecList"); add_son(yyval,yyvsp[-2]); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]);
                         // if ($1->type == "0") $$->type = $3->type;
                         // else if ($3->type == "0") $$->type = $1->type;
-                        /*else*/ if (yyvsp[-2]->type != yyvsp[0]->type) my_yyerror("para diff type", yyval->line);
+                        /*else*/ if (yyvsp[-2]->type != yyvsp[0]->type) my_yyerror2("unmatching type on both sides of assignment", yyval->line, 5);
                         // else
                             yyval->type = yyvsp[-2]->type;
                         }
-#line 1813 "syntax.tab.c"
+#line 1838 "syntax.tab.c"
     break;
 
   case 47:
-#line 182 "syntax.y"
+#line 200 "syntax.y"
             {yyval = create("Dec"); add_son(yyval,yyvsp[0]); yyval->id=yyvsp[0]->id; yyval->dim = yyvsp[0]->dim; yyval->type = "0";}
-#line 1819 "syntax.tab.c"
+#line 1844 "syntax.tab.c"
     break;
 
   case 48:
-#line 183 "syntax.y"
+#line 201 "syntax.y"
                        {yyval = create("Dec"); add_son(yyval,yyvsp[-2]); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]);
                         // cerr << $3->dim << ' ' << $3->type << endl;
-                        if (yyvsp[0]->dim != yyvsp[-2]->dim) my_yyerror("Miss match type",yyval->line);
+                        if (yyvsp[0]->dim != yyvsp[-2]->dim) my_yyerror2("unmatching type on both sides of assignment", yyval->line, 5);
                         // else
                         // {
                             yyval->type = yyvsp[0]->type;
@@ -1830,113 +1855,224 @@ yyreduce:
                             yyval->id=yyvsp[-2]->id; yyval->dim = yyvsp[-2]->dim;
                         // }
                         }
-#line 1834 "syntax.tab.c"
+#line 1859 "syntax.tab.c"
     break;
 
   case 49:
-#line 193 "syntax.y"
+#line 211 "syntax.y"
                          {yyval = create("Dec"); add_son(yyval,yyvsp[-2]);my_yyerror("Missing Expression ",yyval->line); yyval->id=yyvsp[-2]->id;}
-#line 1840 "syntax.tab.c"
+#line 1865 "syntax.tab.c"
     break;
 
   case 50:
-#line 195 "syntax.y"
+#line 213 "syntax.y"
                 {yyval = create("ASSIGN");yyval->line = yyvsp[0]->line;}
-#line 1846 "syntax.tab.c"
+#line 1871 "syntax.tab.c"
     break;
 
   case 51:
-#line 196 "syntax.y"
+#line 214 "syntax.y"
          {yyval = create("AND");yyval->line = yyvsp[0]->line;}
-#line 1852 "syntax.tab.c"
+#line 1877 "syntax.tab.c"
     break;
 
   case 52:
-#line 197 "syntax.y"
+#line 215 "syntax.y"
         {yyval = create("OR");yyval->line = yyvsp[0]->line;}
-#line 1858 "syntax.tab.c"
+#line 1883 "syntax.tab.c"
     break;
 
   case 53:
-#line 198 "syntax.y"
+#line 216 "syntax.y"
         {yyval = create("LT");yyval->line = yyvsp[0]->line;}
-#line 1864 "syntax.tab.c"
+#line 1889 "syntax.tab.c"
     break;
 
   case 54:
-#line 199 "syntax.y"
+#line 217 "syntax.y"
         {yyval = create("LE");yyval->line = yyvsp[0]->line;}
-#line 1870 "syntax.tab.c"
+#line 1895 "syntax.tab.c"
     break;
 
   case 55:
-#line 200 "syntax.y"
+#line 218 "syntax.y"
         {yyval = create("GT");yyval->line = yyvsp[0]->line;}
-#line 1876 "syntax.tab.c"
+#line 1901 "syntax.tab.c"
     break;
 
   case 56:
-#line 201 "syntax.y"
+#line 219 "syntax.y"
         {yyval = create("GE");yyval->line = yyvsp[0]->line;}
-#line 1882 "syntax.tab.c"
+#line 1907 "syntax.tab.c"
     break;
 
   case 57:
-#line 202 "syntax.y"
+#line 220 "syntax.y"
         {yyval = create("NE");yyval->line = yyvsp[0]->line;}
-#line 1888 "syntax.tab.c"
+#line 1913 "syntax.tab.c"
     break;
 
   case 58:
-#line 203 "syntax.y"
+#line 221 "syntax.y"
         {yyval = create("EQ");yyval->line = yyvsp[0]->line;}
-#line 1894 "syntax.tab.c"
+#line 1919 "syntax.tab.c"
     break;
 
   case 59:
-#line 204 "syntax.y"
+#line 222 "syntax.y"
           {yyval = create("PLUS");yyval->line = yyvsp[0]->line;}
-#line 1900 "syntax.tab.c"
+#line 1925 "syntax.tab.c"
     break;
 
   case 60:
-#line 205 "syntax.y"
+#line 223 "syntax.y"
            {yyval = create("MINUS");yyval->line = yyvsp[0]->line;}
-#line 1906 "syntax.tab.c"
+#line 1931 "syntax.tab.c"
     break;
 
   case 61:
-#line 206 "syntax.y"
+#line 224 "syntax.y"
          {yyval = create("MUL");yyval->line = yyvsp[0]->line;}
-#line 1912 "syntax.tab.c"
+#line 1937 "syntax.tab.c"
     break;
 
   case 62:
-#line 207 "syntax.y"
+#line 225 "syntax.y"
          {yyval = create("DIV");yyval->line = yyvsp[0]->line;}
-#line 1918 "syntax.tab.c"
+#line 1943 "syntax.tab.c"
     break;
 
   case 63:
-#line 208 "syntax.y"
+#line 226 "syntax.y"
             {yyval = create("BITAND");yyval->line = yyvsp[0]->line;}
-#line 1924 "syntax.tab.c"
+#line 1949 "syntax.tab.c"
     break;
 
   case 64:
-#line 209 "syntax.y"
+#line 227 "syntax.y"
            {yyval = create("BITOR");yyval->line = yyvsp[0]->line;}
-#line 1930 "syntax.tab.c"
+#line 1955 "syntax.tab.c"
     break;
 
   case 65:
-#line 210 "syntax.y"
+#line 228 "syntax.y"
             {yyval = create("BITXOR");yyval->line = yyvsp[0]->line;}
-#line 1936 "syntax.tab.c"
+#line 1961 "syntax.tab.c"
     break;
 
   case 66:
-#line 212 "syntax.y"
+#line 230 "syntax.y"
+              {yyval = create("AND");yyval->line = yyvsp[0]->line;}
+#line 1967 "syntax.tab.c"
+    break;
+
+  case 67:
+#line 231 "syntax.y"
+        {yyval = create("OR");yyval->line = yyvsp[0]->line;}
+#line 1973 "syntax.tab.c"
+    break;
+
+  case 68:
+#line 232 "syntax.y"
+        {yyval = create("LT");yyval->line = yyvsp[0]->line;}
+#line 1979 "syntax.tab.c"
+    break;
+
+  case 69:
+#line 233 "syntax.y"
+        {yyval = create("LE");yyval->line = yyvsp[0]->line;}
+#line 1985 "syntax.tab.c"
+    break;
+
+  case 70:
+#line 234 "syntax.y"
+        {yyval = create("GT");yyval->line = yyvsp[0]->line;}
+#line 1991 "syntax.tab.c"
+    break;
+
+  case 71:
+#line 235 "syntax.y"
+        {yyval = create("GE");yyval->line = yyvsp[0]->line;}
+#line 1997 "syntax.tab.c"
+    break;
+
+  case 72:
+#line 236 "syntax.y"
+        {yyval = create("NE");yyval->line = yyvsp[0]->line;}
+#line 2003 "syntax.tab.c"
+    break;
+
+  case 73:
+#line 237 "syntax.y"
+        {yyval = create("EQ");yyval->line = yyvsp[0]->line;}
+#line 2009 "syntax.tab.c"
+    break;
+
+  case 74:
+#line 238 "syntax.y"
+          {yyval = create("PLUS");yyval->line = yyvsp[0]->line;}
+#line 2015 "syntax.tab.c"
+    break;
+
+  case 75:
+#line 239 "syntax.y"
+           {yyval = create("MINUS");yyval->line = yyvsp[0]->line;}
+#line 2021 "syntax.tab.c"
+    break;
+
+  case 76:
+#line 240 "syntax.y"
+         {yyval = create("MUL");yyval->line = yyvsp[0]->line;}
+#line 2027 "syntax.tab.c"
+    break;
+
+  case 77:
+#line 241 "syntax.y"
+         {yyval = create("DIV");yyval->line = yyvsp[0]->line;}
+#line 2033 "syntax.tab.c"
+    break;
+
+  case 78:
+#line 242 "syntax.y"
+            {yyval = create("BITAND");yyval->line = yyvsp[0]->line;}
+#line 2039 "syntax.tab.c"
+    break;
+
+  case 79:
+#line 243 "syntax.y"
+           {yyval = create("BITOR");yyval->line = yyvsp[0]->line;}
+#line 2045 "syntax.tab.c"
+    break;
+
+  case 80:
+#line 244 "syntax.y"
+            {yyval = create("BITXOR");yyval->line = yyvsp[0]->line;}
+#line 2051 "syntax.tab.c"
+    break;
+
+  case 81:
+#line 246 "syntax.y"
+          {yyval = create("LVAL"); add_son(yyval, yyvsp[0]);
+            // if (getParaType($1->id).first != "")
+            // {
+                yyval->type = getParaType(yyvsp[0]->id).first;
+                yyval->dim = getParaType(yyvsp[0]->id).second;
+            // }
+            }
+#line 2063 "syntax.tab.c"
+    break;
+
+  case 82:
+#line 253 "syntax.y"
+                  {yyval = create("LVAL"); add_son(yyval, yyvsp[-2]); add_son(yyval, yyvsp[-1]); add_son(yyval, yyvsp[0]);//结构体取参
+        yyval->type = struct_vars[yyvsp[-2]->type][yyvsp[0]->type].first;
+        yyval->dim = struct_vars[yyvsp[-2]->type][yyvsp[0]->type].second;
+    }
+#line 2072 "syntax.tab.c"
+    break;
+
+  case 83:
+#line 260 "syntax.y"
                     {yyval = create("Exp"); add_son(yyval,yyvsp[-3]); add_son(yyval,yyvsp[-2]); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]);
                     if(getFuncType(yyvsp[-3]->id) == "") my_yyerror2('"' + yyvsp[-3]->id + '"' + " is invoked without a definition", yyval->line, 2); /*该函数当前没定义*/
                     // else
@@ -1945,17 +2081,17 @@ yyreduce:
                         yyval->type = getFuncType(yyvsp[-3]->id);
                     // }
                     }
-#line 1949 "syntax.tab.c"
+#line 2085 "syntax.tab.c"
     break;
 
-  case 67:
-#line 221 "syntax.y"
+  case 84:
+#line 269 "syntax.y"
                        {yyval = create("Exp"); add_son(yyval,yyvsp[-3]); my_yyerror("Missing right parentheses ')'",yyval->line); }
-#line 1955 "syntax.tab.c"
+#line 2091 "syntax.tab.c"
     break;
 
-  case 68:
-#line 223 "syntax.y"
+  case 85:
+#line 271 "syntax.y"
                     {yyval = create("Exp"); add_son(yyval,yyvsp[-3]); add_son(yyval,yyvsp[-2]); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]); 
                     
                     if (yyvsp[-1]->dim != 0 || yyvsp[-1]->type != "int") my_yyerror("Wrong index",yyval->line); /*数组坐标只能是整数*/
@@ -1965,139 +2101,168 @@ yyreduce:
                         yyval->type = yyvsp[-3]->type;
                     // }
                     }
-#line 1969 "syntax.tab.c"
+#line 2105 "syntax.tab.c"
     break;
 
-  case 69:
-#line 233 "syntax.y"
+  case 86:
+#line 280 "syntax.y"
                      {
+        yyval = create("Exp"); add_son(yyval,yyvsp[-2]); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]);
+        if (checkType(yyvsp[-2], yyvsp[0]) == 0) my_yyerror2("unmatching type on both sides of assignment", yyval->line, 5);/*数据类型不一致*/
+        else 
+        {
+            yyval->dim = yyvsp[-2]->dim; yyval->type = yyvsp[-2]->type;
+        }
+    }
+#line 2118 "syntax.tab.c"
+    break;
+
+  case 87:
+#line 289 "syntax.y"
+                      {
         yyval = create("Exp"); add_son(yyval,yyvsp[-2]); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]);
         // cerr << $1->dim << ' ' << $1->type << endl;
         // cerr << $3->dim << ' ' << $3->type << endl;
-        if (checkType(yyvsp[-2], yyvsp[0]) == 0) my_yyerror("diff type" + yyvsp[-2]->id + " " + yyvsp[0]->id, yyval->line);/*数据类型不一致*/
-        // else 
-        // {
+        if (checkType(yyvsp[-2], yyvsp[0]) == 0) my_yyerror2("unmatching operands", yyval->line, 7);/*数据类型不一致*/
+        else 
+        {
             yyval->dim = yyvsp[-2]->dim; yyval->type = yyvsp[-2]->type;
-        // }
         }
-#line 1984 "syntax.tab.c"
+        }
+#line 2133 "syntax.tab.c"
     break;
 
-  case 70:
-#line 244 "syntax.y"
+  case 88:
+#line 300 "syntax.y"
+                    {//右值在左侧
+        my_yyerror2("rvalue appears on the left-side of assignment", yyval->line, 6);
+    }
+#line 2141 "syntax.tab.c"
+    break;
+
+  case 89:
+#line 304 "syntax.y"
                 {yyval = create("Exp"); add_son(yyval,yyvsp[-2]); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]);
                 yyval->dim = yyvsp[-1]->dim; yyval->type = yyvsp[-1]->type;
                 }
-#line 1992 "syntax.tab.c"
+#line 2149 "syntax.tab.c"
     break;
 
-  case 71:
-#line 248 "syntax.y"
+  case 90:
+#line 308 "syntax.y"
                {yyval = create("Exp"); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]);
                 yyval->dim = yyvsp[0]->dim; yyval->type = yyvsp[0]->type;
                 }
-#line 2000 "syntax.tab.c"
+#line 2157 "syntax.tab.c"
     break;
 
-  case 72:
-#line 252 "syntax.y"
+  case 91:
+#line 312 "syntax.y"
              {yyval = create("Exp"); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]);}
-#line 2006 "syntax.tab.c"
+#line 2163 "syntax.tab.c"
     break;
 
-  case 73:
-#line 254 "syntax.y"
+  case 92:
+#line 314 "syntax.y"
               {yyval = create("Exp"); add_son(yyval,yyvsp[-2]); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]);}
-#line 2012 "syntax.tab.c"
+#line 2169 "syntax.tab.c"
     break;
 
-  case 74:
-#line 256 "syntax.y"
-                {yyval = create("Exp"); add_son(yyval,yyvsp[-2]); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]);}
-#line 2018 "syntax.tab.c"
+  case 93:
+#line 316 "syntax.y"
+                {yyval = create("Exp"); add_son(yyval,yyvsp[-2]); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]);
+                if (struct_vars[yyvsp[-2]->type][yyvsp[0]->id].first == "") {}//结构体没这个变量
+                else
+                {
+                    yyval->type = struct_vars[yyvsp[-2]->type][yyvsp[0]->id].first;
+                    yyval->dim = struct_vars[yyvsp[-2]->type][yyvsp[0]->id].second;
+                }
+                }
+#line 2182 "syntax.tab.c"
     break;
 
-  case 75:
-#line 258 "syntax.y"
+  case 94:
+#line 325 "syntax.y"
         {yyval = create("Exp"); add_son(yyval,yyvsp[0]);
         if(getParaType(yyvsp[0]->id).first == "") my_yyerror2('"' + yyvsp[0]->id + '"' + " is used without a definition", yyval->line, 1);
-        // else
-        // {
+        else
+        {
             yyval->dim = getParaType(yyvsp[0]->id).second;
             yyval->type = getParaType(yyvsp[0]->id).first;
-        // }
+            // $$->id = $1->id;
         }
-#line 2031 "syntax.tab.c"
+        }
+#line 2196 "syntax.tab.c"
     break;
 
-  case 76:
-#line 267 "syntax.y"
+  case 95:
+#line 335 "syntax.y"
          {yyval = create("Exp"); add_son(yyval,yyvsp[0]);
         yyval->dim = 0; yyval->type = "int";
         yyvsp[0]->dim = 0; yyvsp[0]->type = "int";
         }
-#line 2040 "syntax.tab.c"
+#line 2205 "syntax.tab.c"
     break;
 
-  case 77:
-#line 272 "syntax.y"
+  case 96:
+#line 340 "syntax.y"
            {yyval = create("Exp"); add_son(yyval,yyvsp[0]);
             yyval->dim = 0; yyval->type = "float";
             yyvsp[0]->dim = 0; yyvsp[0]->type = "float";
             }
-#line 2049 "syntax.tab.c"
+#line 2214 "syntax.tab.c"
     break;
 
-  case 78:
-#line 277 "syntax.y"
+  case 97:
+#line 345 "syntax.y"
           {yyval = create("Exp"); add_son(yyval,yyvsp[0]);
             yyval->dim = 0; yyval->type = "char";
             yyvsp[0]->dim = 0; yyvsp[0]->type = "char";
     }
-#line 2058 "syntax.tab.c"
+#line 2223 "syntax.tab.c"
     break;
 
-  case 79:
-#line 282 "syntax.y"
+  case 98:
+#line 350 "syntax.y"
             {yyval = create("Exp"); add_son(yyval,yyvsp[0]);
             yyval->dim = 0; yyval->type = "string";
             yyvsp[0]->dim = 0; yyvsp[0]->type = "string";
     }
-#line 2067 "syntax.tab.c"
+#line 2232 "syntax.tab.c"
     break;
 
-  case 80:
-#line 286 "syntax.y"
+  case 99:
+#line 354 "syntax.y"
                         {yyval = create("Exp"); add_son(yyval,yyvsp[-2]); my_yyerror("Missing expression",yyval->line);}
-#line 2073 "syntax.tab.c"
+#line 2238 "syntax.tab.c"
     break;
 
-  case 81:
-#line 288 "syntax.y"
+  case 100:
+#line 356 "syntax.y"
                    {yyval = create("Exp"); add_son(yyval,yyvsp[-2]); my_yyerror("Missing right parentheses ')'",yyval->line);}
-#line 2079 "syntax.tab.c"
+#line 2244 "syntax.tab.c"
     break;
 
-  case 82:
-#line 289 "syntax.y"
+  case 101:
+#line 357 "syntax.y"
                  {yyval = create("Exp"); add_son(yyval,yyvsp[-2]); my_yyerror("Missing right parentheses ')'",yyval->line);}
-#line 2085 "syntax.tab.c"
+#line 2250 "syntax.tab.c"
     break;
 
-  case 83:
-#line 292 "syntax.y"
+  case 102:
+#line 360 "syntax.y"
                      {yyval = create("Args"); add_son(yyval,yyvsp[-2]); add_son(yyval,yyvsp[-1]); add_son(yyval,yyvsp[0]);}
-#line 2091 "syntax.tab.c"
+#line 2256 "syntax.tab.c"
     break;
 
-  case 84:
-#line 293 "syntax.y"
+  case 103:
+#line 361 "syntax.y"
          {yyval = create("Args"); add_son(yyval,yyvsp[0]);}
-#line 2097 "syntax.tab.c"
+#line 2262 "syntax.tab.c"
     break;
 
 
-#line 2101 "syntax.tab.c"
+#line 2266 "syntax.tab.c"
 
       default: break;
     }
@@ -2329,7 +2494,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 295 "syntax.y"
+#line 363 "syntax.y"
 
 void my_yyerror(const string s,int line) {
     fprintf(stderr, "Error type B at Line %d: %s\n",line, s.c_str());
@@ -2536,6 +2701,8 @@ int main(int argc, char **argv) {
         std::cout << pair.first << ": "<<std::endl;
         for (const auto& pair1: pair.second) {
         std::cout << pair1.first << ' ' << pair1.second.first << " " << pair1.second.second<< endl;
+
+        // cerr << getParaType("amy").second << endl;
     }
     }
     }
