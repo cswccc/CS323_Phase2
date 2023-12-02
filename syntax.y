@@ -5,6 +5,7 @@
     #include <string>
     #include <unordered_map>
     #include <list>
+    #include <utility>
     #define true 1
     #define false 0
     using namespace std;
@@ -14,8 +15,9 @@
         string name;
         string id;
         string type;
-        list<string> argsList;
-        unordered_map<string, string> varsInStruct;
+
+        list<pair<string, string>> argsList;
+        unordered_map<string, pair<string, int> > varsInStruct;
         int dim = -1; //当前数据的维度
         struct parsetree* left_son;
         struct parsetree* right_son;
@@ -28,10 +30,11 @@
 
     unordered_map<string, pair<string, int> > para_type;
     unordered_map<string, string> func_type;
-    unordered_map<string, list<string>> func_args;
-    unordered_map<string,unordered_map<string,string>> struct_vars;
+    unordered_map<string, list<pair<string, string>>> func_args;
+    unordered_map<string, unordered_map<string, pair<string, int> > > struct_vars;
 
     void my_yyerror(const string s,int line);
+    void my_yyerror2(const string s, int line, int type);
     void yyerror(const string s);
     struct parsetree* create(const string to_name);
     struct parsetree* create_add(const string to_name,const char* to_add);
@@ -45,9 +48,9 @@
     string getFuncType(string id);
 
     void output(struct parsetree* root,int dep);
-    void varListIt(struct parsetree* root,list<string>& re);
-   void varInStructListIt(struct parsetree* root,unordered_map<string, string>& varsInStruct);
-    void decListItForStruct(struct parsetree* root,string type,unordered_map<string, string>& varsInStruct);
+    void varListIt(struct parsetree* root,list<pair<string, string>>& re);
+   void varInStructListIt(struct parsetree* root,unordered_map<string, pair<string, int> >& varsInStruct);
+    void decListItForStruct(struct parsetree* root,string type,unordered_map<string, pair<string, int> >& varsInStruct);
     #include "lex.yy.c"
 %}
 
@@ -100,7 +103,10 @@ ExtDefList : ExtDef ExtDefList{$$ = create("ExtDefList"); add_son($$,$1); add_so
 
 ExtDef : Specifier ExtDecList SEMI{$$ = create("ExtDef"); add_son($$,$1); add_son($$,$2); add_son($$,$3);}
     | Specifier SEMI{$$ = create("ExtDef"); add_son($$,$1); add_son($$,$2);}
-    | Specifier FunDec CompSt{$$ = create("ExtDef"); add_son($$,$1); add_son($$,$2); add_son($$,$3); func_type[$2->id]=$1->type;} //函数返回值 函数头 函数体 处理func_type
+    | Specifier FunDec CompSt{$$ = create("ExtDef"); add_son($$,$1); add_son($$,$2); add_son($$,$3);
+                            if(getFuncType($2->id) != "") my_yyerror2('"' + $2->id + '"' + " is redefined", $$->line, 4);
+                            else func_type[$2->id] = $1->type;
+                            } //函数返回值 函数头 函数体 处理func_type
 
 ExtDecList : VarDec{$$ = create("ExtDecList"); add_son($$,$1);}
     | VarDec COMMA ExtDecList{$$ = create("ExtDecList"); add_son($$,$1); add_son($$,$2); add_son($$,$3);}
@@ -119,15 +125,16 @@ VarDec : ID{$$ = create("VarDec"); add_son($$,$1); if($1->dim == -1) $1->dim = 0
                         }
     | VarDec LB INT error{$$ = create("VarDec"); add_son($$,$1); my_yyerror("Missing right brackets ']'",$$->line);}
 
-FunDec : ID LP VarList RP{$$ = create("FunDec"); add_son($$,$1); add_son($$,$2); add_son($$,$3); add_son($$,$4); $$->id=$1->id; func_args[$1->id]=$3->argsList;}//有参函数的定义 id向上传个fundec 处理func_args
+FunDec : ID LP VarList RP{$$ = create("FunDec"); add_son($$,$1); add_son($$,$2); add_son($$,$3); add_son($$,$4); $$->id=$1->id; func_args[$1->id]=$3->argsList;
+                        }//有参函数的定义 id向上传个fundec 处理func_args
     | ID LP VarList error{$$ = create("FunDec"); add_son($$,$1); my_yyerror("Missing right parentheses ')'",$$->line);}
-    | ID LP RP{$$ = create("FunDec"); add_son($$,$1); add_son($$,$2); add_son($$,$3); $$->id=$1->id; list<string> argsList;func_args[$1->id]=argsList;} //无参函数的定义 id向上传个fundec
+    | ID LP RP{$$ = create("FunDec"); add_son($$,$1); add_son($$,$2); add_son($$,$3); $$->id=$1->id; list<pair<string, string>> argsList;func_args[$1->id]=argsList;} //无参函数的定义 id向上传个fundec
     | ID LP error{$$ = create("FunDec"); add_son($$,$1); my_yyerror("Missing right parentheses ')'",$$->line);}
 
 VarList : ParamDec COMMA VarList{$$ = create("VarList"); add_son($$,$1); add_son($$,$2); add_son($$,$3);varListIt($$,$$->argsList);} //参数列表 处理func_args
-    | ParamDec{$$ = create("VarList"); add_son($$,$1);}
+    | ParamDec{$$ = create("VarList"); add_son($$,$1);varListIt($$,$$->argsList);}
 
-ParamDec : Specifier VarDec{$$ = create("ParamDec"); add_son($$,$1); add_son($$,$2); $$->type=$1->type;} //参数 类型+名字 把类型传递给paramDec
+ParamDec : Specifier VarDec{$$ = create("ParamDec"); add_son($$,$1); add_son($$,$2); $$->type=$1->type; $$->id=$2->id;$$->dim = $2->dim;} //参数 类型+名字 把类型传递给paramDec
 
 CompSt : LC DefList StmtList RC{$$ = create("CompSt"); add_son($$,$1); add_son($$,$2); add_son($$,$3); add_son($$,$4);}
 
@@ -156,16 +163,19 @@ DefList : Def DefList{$$ = create("DefList"); add_son($$,$1); add_son($$,$2); va
 Def : Specifier DecList SEMI{$$ = create("Def"); add_son($$,$1); add_son($$,$2); add_son($$,$3);
                             // cerr << $1->type << ' ' << $2->type << endl;
                             if($1->type != $2->type && $2->type != "0") my_yyerror("para diff type", $$->line);
-                            else decListIt($2, $1->type); $$->type=$1->type;
+                            // else 
+                            decListIt($2, $1->type); $$->type=$1->type;
                             }
     | Specifier DecList error{$$ = create("Def"); add_son($$,$1); my_yyerror("Missing semicolon ';'",$$->line);}
 
-DecList : Dec{$$ = create("DecList"); add_son($$,$1); $$->type = $1->type;}
+DecList : Dec{$$ = create("DecList"); add_son($$,$1); $$->type = $1->type;
+            if (getParaType($1->id).first != "") my_yyerror2('"' + $1->id + '"' + " is redefined", $$->line, 3); // 重复定义
+            }
     | Dec COMMA DecList{$$ = create("DecList"); add_son($$,$1); add_son($$,$2); add_son($$,$3);
-                        if ($1->type == "0") $$->type = $3->type;
-                        else if ($3->type == "0") $$->type = $1->type;
-                        else if ($1->type != $3->type) my_yyerror("para diff type", $$->line);
-                        else
+                        // if ($1->type == "0") $$->type = $3->type;
+                        // else if ($3->type == "0") $$->type = $1->type;
+                        /*else*/ if ($1->type != $3->type) my_yyerror("para diff type", $$->line);
+                        // else
                             $$->type = $1->type;
                         }
 
@@ -173,12 +183,12 @@ Dec : VarDec{$$ = create("Dec"); add_son($$,$1); $$->id=$1->id; $$->dim = $1->di
     | VarDec ASSIGN Exp{$$ = create("Dec"); add_son($$,$1); add_son($$,$2); add_son($$,$3);
                         // cerr << $3->dim << ' ' << $3->type << endl;
                         if ($3->dim != $1->dim) my_yyerror("Miss match type",$$->line);
-                        else
-                        {
+                        // else
+                        // {
                             $$->type = $3->type;
                             $1->type = $3->type;//此时变量还未获取type
                             $$->id=$1->id; $$->dim = $1->dim;
-                        }
+                        // }
                         }
     | VarDec ASSIGN error{$$ = create("Dec"); add_son($$,$1);my_yyerror("Missing Expression ",$$->line); $$->id=$1->id;}
 
@@ -200,12 +210,12 @@ Operate : ASSIGN{$$ = create("ASSIGN");$$->line = $1->line;}
     | BITXOR{$$ = create("BITXOR");$$->line = $1->line;}
 
 Exp : ID LP Args RP {$$ = create("Exp"); add_son($$,$1); add_son($$,$2); add_son($$,$3); add_son($$,$4);
-                    if(getFuncType($1->id) == "") my_yyerror("No def for func",$$->line); /*该函数当前没定义*/
-                    else
-                    {
+                    if(getFuncType($1->id) == "") my_yyerror2('"' + $1->id + '"' + " is invoked without a definition", $$->line, 2); /*该函数当前没定义*/
+                    // else
+                    // {
                         $$->dim = 0;
                         $$->type = getFuncType($1->id);
-                    }
+                    // }
                     }
 
     | ID LP Args error {$$ = create("Exp"); add_son($$,$1); my_yyerror("Missing right parentheses ')'",$$->line); }
@@ -213,21 +223,22 @@ Exp : ID LP Args RP {$$ = create("Exp"); add_son($$,$1); add_son($$,$2); add_son
     | Exp LB Exp RB {$$ = create("Exp"); add_son($$,$1); add_son($$,$2); add_son($$,$3); add_son($$,$4); 
                     
                     if ($3->dim != 0 || $3->type != "int") my_yyerror("Wrong index",$$->line); /*数组坐标只能是整数*/
-                    else
-                    {
+                    // else
+                    // {
                         $$->dim = $1->dim - 1;
                         $$->type = $1->type;
-                    }
+                    // }
                     }
 
     | Exp Operate Exp{
         $$ = create("Exp"); add_son($$,$1); add_son($$,$2); add_son($$,$3);
         // cerr << $1->dim << ' ' << $1->type << endl;
         // cerr << $3->dim << ' ' << $3->type << endl;
-        if (checkType($1, $3) == 0) my_yyerror("diff type", $$->line);/*数据类型不一致*/
-        else {
+        if (checkType($1, $3) == 0) my_yyerror("diff type" + $1->id + " " + $3->id, $$->line);/*数据类型不一致*/
+        // else 
+        // {
             $$->dim = $1->dim; $$->type = $1->type;
-        }
+        // }
         }
 
     | LP Exp RP {$$ = create("Exp"); add_son($$,$1); add_son($$,$2); add_son($$,$3);
@@ -245,12 +256,12 @@ Exp : ID LP Args RP {$$ = create("Exp"); add_son($$,$1); add_son($$,$2); add_son
     | Exp DOT ID{$$ = create("Exp"); add_son($$,$1); add_son($$,$2); add_son($$,$3);}
 
     | ID{$$ = create("Exp"); add_son($$,$1);
-        if(getParaType($1->id).first == "") my_yyerror("ID no def", $$->line);
-        else
-        {
+        if(getParaType($1->id).first == "") my_yyerror2('"' + $1->id + '"' + " is used without a definition", $$->line, 1);
+        // else
+        // {
             $$->dim = getParaType($1->id).second;
             $$->type = getParaType($1->id).first;
-        }
+        // }
         }
 
     | INT{$$ = create("Exp"); add_son($$,$1);
@@ -284,6 +295,12 @@ Args : Exp COMMA Args{$$ = create("Args"); add_son($$,$1); add_son($$,$2); add_s
 %%
 void my_yyerror(const string s,int line) {
     fprintf(stderr, "Error type B at Line %d: %s\n",line, s.c_str());
+    ok = false;
+}
+
+void my_yyerror2(const string s, int line, int type)
+{
+    fprintf(stderr, "Error type %d at Line %d: %s\n", type, line, s.c_str());
     ok = false;
 }
 void yyerror(const string s) {
@@ -375,6 +392,7 @@ void decListIt(struct parsetree* root, string type)
     if(root->name == "Dec")
     {
         // cerr << root->id << " " << root->dim << endl;
+        root->left_son->type = type;
         root->type = type;
         para_type[root->id] = make_pair(type, root->dim);
         return;
@@ -386,12 +404,12 @@ void decListIt(struct parsetree* root, string type)
         nxt = nxt->nxt_bro;
     }
 }
-void varListIt(struct parsetree* root,list<string>& re)
+void varListIt(struct parsetree* root,list<pair<string, string>>& re)
 {
     if(root->name == "COMMA") return;
     if(root->name == "ParamDec")
     {
-        re.push_back(root->type);
+        re.push_back(make_pair(root->id,root->type));
         return;
     }
     struct parsetree* nxt = root->left_son;
@@ -401,13 +419,13 @@ void varListIt(struct parsetree* root,list<string>& re)
         nxt = nxt->nxt_bro;
     }
 }
-void decListItForStruct(struct parsetree* root,string type,unordered_map<string, string>& varsInStruct)
+void decListItForStruct(struct parsetree* root,string type,unordered_map<string, pair<string, int> >& varsInStruct)
 {
     if(root->name == "COMMA") return;
     if(root->name == "Dec")
     {
 
-        varsInStruct[root->id]=type;
+        varsInStruct[root->id]= make_pair(type, root->dim);
         return;
     }
     struct parsetree* nxt = root->left_son;
@@ -418,7 +436,7 @@ void decListItForStruct(struct parsetree* root,string type,unordered_map<string,
     }
 }
 
-void varInStructListIt(struct parsetree* root,unordered_map<string, string>& varsInStruct)
+void varInStructListIt(struct parsetree* root,unordered_map<string, pair<string, int> >& varsInStruct)
 {
     if(root->name == "Def")
     {
@@ -469,17 +487,17 @@ int main(int argc, char **argv) {
         cout<<"para_args------------"<<endl;
          for (const auto& pair : func_args) {
         std::cout << pair.first << ": " << std::endl;
-         for (string argsType : pair.second) {
-        std::cout << argsType << " "<<endl;
-         }
+        for (const auto& pair1: pair.second) {
+        std::cout << pair1.first << ' ' << pair1.second <<  endl;
          cout<<endl;
         }
+         }
         
         cout<<"struct_vars------------"<<endl;
           for (const auto& pair : struct_vars) {
         std::cout << pair.first << ": "<<std::endl;
         for (const auto& pair1: pair.second) {
-        std::cout << pair1.first<<pair1.second << " "<<endl;
+        std::cout << pair1.first << ' ' << pair1.second.first << " " << pair1.second.second<< endl;
     }
     }
     }
