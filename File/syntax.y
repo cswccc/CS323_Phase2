@@ -50,6 +50,7 @@
     int isNotStruct(string type);
 
     void output(struct parsetree* root,int dep);
+    void getir(struct parsetree* root,int dep);
     void varListIt(struct parsetree* root,list<pair<string, string>>& re);
    void varInStructListIt(struct parsetree* root,unordered_map<string, pair<string, int> >& varsInStruct);
     void decListItForStruct(struct parsetree* root,string type,unordered_map<string, pair<string, int> >& varsInStruct);
@@ -98,11 +99,17 @@
 %token BITAND
 %token BITOR
 %token BITXOR
-
+%token WRITE
+%token READ
 
 %%
 /* high-level definition */
-Program : ExtDefList{$$ = create("Program");add_son($$,$1);if(ok) output($$,0);}
+Program : ExtDefList{$$ = create("Program");add_son($$,$1);if(ok)
+{
+    output($$,0);
+    freopen("mycode.ir","w",stdout);
+    getir($$,0);
+}}
 
 ExtDefList : ExtDef ExtDefList{$$ = create("ExtDefList"); add_son($$,$1); add_son($$,$2);}
     | {$$ = NULL;}
@@ -404,6 +411,7 @@ Exp : ID LP Args RP {$$ = create("Exp"); add_son($$,$1); add_son($$,$2); add_son
                         $$->type = getFuncType($1->id);
                     // }
                     }
+    | READ {$$ = create("Exp"); add_son($$,$1); $$->type = "int"; $$->dim = 0;}
 
     | ID LP Args error {$$ = create("Exp"); add_son($$,$1); my_yyerror("Missing right parentheses ')'",$$->line); }
 
@@ -498,10 +506,10 @@ Exp : ID LP Args RP {$$ = create("Exp"); add_son($$,$1); add_son($$,$2); add_son
     // | Exp error Exp {$$ = create("Exp"); add_son($$,$1); my_yyerror("Missing operate",$$->line);}
     | LP Exp error {$$ = create("Exp"); add_son($$,$1); my_yyerror("Missing right parentheses ')'",$$->line);}
     | ID LP error{$$ = create("Exp"); add_son($$,$1); my_yyerror("Missing right parentheses ')'",$$->line);}
-
+    | WRITE LP Exp RP{$$ = create("Exp"); add_son($$,$1); add_son($$,$2); add_son($$,$3); add_son($$,$4);}
     
 Args : Exp COMMA Args{$$ = create("Args"); add_son($$,$1); add_son($$,$2); add_son($$,$3);}
-    | Exp{$$ = create("Args"); add_son($$,$1);}
+    | Exp{$$ = create("Args"); add_son($$,$1); }
 
 %%
 void my_yyerror(const string s,int line) {
@@ -582,6 +590,24 @@ int isNotStruct(string type)
     return (type == "int" || type == "char" || type == "float" || type == "string") ? true : false;
 }
 
+void getir(struct parsetree* root,int dep)
+{
+    switch(root->name)
+    {
+        case "":
+            break;
+        case "":
+            break;
+        default:break;
+    }
+    struct parsetree* nxt = root->left_son;
+    while(nxt!=NULL)
+    {
+        getir(nxt,dep+1);
+        nxt = nxt->nxt_bro;
+    }
+}
+
 void output(struct parsetree* root,int dep)
 {
     for(int i=0; i<dep; i++)
@@ -589,9 +615,9 @@ void output(struct parsetree* root,int dep)
     cout<<root->name;
     if(root->left_son !=NULL) printf(" (%d)",root->line);
     if(root->type!="-1") printf(" (%s)",root->type.c_str());
-    printf("  --dim: %d", root->dim);
-    cout << "  --type:" << root->type;
-    cout << "  --id:" << root->id;
+    // printf("  --dim: %d", root->dim);
+    // cout << "  --type:" << root->type;
+    // cout << "  --id:" << root->id;
     printf("\n");
     struct parsetree* nxt = root->left_son;
     while(nxt!=NULL)
@@ -684,7 +710,12 @@ void argsListIt(struct parsetree* root,list<string>& argsList)
     if(root->name == "Exp")
     {
         // cerr << root->id << " " << root->dim << endl;
-        argsList.push_back(para_type[root->id].first);
+       if ((para_type[root->id].first)!=""){
+            argsList.push_back(para_type[root->id].first);
+        }else{
+            argsList.push_back(root->type);
+        }
+
         return;
     }
     struct parsetree* nxt = root->left_son;

@@ -68,8 +68,12 @@ RETURN return
 IF if
 ELSE else
 WHILE while
+READ read"()"
+WRITE write
 
 %%
+{READ} {yylval = create_add("READ",yytext);  return READ;}
+{WRITE} {yylval = create_add("WRITE",yytext); return WRITE;}
 {CHAR} {/*line();*/       /*printf("CHAR %s\n",yytext);*/    yylval = create_add("CHAR: ",yytext);  return CHAR;}
 {CHAR_HEX} {/*line();*/       /*printf("CHAR %s\n",yytext);*/    yylval = create_add("CHAR: ",yytext);  return CHAR;}
 {STRUCT} {/*line();*/       /*printf("%s\n",yytext);   */ yylval = create("STRUCT");     return STRUCT;}
