@@ -1,0 +1,129 @@
+Program: (1)
+  ExtDefList: (1)
+    ExtDef: (1)
+      Specifier: (1) (int)
+        TYPE: :int (int)
+      FunDec: (1)
+        ID: :test
+        LP:
+        VarList: (1)
+          ParamDec: (1) (int)
+            Specifier: (1) (int)
+              TYPE: :int (int)
+            VarDec: (1) (0)
+              ID: :k
+          COMMA:
+          VarList: (1)
+            ParamDec: (1) (int)
+              Specifier: (1) (int)
+                TYPE: :int (int)
+              VarDec: (1) (0)
+                ID: :k1
+        RP:
+      CompSt: (1) (int)
+        LC:
+        StmtList: (2) (int)
+          Stmt: (2) (int)
+            RETURN:
+            Exp: (2) (int)
+              INT: :0 (int)
+            SEMI:
+        RC:
+    ExtDefList: (5)
+      ExtDef: (5)
+        Specifier: (5) (int)
+          TYPE: :int (int)
+        FunDec: (5)
+          ID: :main
+          LP:
+          RP:
+        CompSt: (5) (int)
+          LC:
+          DefList: (6)
+            Def: (6) (int)
+              Specifier: (6) (int)
+                TYPE: :int (int)
+              DecList: (6) (int)
+                Dec: (6) (int)
+                  VarDec: (6) (int)
+                    ID: :a
+                  ASSIGN:
+                  Exp: (6) (int)
+                    INT: :2 (int)
+              SEMI:
+            DefList: (7)
+              Def: (7) (int)
+                Specifier: (7) (int)
+                  TYPE: :int (int)
+                DecList: (7) (0)
+                  Dec: (7) (int)
+                    VarDec: (7) (int)
+                      ID: :b
+                SEMI:
+          StmtList: (8) (int)
+            Stmt: (8)
+              Exp: (8) (int)
+                LVAL: (8) (int)
+                  ID: :b
+                ASSIGN:
+                Exp: (8) (int)
+                  INT: :1 (int)
+              SEMI:
+            StmtList: (9) (int)
+              Stmt: (9)
+                Exp: (9) (int)
+                  LVAL: (9) (int)
+                    ID: :b
+                  ASSIGN:
+                  Exp: (9) (int)
+                    INT: :1 (int)
+                SEMI:
+              StmtList: (10) (int)
+                Stmt: (10)
+                  IF:
+                  LP:
+                  Exp: (10) (int)
+                    Exp: (10) (int)
+                      ID: :a
+                    EQ:
+                    Exp: (10) (int)
+                      ID: :b
+                  RP:
+                  Stmt: (11)
+                    Exp: (11) (int)
+                      LVAL: (11) (int)
+                        ID: :b
+                      ASSIGN:
+                      Exp: (11) (int)
+                        INT: :1 (int)
+                    SEMI:
+                  ELSE:
+                  Stmt: (12)
+                    IF:
+                    LP:
+                    Exp: (12) (int)
+                      Exp: (12) (int)
+                        ID: :a
+                      EQ:
+                      Exp: (12) (int)
+                        INT: :1 (int)
+                    RP:
+                    Stmt: (13)
+                      Exp: (13) (int)
+                        LVAL: (13) (int)
+                          ID: :b
+                        ASSIGN:
+                        Exp: (13) (int)
+                          INT: :2 (int)
+                      SEMI:
+                StmtList: (14) (int)
+                  Stmt: (14) (int)
+                    RETURN:
+                    Exp: (14) (int)
+                      Exp: (14) (int)
+                        ID: :a
+                      MUL:
+                      Exp: (14) (int)
+                        ID: :b
+                    SEMI:
+          RC:

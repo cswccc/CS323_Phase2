@@ -95,7 +95,7 @@ WRITE write
 {RB} {/*line();*/       /*printf("RB %s\n",yytext);   */ yylval = create("RB");     return RB;}
 "//".*\n {/*line();*/       /*printf("%s",yytext);*/   lines++;}
 
-{EQ}    {/*line();*/       /*printf("EQ %s\n",yytext);   */ yylval = create("RQ");     return EQ;}
+{EQ}    {/*line();*/       /*printf("EQ %s\n",yytext);   */ yylval = create("EQ");     return EQ;}
 {NE}    {/*line();*/       /*printf("NE %s\n",yytext);   */ yylval = create("NE");     return NE;}
 {LE}     {/*line();*/       /*printf("LE %s\n",yytext);   */ yylval = create("LE");     return LE;}
 {GE}     {/*line();*/       /*printf("GE %s\n",yytext);   */ yylval = create("GE");     return GE;}

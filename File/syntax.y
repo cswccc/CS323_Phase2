@@ -16,6 +16,8 @@
         string name;
         string id;
         string type;
+        string irtype;
+        string to_add;
 
         list<pair<string, string>> argsList;
         unordered_map<string, pair<string, int> > varsInStruct;
@@ -23,6 +25,7 @@
         struct parsetree* left_son;
         struct parsetree* right_son;
         struct parsetree* nxt_bro;
+        struct parsetree* last_bro;
         int line;
     };
     #define YYSTYPE struct parsetree*
@@ -31,8 +34,12 @@
 
     unordered_map<string, pair<string, int> > para_type;
     unordered_map<string, string> func_type;
-    unordered_map<string, list<pair<string, string>>> func_args;
+    unordered_map<string, list<pair<string, string>>> func_args; //first id second type
     unordered_map<string, unordered_map<string, pair<string, int> > > struct_vars;
+    unordered_map<string, int> v_map;
+    int v_cnt=0;
+    unordered_map<string, int> t_map;
+    int t_cnt=0;
 
     void my_yyerror(const string s,int line);
     void my_yyerror2(const string s, int line, int type);
@@ -101,7 +108,10 @@
 %token BITXOR
 %token WRITE
 %token READ
-
+%left OR
+%left AND
+%left PLUS MINUS
+%left MUL DIV
 %%
 /* high-level definition */
 Program : ExtDefList{$$ = create("Program");add_son($$,$1);if(ok)
@@ -294,38 +304,6 @@ Dec : VarDec{$$ = create("Dec"); add_son($$,$1); $$->id=$1->id; $$->dim = $1->di
                         }
     | VarDec ASSIGN error{$$ = create("Dec"); add_son($$,$1);my_yyerror("Missing Expression ",$$->line); $$->id=$1->id;}
 
-Operate : ASSIGN{$$ = create("ASSIGN");$$->line = $1->line;}
-    | AND{$$ = create("AND");$$->line = $1->line;}
-    | OR{$$ = create("OR");$$->line = $1->line;}
-    | LT{$$ = create("LT");$$->line = $1->line;}
-    | LE{$$ = create("LE");$$->line = $1->line;}
-    | GT{$$ = create("GT");$$->line = $1->line;}
-    | GE{$$ = create("GE");$$->line = $1->line;}
-    | NE{$$ = create("NE");$$->line = $1->line;}
-    | EQ{$$ = create("EQ");$$->line = $1->line;}
-    | PLUS{$$ = create("PLUS");$$->line = $1->line;}
-    | MINUS{$$ = create("MINUS");$$->line = $1->line;}
-    | MUL{$$ = create("MUL");$$->line = $1->line;}
-    | DIV{$$ = create("DIV");$$->line = $1->line;}
-    | BITAND{$$ = create("BITAND");$$->line = $1->line;}
-    | BITOR{$$ = create("BITOR");$$->line = $1->line;}
-    | BITXOR{$$ = create("BITXOR");$$->line = $1->line;}
-
-Operate2 : AND{$$ = create("AND");$$->line = $1->line;}
-    | OR{$$ = create("OR");$$->line = $1->line;}
-    | LT{$$ = create("LT");$$->line = $1->line;}
-    | LE{$$ = create("LE");$$->line = $1->line;}
-    | GT{$$ = create("GT");$$->line = $1->line;}
-    | GE{$$ = create("GE");$$->line = $1->line;}
-    | NE{$$ = create("NE");$$->line = $1->line;}
-    | EQ{$$ = create("EQ");$$->line = $1->line;}
-    | PLUS{$$ = create("PLUS");$$->line = $1->line;}
-    | MINUS{$$ = create("MINUS");$$->line = $1->line;}
-    | MUL{$$ = create("MUL");$$->line = $1->line;}
-    | DIV{$$ = create("DIV");$$->line = $1->line;}
-    | BITAND{$$ = create("BITAND");$$->line = $1->line;}
-    | BITOR{$$ = create("BITOR");$$->line = $1->line;}
-    | BITXOR{$$ = create("BITXOR");$$->line = $1->line;}
 
 LVAL : ID {$$ = create("LVAL"); add_son($$, $1);
             // if (getParaType($1->id).first != "")
@@ -369,8 +347,7 @@ Assign : LVAL ASSIGN Exp {
     | Exp ASSIGN Exp{//右值在左侧
         my_yyerror2("rvalue appears on the left-side of assignment", $$->line, 6);
     }
-
-Exp : ID LP Args RP {$$ = create("Exp"); add_son($$,$1); add_son($$,$2); add_son($$,$3); add_son($$,$4); //函数有参调用
+Exp :ID LP Args RP {$$ = create("Exp"); $$->irtype = "function"; add_son($$,$1); add_son($$,$2); add_son($$,$3); add_son($$,$4); //函数有参调用
                     if(getFuncType($1->id) == "") 
                     {
                         if(getParaType($1->id).first == "") my_yyerror2('"' + $1->id + '"' + " is invoked without a definition", $$->line, 2);
@@ -411,11 +388,11 @@ Exp : ID LP Args RP {$$ = create("Exp"); add_son($$,$1); add_son($$,$2); add_son
                         $$->type = getFuncType($1->id);
                     // }
                     }
-    | READ {$$ = create("Exp"); add_son($$,$1); $$->type = "int"; $$->dim = 0;}
+    | READ {$$ = create("Exp"); $$->irtype="read"; add_son($$,$1); $$->type = "int"; $$->dim = 0;}
 
     | ID LP Args error {$$ = create("Exp"); add_son($$,$1); my_yyerror("Missing right parentheses ')'",$$->line); }
 
-    | Exp LB Exp RB {$$ = create("Exp"); add_son($$,$1); add_son($$,$2); add_son($$,$3); add_son($$,$4); 
+    | Exp LB Exp RB {$$ = create("Exp"); $$->irtype="array"; add_son($$,$1); add_son($$,$2); add_son($$,$3); add_son($$,$4); 
                     if ($3->dim != 0 || $3->type != "int") my_yyerror2("indexing by non-integer", $$->line, 12); /*数组坐标只能是整数*/
                     else
                     {
@@ -424,8 +401,8 @@ Exp : ID LP Args RP {$$ = create("Exp"); add_son($$,$1); add_son($$,$2); add_son
                     }
                     }
 
-    | Exp Operate2 Exp{
-        $$ = create("Exp"); add_son($$,$1); add_son($$,$2); add_son($$,$3);
+    | Exp MUL Exp{
+        $$ = create("Exp"); $$->irtype="expression"; add_son($$,$1); add_son($$,$2); add_son($$,$3);
         // cerr << $1->dim << ' ' << $1->type << endl;
         // cerr << $3->dim << ' ' << $3->type << endl;
         if (checkType($1, $3) == 0) my_yyerror2("unmatching operand", $$->line, 7);/*数据类型不一致*/
@@ -434,18 +411,127 @@ Exp : ID LP Args RP {$$ = create("Exp"); add_son($$,$1); add_son($$,$2); add_son
             $$->dim = $1->dim; $$->type = $1->type;
         }
         }
-
-    | LP Exp RP {$$ = create("Exp"); add_son($$,$1); add_son($$,$2); add_son($$,$3);
+    | Exp AND Exp{
+    $$ = create("Exp"); $$->irtype="andexpression"; add_son($$,$1); add_son($$,$2); add_son($$,$3);
+    // cerr << $1->dim << ' ' << $1->type << endl;
+    // cerr << $3->dim << ' ' << $3->type << endl;
+    if (checkType($1, $3) == 0) my_yyerror2("unmatching operand", $$->line, 7);/*数据类型不一致*/
+    else 
+    {
+        $$->dim = $1->dim; $$->type = $1->type;
+    }
+    }
+    | Exp OR Exp{
+        $$ = create("Exp"); $$->irtype="orexpression"; add_son($$,$1); add_son($$,$2); add_son($$,$3);
+        // cerr << $1->dim << ' ' << $1->type << endl;
+        // cerr << $3->dim << ' ' << $3->type << endl;
+        if (checkType($1, $3) == 0) my_yyerror2("unmatching operand", $$->line, 7);/*数据类型不一致*/
+        else 
+        {
+            $$->dim = $1->dim; $$->type = $1->type;
+        }
+        }
+    | Exp DIV Exp{
+        $$ = create("Exp"); $$->irtype="expression"; add_son($$,$1); add_son($$,$2); add_son($$,$3);
+        // cerr << $1->dim << ' ' << $1->type << endl;
+        // cerr << $3->dim << ' ' << $3->type << endl;
+        if (checkType($1, $3) == 0) my_yyerror2("unmatching operand", $$->line, 7);/*数据类型不一致*/
+        else 
+        {
+            $$->dim = $1->dim; $$->type = $1->type;
+        }
+        }
+    | Exp PLUS Exp{
+        $$ = create("Exp"); $$->irtype="expression"; add_son($$,$1); add_son($$,$2); add_son($$,$3);
+        // cerr << $1->dim << ' ' << $1->type << endl;
+        // cerr << $3->dim << ' ' << $3->type << endl;
+        if (checkType($1, $3) == 0) my_yyerror2("unmatching operand", $$->line, 7);/*数据类型不一致*/
+        else 
+        {
+            $$->dim = $1->dim; $$->type = $1->type;
+        }
+        }
+    | Exp MINUS Exp{
+        $$ = create("Exp"); $$->irtype="expression"; add_son($$,$1); add_son($$,$2); add_son($$,$3);
+        // cerr << $1->dim << ' ' << $1->type << endl;
+        // cerr << $3->dim << ' ' << $3->type << endl;
+        if (checkType($1, $3) == 0) my_yyerror2("unmatching operand", $$->line, 7);/*数据类型不一致*/
+        else 
+        {
+            $$->dim = $1->dim; $$->type = $1->type;
+        }
+        }
+    | Exp LT Exp{
+        $$ = create("Exp"); $$->irtype="expression"; add_son($$,$1); add_son($$,$2); add_son($$,$3);
+        // cerr << $1->dim << ' ' << $1->type << endl;
+        // cerr << $3->dim << ' ' << $3->type << endl;
+        if (checkType($1, $3) == 0) my_yyerror2("unmatching operand", $$->line, 7);/*数据类型不一致*/
+        else 
+        {
+            $$->dim = $1->dim; $$->type = $1->type;
+        }
+        }
+    | Exp LE Exp{
+        $$ = create("Exp"); $$->irtype="expression"; add_son($$,$1); add_son($$,$2); add_son($$,$3);
+        // cerr << $1->dim << ' ' << $1->type << endl;
+        // cerr << $3->dim << ' ' << $3->type << endl;
+        if (checkType($1, $3) == 0) my_yyerror2("unmatching operand", $$->line, 7);/*数据类型不一致*/
+        else 
+        {
+            $$->dim = $1->dim; $$->type = $1->type;
+        }
+        }
+    | Exp GT Exp{
+        $$ = create("Exp"); $$->irtype="expression"; add_son($$,$1); add_son($$,$2); add_son($$,$3);
+        // cerr << $1->dim << ' ' << $1->type << endl;
+        // cerr << $3->dim << ' ' << $3->type << endl;
+        if (checkType($1, $3) == 0) my_yyerror2("unmatching operand", $$->line, 7);/*数据类型不一致*/
+        else 
+        {
+            $$->dim = $1->dim; $$->type = $1->type;
+        }
+        }
+    | Exp GE Exp{
+        $$ = create("Exp"); $$->irtype="expression"; add_son($$,$1); add_son($$,$2); add_son($$,$3);
+        // cerr << $1->dim << ' ' << $1->type << endl;
+        // cerr << $3->dim << ' ' << $3->type << endl;
+        if (checkType($1, $3) == 0) my_yyerror2("unmatching operand", $$->line, 7);/*数据类型不一致*/
+        else 
+        {
+            $$->dim = $1->dim; $$->type = $1->type;
+        }
+        }
+    | Exp NE Exp{
+        $$ = create("Exp"); $$->irtype="expression"; add_son($$,$1); add_son($$,$2); add_son($$,$3);
+        // cerr << $1->dim << ' ' << $1->type << endl;
+        // cerr << $3->dim << ' ' << $3->type << endl;
+        if (checkType($1, $3) == 0) my_yyerror2("unmatching operand", $$->line, 7);/*数据类型不一致*/
+        else 
+        {
+            $$->dim = $1->dim; $$->type = $1->type;
+        }
+        }
+    | Exp EQ Exp{
+        $$ = create("Exp"); $$->irtype="expression"; add_son($$,$1); add_son($$,$2); add_son($$,$3);
+        // cerr << $1->dim << ' ' << $1->type << endl;
+        // cerr << $3->dim << ' ' << $3->type << endl;
+        if (checkType($1, $3) == 0) my_yyerror2("unmatching operand", $$->line, 7);/*数据类型不一致*/
+        else 
+        {
+            $$->dim = $1->dim; $$->type = $1->type;
+        }
+        }
+    | LP Exp RP {$$ = create("Exp"); $$->irtype="(expression)"; add_son($$,$1); add_son($$,$2); add_son($$,$3);
                 $$->dim = $2->dim; $$->type = $2->type;
                 }
 
-    | MINUS Exp{$$ = create("Exp"); add_son($$,$1); add_son($$,$2);
+    | MINUS Exp{$$ = create("Exp"); $$->irtype="-expression"; add_son($$,$1); add_son($$,$2);
                 $$->dim = $2->dim; $$->type = $2->type;
                 }
 
-    | NOT Exp{$$ = create("Exp"); add_son($$,$1); add_son($$,$2);}
+    | NOT Exp{$$ = create("Exp"); $$->irtype="!expression"; add_son($$,$1); add_son($$,$2);}
 
-    | ID LP RP{$$ = create("Exp"); add_son($$,$1); add_son($$,$2); add_son($$,$3);  //函数无参调用 
+    | ID LP RP{$$ = create("Exp"); $$->irtype="function"; add_son($$,$1); add_son($$,$2); add_son($$,$3);  //函数无参调用 
             if(getFuncType($1->id) == "") 
             {
                 if(getParaType($1->id).first == "") my_yyerror2('"' + $1->id + '"' + " is invoked without a definition", $$->line, 2);
@@ -459,7 +545,7 @@ Exp : ID LP Args RP {$$ = create("Exp"); add_son($$,$1); add_son($$,$2); add_son
             if(func_argsList.size()!=0) {my_yyerror2("invalid argument number, except "+to_string(func_argsList.size())+", got 0", $$->line, 9);}
             }
 
-    | Exp DOT ID{$$ = create("Exp"); add_son($$,$1); add_son($$,$2); add_son($$,$3);
+    | Exp DOT ID{$$ = create("Exp"); $$->irtype="struct.id"; add_son($$,$1); add_son($$,$2); add_son($$,$3);
                 if (struct_vars[$1->type][$3->id].first == "")
                 {
                     if (isNotStruct(getParaType($3->id).first) == 1) my_yyerror2("accessing with non-struct variable", $$->line, 13);
@@ -473,7 +559,7 @@ Exp : ID LP Args RP {$$ = create("Exp"); add_son($$,$1); add_son($$,$2); add_son
                 }
                 }
 
-    | ID{$$ = create("Exp"); add_son($$,$1);
+    | ID{$$ = create("Exp"); $$->irtype="id"; add_son($$,$1);
         if(getParaType($1->id).first == "") my_yyerror2('"' + $1->id + '"' + " is used without a definition", $$->line, 1);
         else
         {
@@ -483,31 +569,28 @@ Exp : ID LP Args RP {$$ = create("Exp"); add_son($$,$1); add_son($$,$2); add_son
         }
         }
 
-    | INT{$$ = create("Exp"); add_son($$,$1);
+    | INT{$$ = create("Exp"); $$->irtype="#"; add_son($$,$1);
         $$->dim = 0; $$->type = "int";
         $1->dim = 0; $1->type = "int";
         }
 
-    | FLOAT{$$ = create("Exp"); add_son($$,$1);
+    | FLOAT{$$ = create("Exp"); $$->irtype="#"; add_son($$,$1);
             $$->dim = 0; $$->type = "float";
             $1->dim = 0; $1->type = "float";
             }
 
-    | CHAR{$$ = create("Exp"); add_son($$,$1);
+    | CHAR{$$ = create("Exp"); $$->irtype="#"; add_son($$,$1);
             $$->dim = 0; $$->type = "char";
             $1->dim = 0; $1->type = "char";
     }
 
-    | STRING{$$ = create("Exp"); add_son($$,$1);
+    | STRING{$$ = create("Exp"); $$->irtype="#"; add_son($$,$1);
             $$->dim = 0; $$->type = "string";
             $1->dim = 0; $1->type = "string";
     }
-    | Exp Operate error {$$ = create("Exp"); add_son($$,$1); my_yyerror("Missing expression",$$->line);}
-    // | Exp error Exp {$$ = create("Exp"); add_son($$,$1); my_yyerror("Missing operate",$$->line);}
     | LP Exp error {$$ = create("Exp"); add_son($$,$1); my_yyerror("Missing right parentheses ')'",$$->line);}
     | ID LP error{$$ = create("Exp"); add_son($$,$1); my_yyerror("Missing right parentheses ')'",$$->line);}
-    | WRITE LP Exp RP{$$ = create("Exp"); add_son($$,$1); add_son($$,$2); add_son($$,$3); add_son($$,$4);}
-    
+    | WRITE LP Exp RP{$$ = create("Exp");  $$->irtype="write"; add_son($$,$1); add_son($$,$2); add_son($$,$3); add_son($$,$4);}
 Args : Exp COMMA Args{$$ = create("Args"); add_son($$,$1); add_son($$,$2); add_son($$,$3);}
     | Exp{$$ = create("Args"); add_son($$,$1); }
 
@@ -549,6 +632,7 @@ void add_son(struct parsetree* parent,struct parsetree* son)
     else
     {
         parent->right_son->nxt_bro = son;
+        son->last_bro = parent->right_son;
         parent->right_son = son;
     }
 }
@@ -561,11 +645,9 @@ struct parsetree* create_add(const string to_name,const char* to_add)
     ret->line = lines;
     ret->left_son = ret->right_son = NULL;
 
-    string to_add_ = to_add;
-    string name = to_name;
-    name += to_add_;
+    ret->to_add = to_add;
     
-    ret->name = name;
+    ret->name = to_name;
 
     return ret;
 }
@@ -589,16 +671,153 @@ int isNotStruct(string type)
 {
     return (type == "int" || type == "char" || type == "float" || type == "string") ? true : false;
 }
-
+//workir
+string get_v(string name)
+{
+    if(v_map.find(name) == v_map.end())
+    {
+        v_cnt++;
+        v_map[name]=v_cnt;
+    }
+    return "v"+to_string(v_map[name]);
+}
+string get_t()
+{
+    // if(t_map.find(name) == t_map.end())
+    // {
+    //     t_cnt++;
+    //     t_map[name]=t_cnt;
+    // }
+    // return "t"+to_string(t_map[name]);
+    t_cnt++;
+    return "t"+to_string(t_cnt);
+}
+string getoperator2(struct parsetree* root)
+{
+    if(root->name == "LT") return "<";
+    if(root->name == "LE") return "<=";
+    if(root->name == "GT") return ">";
+    if(root->name == "GE") return ">=";
+    if(root->name == "NE") return "!=";
+    if(root->name == "EQ") return "==";
+    if(root->name == "PLUS") return "+";
+    if(root->name == "MINUS") return "-";
+    if(root->name == "MUL") return "*";
+    if(root->name == "DIV") return "/";
+}
+string getexpression(struct parsetree* root)
+{
+    //fuck
+    if(root->irtype=="function")
+    {
+        if(root->left_son->nxt_bro->nxt_bro->name=="RP"){
+            return "CALL "+root->id;
+        }else{
+            int size=func_args[root->left_son->id].size();
+            struct parsetree* nowArgs=root->left_son->nxt_bro->nxt_bro->left_son;
+            string t[size];
+            for(int i=0;i<size;i++){
+                string str = getexpression(nowArgs);
+                t[i]=str;
+                if(i!=size-1){
+                    nowArgs=nowArgs->nxt_bro->nxt_bro->left_son;
+                }
+            }
+            for(int i=size-1;i>=0;i--){
+                cout<<"ARG "<<t[i]<<"\n";
+            }
+            return "CALL "+root->left_son->id;
+        }
+    }
+    if(root->irtype=="read")
+    {
+        return "read";
+    }
+    if(root->irtype=="array")
+    {
+        return "todo";
+    }
+    if(root->irtype=="expression")
+    {
+        string left_exp = getexpression(root->left_son);
+        string right_exp = getexpression(root->right_son);
+        string t = get_t();
+        string c = getoperator2(root->left_son->nxt_bro);
+        if(c=="<" || c=="<=" || c==">" || c==">=" || c=="==" || c=="!=")
+        {
+            return left_exp+" "+c+" "+right_exp;
+        }
+        cout<<t<<" := "<<left_exp<<" "<<c<<" "<<right_exp<<"\n";
+        return t;
+    }
+    if(root->irtype=="(expression)")
+    {
+        return getexpression(root->left_son->nxt_bro);
+    }
+    if(root->irtype=="-expression")
+    {
+        string right_exp = getexpression(root->left_son->nxt_bro);
+        string t = get_t();
+        cout<<t<<" := #0 - "<<right_exp<<"\n";
+        return t;
+    }
+    if(root->irtype=="!expression")
+    {
+        return "todo";
+    }
+    if(root->irtype=="struct.id")
+    {
+        return "todo";
+    }    
+    if(root->irtype=="id")
+    {
+        return get_v(root->left_son->id);
+    }
+    if(root->irtype=="#")
+    {
+        return "#"+root->left_son->to_add;
+    }
+}
 void getir(struct parsetree* root,int dep)
 {
-    switch(root->name)
+    if(root->name == "FunDec")
     {
-        case "":
-            break;
-        case "":
-            break;
-        default:break;
+        cout<<"FUNCTION "<<root->id<<" :\n";
+        list<pair<string,string>> args=func_args[root->id];
+        for(pair<string,string> arg:args){
+            cout<<"PARAM "<<get_v(arg.first)<<"\n";
+        }
+        return;
+    }
+    if(root->name == "ASSIGN")
+    {
+        string right_out;
+        right_out = getexpression(root->nxt_bro);
+        if(right_out == "read")
+        {
+            cout<<right_out<<" "<<get_v(root->last_bro->id)<<"\n";
+        }
+        else
+        {
+            cout<<get_v(root->last_bro->id)<<" := "<<right_out<<"\n";
+        }
+        return;
+    }
+    if(root->name == "RETURN")
+    {
+        string t = getexpression(root->nxt_bro);
+        cout<<"RETURN "<<t<<"\n";
+        return;
+    }
+    if(root->name == "Exp" && root->irtype == "write")
+    {
+        string exp = getexpression(root->right_son->last_bro);
+        cout<<"WRITE "<<exp<<"\n";
+        return;
+    }
+    if(root->name == "IF")
+    {
+        
     }
     struct parsetree* nxt = root->left_son;
     while(nxt!=NULL)
@@ -606,13 +825,14 @@ void getir(struct parsetree* root,int dep)
         getir(nxt,dep+1);
         nxt = nxt->nxt_bro;
     }
+    return;
 }
 
 void output(struct parsetree* root,int dep)
 {
     for(int i=0; i<dep; i++)
         printf("  ");
-    cout<<root->name;
+    cout<<root->name<<":"<<root->to_add;
     if(root->left_son !=NULL) printf(" (%d)",root->line);
     if(root->type!="-1") printf(" (%s)",root->type.c_str());
     // printf("  --dim: %d", root->dim);
@@ -757,7 +977,6 @@ void checkReturnStmtIt(struct parsetree* root,string type) //一个stmt
     while(nxt!=NULL)
     {
          
-       
         if(root->name == "Stmt" || root->name=="CompSt" || root->name=="StmtList")
         {
            

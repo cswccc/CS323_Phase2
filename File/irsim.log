@@ -1,0 +1,19 @@
+[DEBUG] 2023-12-22 21:32:57,648 (irsim.py 620): Parsed arguments: {'irpath': 'test.ir', 'inputs': '1', 'logpath': 'irsim.log'}
+[ERROR] 2023-12-22 21:32:57,648 (irsim.py 581): Syntax error at line 13:
+IF v1 && t4 GOTO label4
+[ERROR] 2023-12-22 21:32:57,649 (irsim.py 581): Undefined label at line 10: GOTO label3
+[ERROR] 2023-12-22 21:32:57,649 (irsim.py 581): Loading failed
+[DEBUG] 2023-12-22 21:33:10,104 (irsim.py 620): Parsed arguments: {'irpath': 'test.ir', 'inputs': '1', 'logpath': 'irsim.log'}
+[ERROR] 2023-12-22 21:33:10,104 (irsim.py 581): Syntax error at line 13:
+IF v1 GOTO label4
+[ERROR] 2023-12-22 21:33:10,104 (irsim.py 581): Undefined label at line 10: GOTO label3
+[ERROR] 2023-12-22 21:33:10,104 (irsim.py 581): Loading failed
+[DEBUG] 2023-12-22 21:33:16,739 (irsim.py 620): Parsed arguments: {'irpath': 'test.ir', 'inputs': '1', 'logpath': 'irsim.log'}
+[INFO] 2023-12-22 21:33:16,739 (irsim.py 567): File loaded successfully
+[INFO] 2023-12-22 21:33:18,522 (irsim.py 567): Program has exited gracefully
+[INFO] 2023-12-22 21:33:18,522 (irsim.py 567): Total instructions = 10
+[WARNING] 2023-12-22 21:33:19,408 (irsim.py 574): Program Counter goes out of bound. The running program will be terminated instantly
+[INFO] 2023-12-22 21:48:06,943 (irsim.py 567): KeyboardInterrupt raised, quit program
+[DEBUG] 2023-12-22 21:48:08,386 (irsim.py 620): Parsed arguments: {'irpath': 'test.ir', 'inputs': '1', 'logpath': 'irsim.log'}
+[INFO] 2023-12-22 21:48:08,387 (irsim.py 567): File loaded successfully
+[INFO] 2023-12-22 21:48:09,622 (irsim.py 567): KeyboardInterrupt raised, quit program
