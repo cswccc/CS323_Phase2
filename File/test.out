@@ -1,129 +1,232 @@
 Program: (1)
   ExtDefList: (1)
     ExtDef: (1)
-      Specifier: (1) (int)
-        TYPE: :int (int)
-      FunDec: (1)
-        ID: :test
-        LP:
-        VarList: (1)
-          ParamDec: (1) (int)
-            Specifier: (1) (int)
-              TYPE: :int (int)
-            VarDec: (1) (0)
-              ID: :k
-          COMMA:
-          VarList: (1)
-            ParamDec: (1) (int)
-              Specifier: (1) (int)
-                TYPE: :int (int)
-              VarDec: (1) (0)
-                ID: :k1
-        RP:
-      CompSt: (1) (int)
-        LC:
-        StmtList: (2) (int)
-          Stmt: (2) (int)
-            RETURN:
-            Exp: (2) (int)
-              INT: :0 (int)
-            SEMI:
-        RC:
-    ExtDefList: (5)
-      ExtDef: (5)
-        Specifier: (5) (int)
-          TYPE: :int (int)
-        FunDec: (5)
-          ID: :main
-          LP:
-          RP:
-        CompSt: (5) (int)
+      Specifier: (1)
+        StructSpecifier: (1)
+          STRUCT:
+          ID:people
           LC:
-          DefList: (6)
-            Def: (6) (int)
-              Specifier: (6) (int)
+          DefList: (2)
+            Def: (2) (int)
+              Specifier: (2) (int)
                 TYPE: :int (int)
-              DecList: (6) (int)
-                Dec: (6) (int)
-                  VarDec: (6) (int)
-                    ID: :a
-                  ASSIGN:
-                  Exp: (6) (int)
-                    INT: :2 (int)
+              DecList: (2) (0)
+                Dec: (2) (int)
+                  VarDec: (2) (int)
+                    ID:name
               SEMI:
-            DefList: (7)
-              Def: (7) (int)
-                Specifier: (7) (int)
+            DefList: (3)
+              Def: (3) (int)
+                Specifier: (3) (int)
                   TYPE: :int (int)
-                DecList: (7) (0)
-                  Dec: (7) (int)
-                    VarDec: (7) (int)
-                      ID: :b
+                DecList: (3) (0)
+                  Dec: (3) (int)
+                    VarDec: (3) (int)
+                      ID:age
                 SEMI:
-          StmtList: (8) (int)
-            Stmt: (8)
-              Exp: (8) (int)
-                LVAL: (8) (int)
-                  ID: :b
-                ASSIGN:
-                Exp: (8) (int)
-                  INT: :1 (int)
-              SEMI:
-            StmtList: (9) (int)
-              Stmt: (9)
-                Exp: (9) (int)
-                  LVAL: (9) (int)
-                    ID: :b
-                  ASSIGN:
-                  Exp: (9) (int)
-                    INT: :1 (int)
-                SEMI:
-              StmtList: (10) (int)
-                Stmt: (10)
-                  IF:
-                  LP:
-                  Exp: (10) (int)
-                    Exp: (10) (int)
-                      ID: :a
-                    EQ:
-                    Exp: (10) (int)
-                      ID: :b
-                  RP:
-                  Stmt: (11)
-                    Exp: (11) (int)
-                      LVAL: (11) (int)
-                        ID: :b
-                      ASSIGN:
-                      Exp: (11) (int)
-                        INT: :1 (int)
-                    SEMI:
-                  ELSE:
-                  Stmt: (12)
-                    IF:
-                    LP:
-                    Exp: (12) (int)
-                      Exp: (12) (int)
-                        ID: :a
-                      EQ:
-                      Exp: (12) (int)
-                        INT: :1 (int)
-                    RP:
-                    Stmt: (13)
-                      Exp: (13) (int)
-                        LVAL: (13) (int)
-                          ID: :b
-                        ASSIGN:
-                        Exp: (13) (int)
-                          INT: :2 (int)
-                      SEMI:
-                StmtList: (14) (int)
-                  Stmt: (14) (int)
-                    RETURN:
-                    Exp: (14) (int)
-                      Exp: (14) (int)
-                        ID: :a
-                      MUL:
-                      Exp: (14) (int)
-                        ID: :b
-                    SEMI:
+              DefList: (4)
+                Def: (4) (int)
+                  Specifier: (4) (int)
+                    TYPE: :int (int)
+                  DecList: (4) (0)
+                    Dec: (4) (int)
+                      VarDec: (4) (int)
+                        ID:salary
+                  SEMI:
           RC:
+      SEMI:
+    ExtDefList: (7)
+      ExtDef: (7)
+        Specifier: (7)
+          StructSpecifier: (7)
+            STRUCT:
+            ID:plepeo
+            LC:
+            DefList: (8)
+              Def: (8) (int)
+                Specifier: (8) (int)
+                  TYPE: :int (int)
+                DecList: (8) (0)
+                  Dec: (8) (int)
+                    VarDec: (8) (int)
+                      ID:didi
+                SEMI:
+              DefList: (9)
+                Def: (9) (int)
+                  Specifier: (9) (int)
+                    TYPE: :int (int)
+                  DecList: (9) (0)
+                    Dec: (9) (int)
+                      VarDec: (9) (int)
+                        ID:gege
+                  SEMI:
+                DefList: (10)
+                  Def: (10) (int)
+                    Specifier: (10) (int)
+                      TYPE: :int (int)
+                    DecList: (10) (0)
+                      Dec: (10) (int)
+                        VarDec: (10) (int)
+                          ID:baba
+                    SEMI:
+                  DefList: (11)
+                    Def: (11) (int)
+                      Specifier: (11) (int)
+                        TYPE: :int (int)
+                      DecList: (11) (0)
+                        Dec: (11) (int)
+                          VarDec: (11) (int)
+                            ID:mama
+                      SEMI:
+            RC:
+        SEMI:
+      ExtDefList: (14)
+        ExtDef: (14)
+          Specifier: (14) (int)
+            TYPE: :int (int)
+          FunDec: (14)
+            ID:test
+            LP:
+            VarList: (14)
+              ParamDec: (14) (people)
+                Specifier: (14) (people)
+                  StructSpecifier: (14) (people)
+                    STRUCT:
+                    ID:people
+                VarDec: (14) (0)
+                  ID:p1
+              COMMA:
+              VarList: (14)
+                ParamDec: (14) (plepeo)
+                  Specifier: (14) (plepeo)
+                    StructSpecifier: (14) (plepeo)
+                      STRUCT:
+                      ID:plepeo
+                  VarDec: (14) (0)
+                    ID:p9
+            RP:
+          CompSt: (14) (int)
+            LC:
+            DefList: (15)
+              Def: (15) (int)
+                Specifier: (15) (int)
+                  TYPE: :int (int)
+                DecList: (15) (int)
+                  Dec: (15) (int)
+                    VarDec: (15) (int)
+                      ID:re
+                    ASSIGN:
+                    Exp: (15) (int)
+                      Exp: (15) (int)
+                        Exp: (15) (people)
+                          ID:p1
+                        DOT:
+                        ID:age
+                      PLUS:
+                      Exp: (15) (int)
+                        Exp: (15) (plepeo)
+                          ID:p9
+                        DOT:
+                        ID:gege
+                SEMI:
+            StmtList: (16) (int)
+              Stmt: (16) (int)
+                RETURN:
+                Exp: (16) (int)
+                  ID:re
+                SEMI:
+            RC:
+        ExtDefList: (18)
+          ExtDef: (18)
+            Specifier: (18) (int)
+              TYPE: :int (int)
+            FunDec: (18)
+              ID:main
+              LP:
+              RP:
+            CompSt: (18) (int)
+              LC:
+              DefList: (19)
+                Def: (19) (people)
+                  Specifier: (19) (people)
+                    StructSpecifier: (19) (people)
+                      STRUCT:
+                      ID:people
+                  DecList: (19) (0)
+                    Dec: (19) (people)
+                      VarDec: (19) (people)
+                        ID:p
+                  SEMI:
+                DefList: (20)
+                  Def: (20) (plepeo)
+                    Specifier: (20) (plepeo)
+                      StructSpecifier: (20) (plepeo)
+                        STRUCT:
+                        ID:plepeo
+                    DecList: (20) (0)
+                      Dec: (20) (plepeo)
+                        VarDec: (20) (plepeo)
+                          ID:p5
+                    SEMI:
+              StmtList: (21) (int)
+                Stmt: (21)
+                  Exp: (21) (int)
+                    LVAL: (21) (int)
+                      LVAL: (21) (people)
+                        ID:p
+                      DOT:
+                      ID:age
+                    ASSIGN:
+                    Exp: (21) (int)
+                      INT: :5 (int)
+                  SEMI:
+                StmtList: (22) (int)
+                  Stmt: (22)
+                    Exp: (22) (int)
+                      LVAL: (22) (int)
+                        LVAL: (22) (plepeo)
+                          ID:p5
+                        DOT:
+                        ID:gege
+                      ASSIGN:
+                      Exp: (22) (int)
+                        INT: :10 (int)
+                    SEMI:
+                  StmtList: (23) (int)
+                    Stmt: (23)
+                      Def: (23) (int)
+                        Specifier: (23) (int)
+                          TYPE: :int (int)
+                        DecList: (23) (int)
+                          Dec: (23) (int)
+                            VarDec: (23) (int)
+                              ID:b
+                            ASSIGN:
+                            Exp: (23) (int)
+                              ID:test
+                              LP:
+                              Args: (23)
+                                Exp: (23) (people)
+                                  ID:p
+                                COMMA:
+                                Args: (23)
+                                  Exp: (23) (plepeo)
+                                    ID:p5
+                              RP:
+                        SEMI:
+                    StmtList: (24) (int)
+                      Stmt: (24)
+                        Exp: (24)
+                          WRITE:write
+                          LP:
+                          Exp: (24) (int)
+                            ID:b
+                          RP:
+                        SEMI:
+                      StmtList: (25) (int)
+                        Stmt: (25) (int)
+                          RETURN:
+                          Exp: (25) (int)
+                            INT: :0 (int)
+                          SEMI:
+              RC:

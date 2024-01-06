@@ -17,3 +17,37 @@ IF v1 GOTO label4
 [DEBUG] 2023-12-22 21:48:08,386 (irsim.py 620): Parsed arguments: {'irpath': 'test.ir', 'inputs': '1', 'logpath': 'irsim.log'}
 [INFO] 2023-12-22 21:48:08,387 (irsim.py 567): File loaded successfully
 [INFO] 2023-12-22 21:48:09,622 (irsim.py 567): KeyboardInterrupt raised, quit program
+[DEBUG] 2023-12-22 22:08:23,806 (irsim.py 620): Parsed arguments: {'irpath': 'mycode.ir', 'inputs': '1,2', 'logpath': 'irsim.log'}
+[ERROR] 2023-12-22 22:08:23,807 (irsim.py 581): Syntax error at line 7:
+read v3
+[INFO] 2023-12-22 22:08:23,807 (irsim.py 567): File loaded successfully
+[DEBUG] 2023-12-22 22:08:42,169 (irsim.py 620): Parsed arguments: {'irpath': 'mycode.ir', 'inputs': '1,2', 'logpath': 'irsim.log'}
+[ERROR] 2023-12-22 22:08:42,169 (irsim.py 581): Syntax error at line 7:
+read v3
+[INFO] 2023-12-22 22:08:42,169 (irsim.py 567): File loaded successfully
+[DEBUG] 2023-12-22 22:08:45,619 (irsim.py 620): Parsed arguments: {'irpath': 'mycode.ir', 'inputs': '1,2', 'logpath': 'irsim.log'}
+[ERROR] 2023-12-22 22:08:45,620 (irsim.py 581): Syntax error at line 7:
+read v3
+[INFO] 2023-12-22 22:08:45,620 (irsim.py 567): File loaded successfully
+[DEBUG] 2023-12-22 22:08:59,907 (irsim.py 620): Parsed arguments: {'irpath': 'mycode.ir', 'inputs': '1,2', 'logpath': 'irsim.log'}
+[ERROR] 2023-12-22 22:08:59,907 (irsim.py 581): Syntax error at line 7:
+read v3
+[INFO] 2023-12-22 22:08:59,908 (irsim.py 567): File loaded successfully
+[DEBUG] 2023-12-22 22:09:04,944 (irsim.py 620): Parsed arguments: {'irpath': 'mycode.ir', 'inputs': '1,2', 'logpath': 'irsim.log'}
+[ERROR] 2023-12-22 22:09:04,944 (irsim.py 581): Syntax error at line 7:
+read v3
+[INFO] 2023-12-22 22:09:04,945 (irsim.py 567): File loaded successfully
+[DEBUG] 2023-12-22 22:09:12,394 (irsim.py 620): Parsed arguments: {'irpath': 'mycode.ir', 'inputs': '1,2', 'logpath': 'irsim.log'}
+[ERROR] 2023-12-22 22:09:12,394 (irsim.py 581): Syntax error at line 7:
+read v3
+[INFO] 2023-12-22 22:09:12,394 (irsim.py 567): File loaded successfully
+[DEBUG] 2023-12-24 00:54:06,994 (irsim.py 620): Parsed arguments: {'irpath': 'mycode.ir', 'inputs': '', 'logpath': 'irsim.log'}
+[INFO] 2023-12-24 00:54:06,996 (irsim.py 567): File loaded successfully
+[INFO] 2023-12-24 00:54:09,428 (irsim.py 567): Program has exited gracefully
+[INFO] 2023-12-24 00:54:09,428 (irsim.py 567): Total instructions = 39
+[INFO] 2023-12-24 00:54:23,166 (irsim.py 567): KeyboardInterrupt raised, quit program
+[DEBUG] 2023-12-24 00:54:30,372 (irsim.py 620): Parsed arguments: {'irpath': 'mycode.ir', 'inputs': '', 'logpath': 'irsim.log'}
+[INFO] 2023-12-24 00:54:30,372 (irsim.py 567): File loaded successfully
+[INFO] 2023-12-24 00:54:31,496 (irsim.py 567): Program has exited gracefully
+[INFO] 2023-12-24 00:54:31,497 (irsim.py 567): Total instructions = 24
+[WARNING] 2023-12-24 00:54:33,793 (irsim.py 574): Program Counter goes out of bound. The running program will be terminated instantly

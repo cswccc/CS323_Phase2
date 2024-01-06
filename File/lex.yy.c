@@ -1071,7 +1071,7 @@ YY_RULE_SETUP
 case 37:
 YY_RULE_SETUP
 #line 115 "lex.l"
-{/*line();*/       /*printf("Id %s\n",yytext);   */ yylval = create_add("ID: ",yytext);  yylval->id=yytext; return ID;}
+{/*line();*/       /*printf("Id %s\n",yytext);   */ yylval = create_add("ID",yytext);  yylval->id=yytext; return ID;}
 	YY_BREAK
 case 38:
 YY_RULE_SETUP

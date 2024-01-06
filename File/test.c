@@ -1,15 +1,26 @@
-int test(int k,int k1){
-    return 0;
-}
+struct people{
+    int name;
+    int age;
+    int salary;
+};
 
+struct plepeo{
+    int didi;
+    int gege;
+    int baba;
+    int mama;
+};
+
+int test(struct people p1,struct plepeo p9){
+    int re=p1.age+p9.gege;
+    return re;
+}
 int main(){
-  int a=2;
-  int b;
-  b=1;
-  b=1;
-  if(a==b)
-    b=1;
-  else if(a==1)
-    b=2;
-  return a*b;
+    struct people p;
+    struct plepeo p5;
+    p.age=5;
+    p5.gege = 10;
+    int b=test(p,p5);
+    write(b);
+    return 0;
 }
