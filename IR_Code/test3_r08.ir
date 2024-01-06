@@ -1,0 +1,38 @@
+FUNCTION calculateTax :
+PARAM v1
+v2 := #0
+IF v1 <= #5000 GOTO label1
+GOTO label2
+LABEL label1 :
+RETURN #0
+GOTO label3
+LABEL label2 :
+IF v1 <= #10000 GOTO label4
+GOTO label5
+LABEL label4 :
+t3 := v1 - #5000
+v2 := t3 / #20
+GOTO label6
+LABEL label5 :
+IF v1 <= #50000 GOTO label7
+GOTO label8
+LABEL label7 :
+t6 := v1 - #10000
+t7 := t6 / #10
+v2 := #250 + t7
+GOTO label9
+LABEL label8 :
+t9 := #250 + #4000
+t10 := v1 - #50000
+t11 := t10 / #5
+v2 := t9 + t11
+LABEL label9 :
+LABEL label6 :
+LABEL label3 :
+RETURN v2
+FUNCTION main :
+READ v3
+ARG v3
+v4 := v3 - CALL calculateTax
+WRITE v4
+RETURN #0

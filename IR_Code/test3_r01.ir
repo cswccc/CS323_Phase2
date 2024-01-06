@@ -1,0 +1,44 @@
+FUNCTION mod :
+PARAM v1
+PARAM v2
+t1 := v1 / v2
+t2 := t1 * v2
+t3 := v1 - t2
+RETURN t3
+FUNCTION isPalindrome :
+PARAM v3
+v4 := #0
+v5 := v3
+v6 := #0
+LABEL label1 :
+IF v3 == #0 GOTO label2
+ARG #10
+ARG v3
+v6 := CALL mod
+t5 := v4 * #10
+v4 := t5 + v6
+v3 := v3 / #10
+GOTO label1
+LABEL label2 :
+IF v4 == v5 GOTO label3
+GOTO label4
+LABEL label3 :
+RETURN #1
+GOTO label5
+LABEL label4 :
+RETURN #0
+LABEL label5 :
+FUNCTION main :
+READ v7
+ARG v7
+t9 := CALL isPalindrome
+IF t9 == #1 GOTO label6
+GOTO label7
+LABEL label6 :
+WRITE #1
+GOTO label8
+LABEL label7 :
+t11 := #0 - #1
+WRITE t11
+LABEL label8 :
+RETURN #0
